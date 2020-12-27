@@ -1,21 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import {enableScreens} from 'react-native-screens';
+
+import ResturauntNavigator from './navigation/resturantNavigation';
+
+enableScreens();
+
+//Showing launtch Screen until have all fonts
+const fetchFonts = () => {
+  return Font.loadAsync({
+    'rubik': require('./assets/fonts/Rubik-Regular.ttf'),
+    'rubik-bold': require('./assets/fonts/Rubik-Bold.ttf'),
+    'rubik-light': require('./assets/fonts/Rubik-Light.ttf'),
+  });
+}
 
 export default function App() {
+  //my font State set to false since font is not loaded
+  const [fontLoaded, setFontLoaded] = useState(false);
+  //if font not loaded
+  if (!fontLoaded) {
+    return <AppLoading
+    startAsync={fetchFonts}
+    onFinish={() => setFontLoaded(true)}
+    onError={(err) => console.log(err)}
+ />
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ResturauntNavigator/>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
