@@ -5,6 +5,7 @@ import ReturauntDetail from './resturauntDetailScreen';
 import Colors from '../constants/Colors';
 import { CATEGORIES } from '../data/categoryData';
 
+//this is equivalant to CatMealsScreen
 const ResturauntCategoryScreen = props => {
 
   //get params sent by home screen (the catid) will give title and the resurants that fit into the
