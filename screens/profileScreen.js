@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
 
 const ProfileScreen = props => {
   return (
-    <View style={styles.container}>
-      <Text>ProfileScreen</Text>
-    </View>
+    <SafeAreaView>
+
+      <Text style={styles.title}>Categories</Text>
+
+    </SafeAreaView>
   );
 }
 
@@ -16,5 +18,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  title:{
+    fontFamily: 'rubik',
+    fontSize: 20,
+    padding: 20, 
+},
 });
 export default ProfileScreen;

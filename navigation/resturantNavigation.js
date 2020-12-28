@@ -1,7 +1,10 @@
+import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Platform } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 
 import HomeScreen from '../screens/homeScreen';
 import ResturauntCategoryScreen from '../screens/resturauntCategoryScreen';
@@ -18,9 +21,9 @@ const ResturauntNavigator = createStackNavigator({
         navigationOptions: { //style header
             headerTitle: 'Home',
             headerStyle: {
-                backgroundColor: Colors.accentColor 
+                backgroundColor: Colors.accentColor
             },
-            headerTintColor: 'white' 
+            headerTintColor: 'white'
         }
     },
     ResturauntCategory: {
@@ -45,9 +48,41 @@ const ResturauntNavigator = createStackNavigator({
 });
 
 const ProfileTabNavigator = createBottomTabNavigator({
-    Discover: ResturauntNavigator,
-    Profile: ProfileScreen
+    Discover: {
+        screen: ResturauntNavigator,
+        navigationOptions: {
+            tabBarIcon: tabInfo => {
+                return (
+                    <Ionicons
+                      name="ios-restaurant"
+                      size={25}
+                      color={tabInfo.tintColor}
+                    />
+                  );
+                
+            }
+        }
+    },
+    Profile: {
+        screen: ProfileScreen,
+        navigationOptions: {
+            tabBarIcon: tabInfo => {
+                return (
+                    <Ionicons
+                      name="ios-person"
+                      size={25}
+                      color={tabInfo.tintColor}
+                    />
+                  );
+            }
+        }
+    }
+}, {
+    tabBarOptions: { // look at docs to change more
+        activeTintColor: Colors.primaryColor,
+    }
+
 });
 
 //need createAppContainer for navigation
-export default createAppContainer(ProfileTabNavigator );
+export default createAppContainer(ProfileTabNavigator);
