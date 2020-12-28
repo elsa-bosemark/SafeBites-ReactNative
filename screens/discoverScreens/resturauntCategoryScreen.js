@@ -2,8 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 import ReturauntDetail from './resturauntDetailScreen';
-import Colors from '../constants/Colors';
-import { CATEGORIES } from '../data/categoryData';
+import { CATEGORIES } from '../../data/categoryData';
 
 //this is equivalant to CatMealsScreen
 const ResturauntCategoryScreen = props => {

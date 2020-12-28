@@ -11,9 +11,9 @@ import {
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { SearchBar } from 'react-native-elements';
 
-import { CATEGORIES } from '../data/categoryData';
-import Colors from '../constants/Colors';
-import CategoryGridTile from '../components/categoryGridTile';
+import { CATEGORIES } from '../../data/categoryData';
+import Colors from '../../constants/Colors';
+import CategoryGridTile from '../../components/categoryGridTile';
 
 
 const HomeScreen = props => {

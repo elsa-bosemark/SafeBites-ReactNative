@@ -6,10 +6,10 @@ import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 
-import HomeScreen from '../screens/homeScreen';
-import ResturauntCategoryScreen from '../screens/resturauntCategoryScreen';
-import ReturauntDetailScreen from '../screens/resturauntDetailScreen';
-import ProfileScreen from '../screens/profileScreen';
+import HomeScreen from '../screens/discoverScreens/homeScreen';
+import ResturauntCategoryScreen from '../screens/discoverScreens/resturauntCategoryScreen';
+import ReturauntDetailScreen from '../screens/discoverScreens/resturauntDetailScreen';
+import ProfileScreen from '../screens/profileScreens/profileScreen';
 
 import Colors from '../constants/Colors';
 
