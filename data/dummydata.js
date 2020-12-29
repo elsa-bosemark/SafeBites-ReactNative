@@ -1,7 +1,7 @@
-import Resturaunt from '../models/resturaunt'
+import Restaurant from '../models/restaurant'
 
-export const RESTURANTS = [
-    new Resturaunt(
+export const RESTAURANTS = [
+    new Restaurant(
         '123nfnaser', //id  yelp
         'Luna Chicken', //title yelp
         '$$$$', //price yelp

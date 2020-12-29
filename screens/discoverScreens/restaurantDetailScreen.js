@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const ResturauntDetailScreen = props => {
+const RestaurantDetailScreen = props => {
   return (
     <View style={styles.container}>
       <Text>DetailPage</Text>
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export default ResturauntDetailScreen;
+export default RestaurantDetailScreen;

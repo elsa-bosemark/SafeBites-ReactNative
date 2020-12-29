@@ -7,15 +7,15 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 import HomeScreen from '../screens/discoverScreens/homeScreen';
-import ResturauntCategoryScreen from '../screens/discoverScreens/resturauntCategoryScreen';
-import ReturauntDetailScreen from '../screens/discoverScreens/resturauntDetailScreen';
+import RestaurantCategoryScreen from '../screens/discoverScreens/restaurantCategoryScreen';
+import RetaurantDetailScreen from '../screens/discoverScreens/restaurantDetailScreen';
 import ProfileScreen from '../screens/profileScreens/profileScreen';
 
 import Colors from '../constants/Colors';
 
 
 //Createing a navigation stack for screens
-const ResturauntNavigator = createStackNavigator({
+const RestaurantNavigator = createStackNavigator({
     Home: {
         screen: HomeScreen,
         navigationOptions: { //style header
@@ -26,8 +26,8 @@ const ResturauntNavigator = createStackNavigator({
             headerTintColor: 'white'
         }
     },
-    ResturauntCategory: {
-        screen: ResturauntCategoryScreen,
+    RestaurantCategory: {
+        screen: RestaurantCategoryScreen,
         navigationOptions: { //style header
             headerStyle: {
                 backgroundColor: Colors.primaryColor
@@ -35,8 +35,8 @@ const ResturauntNavigator = createStackNavigator({
             headerTintColor: 'white'
         }
     },
-    ReturauntDetail: {
-        screen: ReturauntDetailScreen,
+    RetaurantDetail: {
+        screen: RetaurantDetailScreen,
     },
 }, {
     defaultNavigationOptions: {
@@ -49,7 +49,7 @@ const ResturauntNavigator = createStackNavigator({
 
 const ProfileTabNavigator = createBottomTabNavigator({
     Discover: {
-        screen: ResturauntNavigator,
+        screen: RestaurantNavigator,
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return (

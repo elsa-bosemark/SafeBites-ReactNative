@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
-import ReturauntDetail from './resturauntDetailScreen';
+import RetaurantDetail from './restaurantDetailScreen';
+import homeScreen from './homeScreen';
 import { CATEGORIES } from '../../data/categoryData';
 
 //this is equivalant to CatMealsScreen
-const ResturauntCategoryScreen = props => {
+const RestaurantCategoryScreen = props => {
 
   //get params sent by home screen (the catid) will give title and the resurants that fit into the
   const catId = props.navigation.getParam('categoryId');
@@ -14,7 +15,7 @@ const ResturauntCategoryScreen = props => {
 
   return (
     <View style={styles.container}>
-      <Text>ResturauntCategory</Text>
+      <Text>restaurantCategory</Text>
       <Text>{selectedCategory.title}</Text>
       <Button title='go to rest detail' onPress={() => {
         props.navigation.navigate('ReturauntDetail');
@@ -24,8 +25,8 @@ const ResturauntCategoryScreen = props => {
 }
 
 //this is a changeing screen (has mutiple cats) therefore I make into a function and can asscess the catId
-ResturauntCategoryScreen.navigationOptions = navigationData => {
-  //fetching nessary information (kinda repeating what I did in ResturauntCategoryScreen)
+RestaurantCategoryScreen.navigationOptions = navigationData => {
+  //fetching nessary information (kinda repeating what I did in restaurantCategoryScreen)
   const catId = navigationData.navigation.getParam('categoryId');
   console.log(catId)
   const selectedCategory = CATEGORIES.find(cat => cat.id === catId);
@@ -42,4 +43,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export default ResturauntCategoryScreen;
+export default RestaurantCategoryScreen;

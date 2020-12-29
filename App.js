@@ -4,7 +4,8 @@ import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import {enableScreens} from 'react-native-screens';
 
-import ResturauntNavigator from './navigation/resturantNavigation';
+
+import RestaurantNavigator from './navigation/restaurantNavigation';
 
 enableScreens();
 
@@ -29,7 +30,7 @@ export default function App() {
  />
   }
   return (
-    <ResturauntNavigator/>
+    <RestaurantNavigator/>
   );
 }
 

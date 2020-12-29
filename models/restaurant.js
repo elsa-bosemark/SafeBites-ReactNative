@@ -1,4 +1,4 @@
-class Resturaunt {//either cate ids or each seperate
+class Restaurant {//either cate ids or each seperate
     constructor(
         id,
         title, 
@@ -64,4 +64,4 @@ class Resturaunt {//either cate ids or each seperate
 
 }
 
-export default Resturaunt;
+export default Restaurant;
