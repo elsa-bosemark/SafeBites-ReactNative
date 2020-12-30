@@ -23,12 +23,11 @@ class Restaurant {//either cate ids or each seperate
         surfaceBool, 
         tempBool, 
         handSanatizerBool, 
-        utensilsBool, 
+        utensilsBool,
         yelpScore, 
         googleScore, 
         website, 
-        // deliveryApps, 
-        // reservationApps
+        
         ){
             this.id= id;
             this.title = title; 
