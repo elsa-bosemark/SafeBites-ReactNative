@@ -15,19 +15,10 @@ const RestaurantCard = props => {
         TouchableCmp = TouchableNativeFeedback;
     }
 
-    // const catDelivery = props.transactions.forEach(function (item) {
-    //     if (item === 'delivery') {
-    //         console.log('there is delivery')
-    //         return true;
-    //     }
-    // });
-    //const userCoor = props.userCoordinates;
     const restaurantDistance = getDistance(
         props.userCoordinates,
         props.restaurantCoordinates
     );
-
-    console.log('rest coordinates'+ Number((restaurantDistance/1000).toFixed(1)))
 
     return (
         <View style={styles.gridItem}>
@@ -96,15 +87,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         // for IOS
         shadowColor: 'black',
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
         // for android
         elevation: 3,
 
     },
     text: {
         fontFamily: 'rubik',
-
     },
     title: {
         flex: 1,
@@ -114,12 +104,11 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-        width: '40%',
-        height: '95%',
+        width: '100%',
+        height: '100%',
         marginRight: 10,
         borderRadius: 10,
         alignItems: 'flex-start'
-
     },
     row: {
         flexDirection: 'row',

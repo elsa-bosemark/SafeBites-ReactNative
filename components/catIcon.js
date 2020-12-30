@@ -10,24 +10,12 @@ const CatIcon = props => {
         transactionArray.push(
             <View style={styles.row}>
                 <Ionicons style={styles.icon} name="checkmark" size={iconSize} color={'green'} />
-                <Text style={[styles.text, styles.smallText]}>{item}</Text>
+                <Text style={[styles.text, styles.text]}>{item}</Text>
             </View>
         )
     });
-    console.log(transactionArray)
+    
     return transactionArray;
-
-
-    // switch (props.category) {
-    //     case true:
-    //         return <Ionicons style={styles.icon}  name="checkmark" size={iconSize} color={'green'} />
-    //         break;
-    //     case false:
-    //         return <Ionicons style={styles.icon}  name="close" size={iconSize} color={'red'} />
-    //         break;
-    //     default:
-    //        return <Ionicons style={styles.icon}  name="help" size={iconSize} color={'grey'} />
-    // }
 }
 const TransactionDeliveryIcon = props => {
     // console.log('this is final decider ' + props.delivery)
@@ -54,8 +42,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         //flex:1,
     },
-    smallText: {
-        fontSize: 15,
+    text: {
+        fontFamily: 'rubik',
+        fontSize: 18,
     },
 });
 //export default TransactionDeliveryIcon;

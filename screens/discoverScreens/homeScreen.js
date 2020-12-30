@@ -28,7 +28,7 @@ state = {
     location: null,
     geocode: null,
     errorMessage: "",
-    data: null,
+    title: null,
     error: null,
     loading: false,
     refreshing: true,
@@ -37,7 +37,7 @@ state = {
     phoneNumber: null,
     restaurantLocations: null,
     address: null,
-    url: null,
+    yelpUrl: null,
     price: null,
     transactions: null,
     restaurantCoordinates: null,
@@ -65,7 +65,7 @@ class HomeScreen extends React.Component {
     fetchApiCall = () => {
         let names = []
         let phoneNums = [];
-        let _url = [];
+        let _yelpUrl = [];
         let image = [];
         let addresses = [];
         let _restaurantLocation = [];
@@ -86,24 +86,24 @@ class HomeScreen extends React.Component {
                     phoneNums.push(element.display_phone)
                     image.push(element.image_url)
                     _restaurantLocation.push(element.location)
-                    _url.push(element.url)
+                    _yelpUrl.push(element.url)
                     _price.push(element.price)
                     _transactions.push(element.transactions)
                     _restaurantCoordinates.push(element.coordinates)
 
                     //set state
                     this.setState({
-                        data: names,
+                        title: names,
                         error: responseJSON.error || null,
                         loading: false,
                         refreshing: false,
                         phoneNumber: phoneNums,
                         images: image,
-                        url: _url,
+                        yelpUrl: _yelpUrl,
                         restaurantLocations: _restaurantLocation,
                         price: _price,
                         transactions: _transactions,
-                        restaurantCoordinates:_restaurantCoordinates,
+                        restaurantCoordinates: _restaurantCoordinates,
                     });
                     //get addresses
                     this.state.restaurantLocations.forEach(element => {
@@ -143,18 +143,25 @@ class HomeScreen extends React.Component {
         let geocode = await Location.reverseGeocodeAsync(location)
         this.setState({ geocode })
     }
-    //update the search field 
+    //SEARCH
+    //WARNING: IT'S ONLY CHANGING THE TITLE NOT ANY OTHER DATA => NEEDS FIXING
     updateSearch = (search) => {
         this.setState({ search: search });
 
-        let filteredData = this.state.data.filter(function (item) {
+        let filteredRestaurants = this.state.title.filter(function (item) {
             return item.includes(search);
         });
 
-        this.setState({ filteredData: filteredData });
+        this.setState({ filteredRestaurants: filteredRestaurants });
     };
 
-    //ATHENA END
+    //Filter reserants into Categories
+    filterCat = () => {
+        let pickupCat = this.state.transactions.filter(function (restaurant) {
+            return restaurant == 'pickup';
+        });
+    }
+
 
     render() {
         const { search, nameList } = this.state;
@@ -166,7 +173,17 @@ class HomeScreen extends React.Component {
                     onSelect={() => {
                         this.props.navigation.navigate({
                             routeName: 'RestaurantCategory', params: {
-                                categoryId: itemData.item.id
+                                categoryId: itemData.item.id,
+                                //pass restaurant DATA
+                                title: this.state.title,
+                                price: this.state.price,
+                                cover: this.state.images,
+                                transactions: this.state.transactions,
+                                restaurantCoordinates: this.state.restaurantCoordinates,
+                                userCoordinates: this.state.location,
+                                phoneNumber: this.state.phoneNumber,
+                                address: this.state.address,
+                                yelpUrl: this.state.yelpUrl,
                             }
                         })
                     }} />
@@ -175,13 +192,6 @@ class HomeScreen extends React.Component {
         return (
             <SafeAreaView>
                 <ScrollView>
-                    <SearchBar
-                        placeholder="Type Here..."
-                        platform="android"
-                        round="true"
-                        onChangeText={this.updateSearch}
-                        value={search}
-                    />
                     <Text style={styles.title}>Categories</Text>
                     <FlatList
                         data={CATEGORIES}
@@ -189,19 +199,31 @@ class HomeScreen extends React.Component {
                         numColumns={3}
                         scrollEnabled={false}
                         nestedScrollEnabled={true}
+                        keyExtractor={item => item}
                     />
                     <Text style={styles.title}>Filter</Text>
+                    <SearchBar
+                        placeholder="Type Here..."
+                        round = {true}
+                        onChangeText={this.updateSearch}
+                        value={search}
+                        clearIcon={true}
+                        containerStyle={{
+                            backgroundColor: Colors.accentColor,
+                        }}
+                        lightTheme={true}
+
+                    />
                     <FlatList
-                        data={this.state.filteredData && this.state.filteredData.length > 0 ? this.state.filteredData : this.state.data}
+                        data={this.state.filteredRestaurants && this.state.filteredRestaurants.length > 0 ? this.state.filteredRestaurants : this.state.title}
                         getItemLayout={(data, index) => (
                             { length: 30, offset: 2 * index, index }
                         )}
                         renderItem={({ item, index }) => (
                             <RestaurantCard
-                                title={item}//{this.state.data}
+                                title={item}
                                 price={this.state.price[index]}
-                                distance={'0.5'}
-                                cover={this.state.images[index]}//{this.state.images}
+                                cover={this.state.images[index]}
                                 transactions={this.state.transactions[index]}
                                 curbsidePickup={true}
                                 takeout={false}
@@ -209,7 +231,6 @@ class HomeScreen extends React.Component {
                                 restaurantCoordinates={this.state.restaurantCoordinates[index]}
                                 userCoordinates={this.state.location}
                                 onSelect={() => {
-                                    console.log(this.state.images[index])
                                 }} />
                         )}
                         size="large"
@@ -218,7 +239,6 @@ class HomeScreen extends React.Component {
                         style={styles.dataContainer}
                     />
                 </ScrollView>
-
             </SafeAreaView>
         );
     }
@@ -236,8 +256,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 20,
     },
-    test: {
-        fontSize: 150
-    }
 });
 export default HomeScreen;
