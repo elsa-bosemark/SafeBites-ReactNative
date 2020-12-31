@@ -11,7 +11,7 @@ const RestaurantCard = props => {
     //if on andoid and has ripple effect then use that (looks better)
     let TouchableCmp = TouchableOpacity;
 
-    if (Platform.OS === 'android' && Plateform.Version >= 21) {
+    if (Platform.OS === 'android' && Platform.Version >= 21) {
         TouchableCmp = TouchableNativeFeedback;
     }
 
@@ -24,7 +24,7 @@ const RestaurantCard = props => {
         <View style={styles.gridItem}>
             <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
                 <View style={styles.container}>
-                    <View style={styles.row}>
+                    <View style={[styles.row,styles.row_end]}>
                         <Image style={styles.image} source={{ uri: props.cover }} />
 
                         <View>
@@ -52,7 +52,7 @@ const RestaurantCard = props => {
                                     <View style={styles.tag}>
                                         <Text style={[styles.text, styles.mediumText, styles.whiteText]}>{props.price}</Text>
                                     </View>
-                                    <View style={styles.row}>
+                                    <View style={[styles.row, styles.row_center]}>
                                         <Ionicons style={styles.icon} name='md-location-sharp' size={35} color={Colors.accentColor} />
                                         <Text style={[styles.text, styles.largeText]}>{Number((restaurantDistance/1000).toFixed(1))} km</Text>
                                     </View>
@@ -85,13 +85,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 15,
         borderRadius: 10,
-        // for IOS
-        shadowColor: 'black',
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
-        // for android
-        elevation: 3,
-
     },
     text: {
         fontFamily: 'rubik',
@@ -105,7 +98,7 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
         width: '100%',
-        height: '100%',
+        height: 150,
         marginRight: 10,
         borderRadius: 10,
         alignItems: 'flex-start'
@@ -113,8 +106,12 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    row_end:{
+        alignItems: 'flex-end',
+    },
+    row_center:{
         alignItems: 'center',
-        //flex:1,
     },
     smallText: {
         fontSize: 15,

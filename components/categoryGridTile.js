@@ -7,7 +7,7 @@ const CategoryGridTile = props => {
     //if on andoid and has ripple effect then use that (looks better)
     let TouchableCmp = TouchableOpacity;
 
-    if (Platform.OS === 'android' && Plateform.Version >= 21) {
+    if (Platform.OS === 'android' && Platform.Version >= 21) {
         TouchableCmp = TouchableNativeFeedback;
     }
     return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView } from 'react-native';
 
 import RetaurantDetail from './restaurantDetailScreen';
 import homeScreen from './homeScreen';
@@ -7,9 +7,31 @@ import { CATEGORIES } from '../../data/categoryData';
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import RestaurantCard from '../../components/restaurantCard';
+import Colors from '../../constants/Colors';
 
 
 const RestaurantCategoryScreen = props => {
+  //search states
+  // state = {
+  //   search: '',
+  //   nameList: [],
+
+  // };
+  //SEARCH
+  // updateSearch = (search) => {
+  //   this.setState({ search: search });
+
+  //   let filteredRestaurants = displayedRestaurantsArray.filter(function (item) {
+  //     return item.includes(search);
+  //   });
+
+  //   this.setState({ filteredRestaurants: filteredRestaurants });
+  // };
+
+  //   //Search
+  //   const { search, nameList } = this.state;
+
+
 
   //get all the params
   const restaurantData = props.navigation.getParam('title');
@@ -35,37 +57,39 @@ const RestaurantCategoryScreen = props => {
       }
     })
   });
-  // updateSearch = (search) => {
-  //   this.setState({ search: search });
 
-  //   let filteredData = this.state.data.filter(function (item) {
-  //     return item.includes(search);
-  //   });
-
-  //   this.setState({ filteredData: filteredData });
-  // };
-
-  // const { search, nameList } = this.state;
+  //This gets the index interms of the entire rest array so that the images, price ect correspond correctly to the title
+  const actualIndex = (item) => { return restaurantData.indexOf(item) }
 
   return (
- 
-      <View style={styles.container}>
-        {/* <SearchBar
-        placeholder="Type Here..."
-        platform="android"
-        round="true"
-        onChangeText={this.updateSearch}
-        value={search}
-      /> */}
+    <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.searchBar}>
+          <SearchBar
+            placeholder="Search..."
+            //onChangeText={this.updateSearch}
+            //value={search}
+            color='black'
+            platform={Platform.OS === 'android' ? 'android' : 'ios'}
+            containerStyle={{
+              backgroundColor: '',
+            }}
+            inputContainerStyle={{
+              borderRadius: 10,
+              backgroundColor: 'white'
+            }}
+          />
+        </View>
+
         <FlatList
-          data={displayedRestaurantsArray}
+          data={displayedRestaurantsArray}//data={this.state.filteredData && this.state.filteredData.length > 0 ? this.state.filteredData : displayedRestaurantsArray}
           renderItem={({ item, index }) => (
             <RestaurantCard
               title={item}
-              price={price[index]}
-              cover={cover[index]}
-              transactions={transactions[index]}
-              restaurantCoordinates={restaurantCoordinates[index]}
+              price={price[actualIndex(item)]}
+              cover={cover[actualIndex(item)]}
+              transactions={transactions[actualIndex(item)]}
+              restaurantCoordinates={restaurantCoordinates[actualIndex(item)]}
               userCoordinates={userCoordinates}
               onSelect={() => {
               }} />
@@ -75,16 +99,17 @@ const RestaurantCategoryScreen = props => {
           refreshing={false}
           style={styles.list}
         />
-      </View>
+      </ScrollView>
+
+    </View>
 
   );
-}  
+}
 
 //this is a changeing screen (has mutiple cats) therefore I make into a function and can asscess the catId
 RestaurantCategoryScreen.navigationOptions = navigationData => {
   //fetching nessary information (kinda repeating what I did in restaurantCategoryScreen)
   const catId = navigationData.navigation.getParam('categoryId');
-  console.log(catId)
   const selectedCategory = CATEGORIES.find(cat => cat.id === catId);
   return {
     headerTitle: selectedCategory.title,
@@ -93,17 +118,19 @@ RestaurantCategoryScreen.navigationOptions = navigationData => {
 
 const styles = StyleSheet.create({
   container: {
-    width:'100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '100%',
   },
   title: {
     fontFamily: 'rubik',
     fontSize: 20,
     padding: 20,
   },
-  list:{
-    width:'100%',
+  list: {
+    width: '100%',
+  },
+  searchBar: {
+    width: '100%',
+    padding: Platform.OS === 'android' ? 10 : 0,
   }
 });
 export default RestaurantCategoryScreen;

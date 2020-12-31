@@ -19,6 +19,7 @@ import { CATEGORIES } from '../../data/categoryData';
 import Colors from '../../constants/Colors';
 import CategoryGridTile from '../../components/categoryGridTile';
 import RestaurantCard from '../../components/restaurantCard';
+import Restaurant from '../../models/restaurant'
 
 
 import { headers } from '../../constants/secret'
@@ -44,7 +45,7 @@ state = {
 }
 
 class HomeScreen extends React.Component {
-    //ATHENA
+
     //-------FUNCTIONS-------
     //more states
     state = {
@@ -144,7 +145,6 @@ class HomeScreen extends React.Component {
         this.setState({ geocode })
     }
     //SEARCH
-    //WARNING: IT'S ONLY CHANGING THE TITLE NOT ANY OTHER DATA => NEEDS FIXING
     updateSearch = (search) => {
         this.setState({ search: search });
 
@@ -155,16 +155,14 @@ class HomeScreen extends React.Component {
         this.setState({ filteredRestaurants: filteredRestaurants });
     };
 
-    //Filter reserants into Categories
-    filterCat = () => {
-        let pickupCat = this.state.transactions.filter(function (restaurant) {
-            return restaurant == 'pickup';
-        });
-    }
-
-
     render() {
         const { search, nameList } = this.state;
+
+        // find the correct index of the rest for other data (cover, price) so right info on search
+        
+        const actualIndex = (item) => { return this.state.title.indexOf(item) }
+        //console.log('the index of the rest is   '+restIndex)
+
         const renderGridItem = (itemData) => {
             return (
                 <CategoryGridTile
@@ -189,6 +187,7 @@ class HomeScreen extends React.Component {
                     }} />
             );
         }
+
         return (
             <SafeAreaView>
                 <ScrollView>
@@ -201,19 +200,24 @@ class HomeScreen extends React.Component {
                         nestedScrollEnabled={true}
                         keyExtractor={item => item}
                     />
-                    <Text style={styles.title}>Filter</Text>
-                    <SearchBar
-                        placeholder="Type Here..."
-                        round = {true}
-                        onChangeText={this.updateSearch}
-                        value={search}
-                        clearIcon={true}
-                        containerStyle={{
-                            backgroundColor: Colors.accentColor,
-                        }}
-                        lightTheme={true}
+                    <Text style={styles.title}>Find</Text>
+                    <View style={styles.searchBar}>
+                        <SearchBar
+                            placeholder="Search..."
+                            onChangeText={this.updateSearch}
+                            value={search}
+                            color='black'
+                            platform={Platform.OS === 'android' ? 'android' : 'ios'}
+                            containerStyle={{
+                                backgroundColor: '',
+                            }}
+                            inputContainerStyle={{
+                                borderRadius: 10,
+                                backgroundColor: 'white'
+                            }}
 
-                    />
+                        /></View>
+
                     <FlatList
                         data={this.state.filteredRestaurants && this.state.filteredRestaurants.length > 0 ? this.state.filteredRestaurants : this.state.title}
                         getItemLayout={(data, index) => (
@@ -222,15 +226,30 @@ class HomeScreen extends React.Component {
                         renderItem={({ item, index }) => (
                             <RestaurantCard
                                 title={item}
-                                price={this.state.price[index]}
-                                cover={this.state.images[index]}
-                                transactions={this.state.transactions[index]}
-                                curbsidePickup={true}
-                                takeout={false}
-                                delivery={true}
-                                restaurantCoordinates={this.state.restaurantCoordinates[index]}
+                                price={this.state.price[actualIndex(item)]}
+                                cover={this.state.images[actualIndex(item)]}
+                                transactions={this.state.transactions[actualIndex(item)]}
+                                restaurantCoordinates={this.state.restaurantCoordinates[actualIndex(item)]}
                                 userCoordinates={this.state.location}
+                                // curbsidePickup={true}
+                                // takeout={false}
+                                // delivery={true}
                                 onSelect={() => {
+                                    this.props.navigation.navigate({
+                                        routeName: 'RetaurantDetail', params: {
+                                            //pass restaurant DATA
+                                            restIndex: index,
+                                            title: this.state.title,
+                                            price: this.state.price,
+                                            cover: this.state.images,
+                                            transactions: this.state.transactions,
+                                            restaurantCoordinates: this.state.restaurantCoordinates,
+                                            userCoordinates: this.state.location,
+                                            phoneNumber: this.state.phoneNumber,
+                                            address: this.state.address,
+                                            yelpUrl: this.state.yelpUrl,
+                                        }
+                                    })
                                 }} />
                         )}
                         size="large"
@@ -256,5 +275,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 20,
     },
+    searchBar: {
+        padding: Platform.OS === 'android' ? 10 : 0,
+    }
 });
 export default HomeScreen;
+

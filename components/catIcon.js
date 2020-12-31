@@ -17,20 +17,21 @@ const CatIcon = props => {
     
     return transactionArray;
 }
-const TransactionDeliveryIcon = props => {
-    // console.log('this is final decider ' + props.delivery)
-    // switch (props.delivery) {
-    //     case 'delivery':
-    //         return <Ionicons style={styles.icon}  name="checkmark" size={iconSize} color={'green'} />
-    //         break;
-    //     case undefined:
-    //         return <Ionicons style={styles.icon}  name="close" size={iconSize} color={'red'} />
-    //         break;
-    //     default:
-    //        return <Ionicons style={styles.icon}  name="help" size={iconSize} color={'grey'} />
-    // }
 
-}
+// const CatIcon = props => {
+//     let transactionArray = [];
+//     switch (props.delivery) {
+//         case 'delivery':
+//             return <Ionicons style={styles.icon}  name="checkmark" size={iconSize} color={'green'} />
+//             break;
+//         case undefined:
+//             return <Ionicons style={styles.icon}  name="close" size={iconSize} color={'red'} />
+//             break;
+//         default:
+//            return <Ionicons style={styles.icon}  name="help" size={iconSize} color={'grey'} />
+//     }
+
+// }
 
 const styles = StyleSheet.create({
     icon: {
