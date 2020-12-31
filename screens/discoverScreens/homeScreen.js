@@ -1,25 +1,19 @@
 import React from 'react';
 import {
-    Button,
     StyleSheet,
     Text,
     View,
     SafeAreaView,
-    TouchableOpacity,
     Platform,
-    Image
 } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import { SectionList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
 import { CATEGORIES } from '../../data/categoryData';
-import Colors from '../../constants/Colors';
 import CategoryGridTile from '../../components/categoryGridTile';
 import RestaurantCard from '../../components/restaurantCard';
-import Restaurant from '../../models/restaurant'
 
 
 import { headers } from '../../constants/secret'
@@ -29,12 +23,13 @@ state = {
     location: null,
     geocode: null,
     errorMessage: "",
-    title: null,
     error: null,
     loading: false,
     refreshing: true,
     filteredData: null,
-    images: null,
+
+    title: null,
+    cover: null,
     phoneNumber: null,
     restaurantLocations: null,
     address: null,
@@ -67,7 +62,7 @@ class HomeScreen extends React.Component {
         let names = []
         let phoneNums = [];
         let _yelpUrl = [];
-        let image = [];
+        let _cover = [];
         let addresses = [];
         let _restaurantLocation = [];
         let _price = [];
@@ -85,7 +80,7 @@ class HomeScreen extends React.Component {
                 responseJSON.businesses.forEach(element => {
                     names.push(element.name)
                     phoneNums.push(element.display_phone)
-                    image.push(element.image_url)
+                    _cover.push(element.image_url)
                     _restaurantLocation.push(element.location)
                     _yelpUrl.push(element.url)
                     _price.push(element.price)
@@ -99,12 +94,12 @@ class HomeScreen extends React.Component {
                         loading: false,
                         refreshing: false,
                         phoneNumber: phoneNums,
-                        images: image,
-                        yelpUrl: _yelpUrl,
+                        cover: _cover,
                         restaurantLocations: _restaurantLocation,
                         price: _price,
                         transactions: _transactions,
                         restaurantCoordinates: _restaurantCoordinates,
+                        yelpUrl: _yelpUrl,
                     });
                     //get addresses
                     this.state.restaurantLocations.forEach(element => {
@@ -175,7 +170,7 @@ class HomeScreen extends React.Component {
                                 //pass restaurant DATA
                                 title: this.state.title,
                                 price: this.state.price,
-                                cover: this.state.images,
+                                cover: this.state.cover,
                                 transactions: this.state.transactions,
                                 restaurantCoordinates: this.state.restaurantCoordinates,
                                 userCoordinates: this.state.location,
@@ -227,7 +222,7 @@ class HomeScreen extends React.Component {
                             <RestaurantCard
                                 title={item}
                                 price={this.state.price[actualIndex(item)]}
-                                cover={this.state.images[actualIndex(item)]}
+                                cover={this.state.cover[actualIndex(item)]}
                                 transactions={this.state.transactions[actualIndex(item)]}
                                 restaurantCoordinates={this.state.restaurantCoordinates[actualIndex(item)]}
                                 userCoordinates={this.state.location}
@@ -241,7 +236,7 @@ class HomeScreen extends React.Component {
                                             restIndex: index,
                                             title: this.state.title,
                                             price: this.state.price,
-                                            cover: this.state.images,
+                                            cover: this.state.cover,
                                             transactions: this.state.transactions,
                                             restaurantCoordinates: this.state.restaurantCoordinates,
                                             userCoordinates: this.state.location,

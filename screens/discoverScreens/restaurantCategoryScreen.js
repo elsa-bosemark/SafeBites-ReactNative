@@ -92,7 +92,22 @@ const RestaurantCategoryScreen = props => {
               restaurantCoordinates={restaurantCoordinates[actualIndex(item)]}
               userCoordinates={userCoordinates}
               onSelect={() => {
-              }} />
+                // this.props.navigation.navigate({
+                //     routeName: 'RetaurantDetail', params: {
+                //         //pass restaurant DATA
+                //         restIndex: index,
+                //         title: restaurantData,
+                //         price: price,
+                //         cover: cover,
+                //         transactions: transactions,
+                //         restaurantCoordinates: restaurantCoordinates,
+                //         userCoordinates: userCoordinates,
+                //         phoneNumber: phoneNumber,
+                //         address: address,
+                //         yelpUrl: yelpUrl,
+                //     }
+                // })
+            }} />
           )}
           size="large"
           keyExtractor={item => item}

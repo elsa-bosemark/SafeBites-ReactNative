@@ -12,7 +12,7 @@ const ServisRating = props => {
                         imageSize={24}
                         type='custom'
                         ratingColor='#FFB547'
-                        readonly={false}
+                        readonly={true}
                         startingValue={props.rating} />
                 </View>
             </View>

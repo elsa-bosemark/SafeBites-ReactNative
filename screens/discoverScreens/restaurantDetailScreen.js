@@ -14,6 +14,8 @@ import DefaultButton from '../../components/defaultButton';
 import SafetyCard from '../../components/safetyCard';
 import Title from '../../components/title';
 import ServisRating from '../../components/servisRating';
+import YelpServisRating from '../../components/yelpServisRating';
+
 
 const RestaurantDetailScreen = props => {
 
@@ -79,13 +81,21 @@ const RestaurantDetailScreen = props => {
               <CircleButton icon='attach' color={Colors.primaryColor} title='Website' />
             </View>
           </View>
+          <View style={[styles.row, styles.center]}>
+            <View style={styles.row}>
+              <Text style={{...styles.text,...{paddingTop:10}}}>Information </Text>
+              <Text style={{...styles.text,...{paddingTop:10, fontFamily: 'rubik-bold'}}}>above</Text>
+              <Text style={{...styles.text,...{paddingTop:10}}}> provided by </Text>
+            </View>
+              <Image style={styles.yelpImage} source={require('../../assets/yelpStars/yelpLogo.png')} />
+            </View>
 
           <Divider />
 
           {/* Rate */}
           <DefaultButton text='Rate' buttonColor={Colors.primaryColor} textColor='white' />
 
-          
+
           <Divider />
 
           {/* Slider Rating */}
@@ -111,7 +121,7 @@ const RestaurantDetailScreen = props => {
             <SafetyCard text='Hand sanatizer provided' result='no' />
             <SafetyCard text='Utensils deliverd in a bag' result='yes' />
           </View>
-          
+
           <Divider />
 
           {/* Comments */}
@@ -124,8 +134,8 @@ const RestaurantDetailScreen = props => {
           {/* Servis Review */}
           <View style={styles.card}>
             <Title text='Food and Servis Review' />
-            <ServisRating text='Yelp' rating={4.5}/>
-            <ServisRating text='Google' rating={3}/>
+            <YelpServisRating text='Yelp' rating={3} />
+            <ServisRating text='Google' rating={3} />
           </View>
 
           <Divider />
@@ -201,6 +211,10 @@ const styles = StyleSheet.create({
   },
   bottomSpace: {
     marginBottom: 20,
+  },
+  yelpImage: {
+    width: 60,
+    height: 25
   }
 
 });
