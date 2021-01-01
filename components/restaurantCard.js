@@ -44,10 +44,16 @@ const RestaurantCard = props => {
                         </View >
 
                         {/* Hand Sanatizer */}
-                        <SafetyScore style={{ flex: 1 }} score={8} size={1}/>
+                        <SafetyScore style={{ flex: 1 }} score={8} size={1} />
                     </View>
-
-                    <Text style={[styles.text, styles.title]}>{props.title}</Text>
+                 
+                        <View style={styles.row}>
+                            {/* Heart =>Favorites */}
+                            <Ionicons style={{...styles.icon,...{paddingTop:10,paddingRight:10}}} name='heart' size={25} color='grey' />
+                            {/* Title */}
+                            <Text style={[styles.text, styles.title]}>{props.title}</Text>
+                     
+                    </View>
 
                 </View>
             </TouchableCmp>
