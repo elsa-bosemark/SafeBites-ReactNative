@@ -16,10 +16,12 @@ const styles = StyleSheet.create({
     circle: {
         backgroundColor: 'white',
         width: 80,
-         height: 80,
+        height: 80,
         borderRadius: 100,
         padding: 10,
         borderWidth: 2,
+        marginLeft: 5,
+        marginRight: 5
       },
       center: {
         alignItems: 'center',

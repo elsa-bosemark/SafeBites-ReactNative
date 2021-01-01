@@ -4,8 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { getDistance } from 'geolib';
 
 import CatIcon from './catIcon';
-//import TransactionDeliveryIcon from './catIcon';
 import Colors from '../constants/Colors';
+import SafetyScore from '../components/handSanatizer';
+
 
 const RestaurantCard = props => {
     //if on andoid and has ripple effect then use that (looks better)
@@ -24,45 +25,26 @@ const RestaurantCard = props => {
         <View style={styles.gridItem}>
             <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
                 <View style={styles.container}>
-                    <View style={[styles.row,styles.row_end]}>
+                    <View style={styles.row}>
+                        {/* Image */}
                         <Image style={styles.image} source={{ uri: props.cover }} />
 
-                        <View>
-                            <View>
-                                {/* the three categories */}
-
-                                {/* <View style={styles.row}>
-                                    <CatIcon category={props.curbsidePickup} />
-                                    <Text style={[styles.text, styles.smallText]}>Curbside Pickup</Text>
+                        {/* Info */}
+                        <View style={{ flex: 1 }}>
+                            <View style={{ ...styles.row, ...{ flex: 1, alignItems: 'center' } }}>
+                                <View style={styles.tag}>
+                                    <Text style={[styles.text, styles.mediumText, styles.whiteText]}>{props.price}</Text>
                                 </View>
-
-                                <View style={styles.row}>
-                                    <CatIcon category={props.takeout} />
-                                    <Text style={[styles.text, styles.smallText]}>Takeout</Text>
-
+                                <View style={{ ...styles.row, ...{ alignItems: 'center' } }}>
+                                    <Ionicons style={styles.icon} name='md-location-sharp' size={35} color={Colors.accentColor} />
+                                    <Text style={[styles.text, styles.largeText]}>{Number((restaurantDistance / 1000).toFixed(1))} km</Text>
                                 </View>
-
-                                <View style={styles.row}>
-                                    <CatIcon cat={props.transactions} />
-                                    <Text style={[styles.text, styles.smallText]}>Delivery</Text>
-                                </View> */}
-
-                                <CatIcon cat={props.transactions} />
-                                <View style={styles.row}>
-                                    <View style={styles.tag}>
-                                        <Text style={[styles.text, styles.mediumText, styles.whiteText]}>{props.price}</Text>
-                                    </View>
-                                    <View style={[styles.row, styles.row_center]}>
-                                        <Ionicons style={styles.icon} name='md-location-sharp' size={35} color={Colors.accentColor} />
-                                        <Text style={[styles.text, styles.largeText]}>{Number((restaurantDistance/1000).toFixed(1))} km</Text>
-                                    </View>
-
-                                </View>
-
                             </View>
+                            <CatIcon style={{ alignItem: 'flex-end', margin: 20 }} cat={props.transactions} />
+                        </View >
 
-                        </View>
-
+                        {/* Hand Sanatizer */}
+                        <SafetyScore style={{ flex: 1 }} score={8} size={1}/>
                     </View>
 
                     <Text style={[styles.text, styles.title]}>{props.title}</Text>
@@ -81,7 +63,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     container: {
-        flex: 1,
+        width: '100%',
         backgroundColor: 'white',
         padding: 15,
         borderRadius: 10,
@@ -97,7 +79,7 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-        width: '100%',
+        width: '40%',
         height: 150,
         marginRight: 10,
         borderRadius: 10,
@@ -105,13 +87,6 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    row_end:{
-        alignItems: 'flex-end',
-    },
-    row_center:{
-        alignItems: 'center',
     },
     smallText: {
         fontSize: 15,
@@ -126,6 +101,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: Colors.accentColor,
         borderRadius: 5,
+        height: 40,
 
     },
     whiteText: {

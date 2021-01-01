@@ -19,35 +19,87 @@ import Credit from '../../components/credit';
 import Tags from '../../components/tags';
 import OpenHours from '../../components/openHours';
 import PhotoSlider from '../../components/photoSlider/photoSlider';
-import SafetyScore from '../../components/handSanatizer';
 
-//passing params like this works
-const RestaurantDetailScreen = props => {
+//This is what Athena and Elsa worked through to try and pass the params
+state = {
+  restIndex: null,
+  restTitles: null,
+  transactions: null,
+  price: null,
+  cover: null,
+  restaurantCoordinates: null,
+  userCoordinates: null,
+  phoneNumber: null,
+  address: null,
+  yelpUrl: null,
+  yelpRating: null,
+  yelpReviewCount: null,
+  photos: null,
+  openHours: null,
+  tags: null,
+}
+export default class RestaurantDetailScreen extends React.Component {
+
+  componentDidMount() {
+    //this.getLocationAsync()
+
+  }
+  this.setState({
+    restIndex: this.props.route.params.restIndex,
+    restTitles: this.props.route.params.title,
+    transactions: this.props.route.params.transactions,
+    price: this.props.route.params.price,
+    cover: this.props.route.params.cover,
+    restaurantCoordinates: this.props.route.params.restaurantCoordinates,
+    userCoordinates: this.props.route.params.userCoordinates,
+    phoneNumber: this.props.route.params.phoneNumber,
+    address: this.props.route.params.address,
+    yelpUrl: this.props.route.params.yelpUrl,
+    yelpRating: this.props.route.params.yelpRating,
+    yelpReviewCount: this.props.route.params.yelpReviewCount,
+    photos: this.props.route.params.photos,
+    openHours: this.props.route.params.openHours,
+    tags: this.props.route.params.tags,
+    data: [
+      {
+        image:
+          'https://images.unsplash.com/photo-1567226475328-9d6baaf565cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60',
+        desc: 'Silent Waters in the mountains in midst of Himilayas',
+      },
+      {
+        image:
+          'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
+        desc:
+          'Red fort in India New Delhi is a magnificient masterpeiece of humans',
+      },
+      {
+        image:
+          'https://images.unsplash.com/photo-1477587458883-47145ed94245?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
+        desc:
+          'Sample Description below the image for representation purpose only',
+      },
+      {
+        image:
+          'https://images.unsplash.com/photo-1568700942090-19dc36fab0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
+        desc:
+          'Sample Description below the image for representation purpose only',
+      },
+      {
+        image:
+          'https://images.unsplash.com/photo-1584271854089-9bb3e5168e32?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80',
+        desc:
+          'Sample Description below the image for representation purpose only',
+      },
+    ],
+  });
 
 
-  //getting all params
-  const restIndex = props.navigation.getParam('restIndex');
-  const restTitles = props.navigation.getParam('title');
-  const transactions = props.navigation.getParam('transactions');
-  const price = props.navigation.getParam('price');
-  const cover = props.navigation.getParam('cover');
-  const restaurantCoordinates = props.navigation.getParam('restaurantCoordinates');
-  const userCoordinates = props.navigation.getParam('userCoordinates');
-  const phoneNumber = props.navigation.getParam('phoneNumber');
-  const address = props.navigation.getParam('address');
-  const yelpUrl = props.navigation.getParam('yelpUrl');
-
-  const yelpRating = props.navigation.getParam('yelpRating');
-  const yelpReviewCount = props.navigation.getParam('yelpReviewCount');
-  const photos = props.navigation.getParam('photos');
-  const openHours = props.navigation.getParam('openHours');
-  const tags = props.navigation.getParam('tags');
-
-
+render() {
+  console.log('this is a test   ' + restaurantCoordinates[this.state.restIndex])
   //Calculate the distance of rest
   const restaurantDistance = getDistance(
-    userCoordinates,
-    restaurantCoordinates[restIndex]
+    this.state.userCoordinates,
+    this.state.restaurantCoordinates[this.state.restIndex]
   );
   //open link function
   const openLink = url => Linking.openURL(url).catch(() => {
@@ -61,67 +113,62 @@ const RestaurantDetailScreen = props => {
         <View style={styles.container}>
           <View style={styles.card}>
             {/* Cover */}
-            {/* <PhotoSlider
-            data={photos[restIndex]}
-            timer={2000}
-            imageKey={'image'}
-            local={false}
-            width={screenWidth}
-            separator={0}
-            loop={true}
-            autoscroll={true}
-            currentIndexCallback={index => console.log('Index', index)}
-            onPress={item => alert(JSON.stringify(item))}
-            indicator
-            animation
-          /> */}
-            <Image style={styles.image} source={{ uri: cover[restIndex] }} />
+            <PhotoSlider
+              data={this.state.data}
+              timer={2000}
+              imageKey={'image'}
+              local={false}
+              width={screenWidth}
+              separator={0}
+              loop={true}
+              autoscroll={true}
+              currentIndexCallback={index => console.log('Index', index)}
+              onPress={item => alert(JSON.stringify(item))}
+              indicator
+              animation
+            />
+            {/* <Image style={styles.image} source={{ uri: cover[restIndex] }} /> */}
             {/* Restaurant Title */}
-            <Title text={restTitles[restIndex]} />
-            <View style={styles.row}>
+            <Title text={this.state.restTitles[this.state.restIndex]} />
+            <View style={[styles.row]}>
               {/* Transactions */}
-              <View style={{ flex: 1 }} >
-                <CatIcon cat={transactions[restIndex]} />
-                
+              <View>
+                <CatIcon cat={this.state.transactions[this.state.restIndex]} />
                 {/* Price and Distance */}
-                <View style={{...styles.row,...{marginTop:15,marginBottom:15}}}>
+                <View style={styles.row}>
                   <View style={styles.tag}>
-                    <Text style={{ ...styles.text, ...{ fontSize: 19, color: 'white' } }}>{price[restIndex]}</Text>
+                    <Text style={{ ...styles.text, ...{ fontSize: 19, color: 'white' } }}>{this.state.price[this.state.restIndex]}</Text>
                   </View>
                   <View style={{ ...styles.row, ...{ alignItems: 'center', } }}>
                     <Ionicons name='md-location-sharp' size={35} color={Colors.primaryColor} />
                     <Text style={{ ...styles.text, ...{ fontSize: 20 } }}>{Number((restaurantDistance / 1000).toFixed(1))} km</Text>
                   </View>
                 </View>
-                
                 {/* Extra Info*/}
                 {/* <OpenHours hours={openHours[restIndex]}/> */}
                 <Text style={styles.title}>Max capacity: ???</Text>
                 <Text style={styles.title}>Open hours: ???</Text>
               </View>
               {/* Rating Score*/}
-              <View style={{ flex: 1, alignItems: 'center' }}>
-                <SafetyScore score={8} size={1.5} />
+              <View >
+                <Image style={styles.scoreImage} source={require('../../assets/icon.png')} />
               </View>
             </View>
             {/* Make tags into a diff comp being an array*/}
             <Text style={styles.title}>Tags</Text>
             <View style={{ flexDirection: 'row' }}>
-              <Tags restTags={tags[restIndex]} />
+              <Tags restTags={this.state.tags[this.state.restIndex]} />
             </View>
           </View>
           <Credit logo={require('../../assets/yelpStars/yelpLogo.png')} />
           <Divider />
           <View style={styles.card}>
             {/* Favorites, Call and Directions */}
-
-            <View style={{felx: 1}}>
-              <View style={{  ...styles.row,...{alignItems: 'center'}}}>
-                <CircleButton icon='heart' color='#E0E0E0' title='Favorite' />
-                <CircleButton icon='call' color={Colors.primaryColor} title='Call' />
-                <CircleButton icon='map' color={Colors.primaryColor} title='Direction' />
-                <CircleButton icon='attach' color={Colors.primaryColor} title='Website' />
-              </View>
+            <View style={{ ...styles.row, ...{ paddingTop: 20, paddingBottom: 10 } }}>
+              <CircleButton icon='heart' color='#E0E0E0' title='Favorite' />
+              <CircleButton icon='call' color={Colors.primaryColor} title='Call' />
+              <CircleButton icon='map' color={Colors.primaryColor} title='Direction' />
+              <CircleButton icon='attach' color={Colors.primaryColor} title='Website' />
             </View>
           </View>
 
@@ -168,8 +215,8 @@ const RestaurantDetailScreen = props => {
           {/* service Review */}
           <View style={styles.card}>
             <Title text='Food and Service Review' />
-            <YelpServisRating text='Yelp' rating={yelpRating[restIndex]} reviewCount={yelpReviewCount[restIndex]} onSelect={() => {
-              openLink(yelpUrl[restIndex])
+            <YelpServisRating text='Yelp' rating={this.state.yelpRating[this.state.restIndex]} reviewCount={this.state.yelpReviewCount[restIndex]} onSelect={() => {
+              openLink(this.state.yelpUrl[this.state.restIndex])
             }} />
             <ServisRating text='Google' rating={3} reviewCount={100} />
           </View>
@@ -178,11 +225,15 @@ const RestaurantDetailScreen = props => {
           <View style={styles.card}>
             <Title text='Order or Reserve Now' />
           </View>
+
+
         </View>
       </ScrollView>
     </SafeAreaView >
 
   );
+}
+
 }
 //this is a changeing screen (has mutiple cats) therefore I make into a function and can asscess the catId
 RestaurantDetailScreen.navigationOptions = navigationData => {
@@ -230,7 +281,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    //justifyContent: 'space-between',
+    justifyContent: 'space-between',
   },
 
   card: {
@@ -241,12 +292,6 @@ const styles = StyleSheet.create({
   bottomSpace: {
     marginBottom: 20,
   },
-  tag: {
-    padding: 10,
-    backgroundColor: Colors.accentColor,
-    borderRadius: 5,
-    margin: 5,
-  },
+
 
 });
-export default RestaurantDetailScreen;

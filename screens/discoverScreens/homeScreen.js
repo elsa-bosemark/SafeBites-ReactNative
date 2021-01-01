@@ -232,8 +232,8 @@ class HomeScreen extends React.Component {
 
 
         return (
-            <SafeAreaView>
-                <ScrollView>
+            <SafeAreaView >
+                <ScrollView >
                     <Text style={styles.title}>Categories</Text>
                     <FlatList
                         data={CATEGORIES}
@@ -325,6 +325,7 @@ const styles = StyleSheet.create({
         fontFamily: 'rubik',
         fontSize: 20,
         padding: 20,
+        
     },
     searchBar: {
         padding: Platform.OS === 'android' ? 10 : 0,
