@@ -17,10 +17,10 @@ const ServisRating = props => {
                 </View>
             </View>
 
-            <View style={{ flex: 1, alignItems: 'flex-end', }}>
+            <View style={{...styles.row,...{marginLeft:30,marginRight:20, marginBottom:20, marginTop:5}}}>
                 <Text style={styles.smallText}>See more...</Text>
+                <Text style={styles.text}>{props.reviewCount} reviews</Text>
             </View>
-
         </TouchableOpacity>
 
     );
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         width: '90%',
-        height: 60,
+        height: 70,
         borderRadius: 40,
         borderWidth: 2,
         borderColor: '#E0E0E0',
@@ -51,6 +51,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-start',
         fontSize: 20,
+    },
+    text: {
+        alignItems: 'flex-end',
+        fontSize: 15,
     },
     rating: {
         marginRight: 10,

@@ -17,17 +17,30 @@ const SafetyCard = props => {
             icon = 'close';
             break;
         case 'idk':
-            color ='grey';
+            color = 'grey';
             icon = 'question';
         default:
-            color ='grey';
-            icon = 'question'; 
+            color = 'grey';
+            icon = 'question';
     }
+
     return (
         <View style={{ ...styles.container, ...{ borderColor: color } }}>
             <View style={styles.row}>
-                <Text style={styles.title}>{props.text}</Text>
-                <Ionicons name={icon} size={35} color={color} />
+                <View>
+                    <Text style={styles.title}>{props.text}</Text>
+                    <View style={{ ...styles.row, ...{ paddingTop: 5 } }}>
+                        <Ionicons name='person' size={20} color='grey' />
+                        <Text style={styles.title}>{props.reviewCount}</Text>
+                    </View>
+
+                </View>
+                <View style={{ felx: 2, alignItems: 'center' }}>
+                    <Ionicons name={icon} size={35} color={color} />
+                </View>
+
+
+
             </View>
         </View>
     );
@@ -51,7 +64,7 @@ const styles = StyleSheet.create({
     title: {
         flex: 1,
         alignItems: 'flex-start',
-        padding: 5,
+        paddingLeft: 5,
         fontSize: 20,
     },
 

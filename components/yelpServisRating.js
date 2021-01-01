@@ -47,15 +47,18 @@ const YelpServisRating = props => {
                 <View style={[styles.row, styles.center, styles.container]}>
                     <View style={{ flex: 1 }}>
                         <Image style={styles.image} source={require('../assets/yelpStars/yelpLogo.png')} />
+                        
                     </View>
                     <View style={{ flex: 1 }}>
                         <Image style={styles.imageRating} source={image} />
+
                     </View>
                 </View>
             </View>
 
-            <View style={{ flex: 1, alignItems: 'flex-end', }}>
+            <View style={{...styles.row,...{marginLeft:30,marginRight:20, marginBottom:20, marginTop:5}}}>
                 <Text style={styles.smallText}>See more...</Text>
+                <Text style={styles.title}>{props.reviewCount} reviews</Text>
             </View>
 
         </TouchableOpacity>
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         width: '90%',
-        height: 60,
+        height: 70,
         borderRadius: 40,
         borderWidth: 2,
         borderColor: '#E0E0E0',
@@ -83,10 +86,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
-        marginLeft: 10,
-        flex: 1,
-        alignItems: 'flex-start',
-        fontSize: 20,
+        alignItems: 'flex-end',
+        fontSize: 15,
     },
     imageRating: {
         marginRight: 20,

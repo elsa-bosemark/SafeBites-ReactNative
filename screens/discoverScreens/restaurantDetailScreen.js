@@ -15,6 +15,8 @@ import SafetyCard from '../../components/safetyCard';
 import Title from '../../components/title';
 import ServisRating from '../../components/servisRating';
 import YelpServisRating from '../../components/yelpServisRating';
+import Credit from '../../components/credit';
+import Tags from '../../components/tags';
 
 
 const RestaurantDetailScreen = props => {
@@ -29,6 +31,13 @@ const RestaurantDetailScreen = props => {
   const phoneNumber = props.navigation.getParam('phoneNumber');
   const address = props.navigation.getParam('address');
   const yelpUrl = props.navigation.getParam('yelpUrl');
+
+  const yelpRating = props.navigation.getParam('yelpRating');
+  const yelpReviewCount = props.navigation.getParam('yelpReviewCount');
+  const photos = props.navigation.getParam('photos');
+  const openHours = props.navigation.getParam('openHours');
+  const tags = props.navigation.getParam('tags');
+
 
   //Calculate the distance of rest
   const restaurantDistance = getDistance(
@@ -70,9 +79,13 @@ const RestaurantDetailScreen = props => {
             </View>
             {/* Make tags into a diff comp being an array*/}
             <Text style={styles.title}>Tags</Text>
-            <View style={styles.tag}>
-              <Text style={{ ...styles.text, ...{ fontSize: 19, color: 'white' } }}>Tags</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Tags restTags={tags[restIndex]} />
             </View>
+          </View>
+          <Credit logo={require('../../assets/yelpStars/yelpLogo.png')} />
+          <Divider />
+          <View style={styles.card}>
             {/* Favorites, Call and Directions */}
             <View style={{ ...styles.row, ...{ paddingTop: 20, paddingBottom: 10 } }}>
               <CircleButton icon='heart' color='#E0E0E0' title='Favorite' />
@@ -81,14 +94,6 @@ const RestaurantDetailScreen = props => {
               <CircleButton icon='attach' color={Colors.primaryColor} title='Website' />
             </View>
           </View>
-          <View style={[styles.row, styles.center]}>
-            <View style={styles.row}>
-              <Text style={{...styles.text,...{paddingTop:10}}}>Information </Text>
-              <Text style={{...styles.text,...{paddingTop:10, fontFamily: 'rubik-bold'}}}>above</Text>
-              <Text style={{...styles.text,...{paddingTop:10}}}> provided by </Text>
-            </View>
-              <Image style={styles.yelpImage} source={require('../../assets/yelpStars/yelpLogo.png')} />
-            </View>
 
           <Divider />
 
@@ -102,12 +107,12 @@ const RestaurantDetailScreen = props => {
           <View style={styles.card}>
             <Title text='Covid Prevention Rating' />
             {/* Sliders */}
-            <ScoreSlider safetyTitle='Enforcement and use of masks by customers and staff ' score={20} />
-            <ScoreSlider safetyTitle='Enforcement of Social Distancing ' score={90} />
-            <ScoreSlider safetyTitle='Sheilds/physical barriers' score={80} />
+            <ScoreSlider safetyTitle='Enforcement and use of masks by customers and staff ' score={20} reviewCount={5} />
+            <ScoreSlider safetyTitle='Enforcement of Social Distancing ' score={90} reviewCount={5} />
+            <ScoreSlider safetyTitle='Sheilds/physical barriers' score={80} reviewCount={5} />
             {/* Yes or no Info  OPTIONS: yes, no, or idk*/}
-            <SafetyCard text='Staff wear gloves' result='yes' />
-            <SafetyCard text='Contactless payment' result='no' />
+            <SafetyCard text='Staff wear gloves' result='yes' reviewCount={4} reviewCount={5} />
+            <SafetyCard text='Contactless payment' result='no' reviewCount={4} reviewCount={5} />
             {/* <SafetyCard text='' result=''/> */}
           </View>
 
@@ -116,10 +121,10 @@ const RestaurantDetailScreen = props => {
           {/* More safety Rating */}
           <View style={styles.card}>
             <Title text='In Person Safety Mesures' />
-            <SafetyCard text='Surfaces are sanitized after each patron' result='idk' />
-            <SafetyCard text='Tempature check of customers' result='yes' />
-            <SafetyCard text='Hand sanatizer provided' result='no' />
-            <SafetyCard text='Utensils deliverd in a bag' result='yes' />
+            <SafetyCard text='Surfaces are sanitized after each patron' result='idk' reviewCount={4} />
+            <SafetyCard text='Tempature check of customers' result='yes' reviewCount={4} />
+            <SafetyCard text='Hand sanatizer provided' result='no' reviewCount={4} />
+            <SafetyCard text='Utensils deliverd in a bag' result='yes' reviewCount={4} />
           </View>
 
           <Divider />
@@ -134,8 +139,8 @@ const RestaurantDetailScreen = props => {
           {/* Servis Review */}
           <View style={styles.card}>
             <Title text='Food and Servis Review' />
-            <YelpServisRating text='Yelp' rating={3} />
-            <ServisRating text='Google' rating={3} />
+            <YelpServisRating text='Yelp' rating={yelpRating[restIndex]} reviewCount={yelpReviewCount[restIndex]} />
+            <ServisRating text='Google' rating={3} reviewCount={100} />
           </View>
 
           <Divider />
@@ -146,7 +151,7 @@ const RestaurantDetailScreen = props => {
 
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView >
 
   );
 }
@@ -198,12 +203,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  tag: {
-    padding: 10,
-    backgroundColor: Colors.accentColor,
-    borderRadius: 5,
 
-  },
   card: {
     backgroundColor: 'white',
     padding: 15,
@@ -212,10 +212,7 @@ const styles = StyleSheet.create({
   bottomSpace: {
     marginBottom: 20,
   },
-  yelpImage: {
-    width: 60,
-    height: 25
-  }
+
 
 });
 export default RestaurantDetailScreen;

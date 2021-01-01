@@ -1,26 +1,33 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 
 import Colors from '../constants/Colors';
+
+
 const Tags = props => {
-    return (
-        <View style={styles.center}><View style={styles.divider}></View></View>
-    );
+
+  let tagArray = [];
+  const tag = props.restTags.forEach((value) => {
+    tagArray.push(
+      <View style={styles.tag}>
+        <Text style={{ ...styles.text, ...{ fontSize: 19, color: 'white' } }}>{value.title}</Text>
+      </View>
+    )
+  });
+    return tagArray;
 }
 
 const styles = StyleSheet.create({
-    center: {
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      divider: {
-        marginTop: 20,
-        marginBottom: 20,
-        width: '90%',
-        height: 3,
-        backgroundColor: Colors.primaryColor,
-        borderRadius: 5,
-      },
+  tag: {
+    padding: 10,
+    backgroundColor: Colors.accentColor,
+    borderRadius: 5,
+    margin: 5,
+  },
+  text: {
+    fontFamily: 'rubik',
+  },
+
 });
 
 export default Tags;

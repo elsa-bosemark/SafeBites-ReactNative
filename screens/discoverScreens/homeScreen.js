@@ -37,6 +37,13 @@ state = {
     price: null,
     transactions: null,
     restaurantCoordinates: null,
+
+    yelpRating: null,
+    yelpReviewCount: null,
+    photos: null,
+    openHours: null,
+    tags: null,
+
 }
 
 class HomeScreen extends React.Component {
@@ -68,6 +75,15 @@ class HomeScreen extends React.Component {
         let _price = [];
         let _transactions = [];
         let _restaurantCoordinates = [];
+
+        let _yelpRating = [];
+        let _yelpReviewCount = [];
+        let _photos = [];
+        let _openHours = [];
+        let _tags = [];
+
+        //let _website = [];
+
         this.setState({ loading: true });
         fetch(`https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=5`, {
             "method": "GET",
@@ -86,6 +102,11 @@ class HomeScreen extends React.Component {
                     _price.push(element.price)
                     _transactions.push(element.transactions)
                     _restaurantCoordinates.push(element.coordinates)
+                    _yelpRating.push(element.rating)
+                    _yelpReviewCount.push(element.review_count)
+                    _photos.push(element.photos)
+                    _openHours.push(element.hours)
+                    _tags.push(element.categories)
 
                     //set state
                     this.setState({
@@ -100,6 +121,12 @@ class HomeScreen extends React.Component {
                         transactions: _transactions,
                         restaurantCoordinates: _restaurantCoordinates,
                         yelpUrl: _yelpUrl,
+
+                        yelpRating: _yelpRating,
+                        yelpReviewCount: _yelpReviewCount,
+                        photos: _photos,
+                        openHours: _openHours,
+                        tags: _tags,
                     });
                     //get addresses
                     this.state.restaurantLocations.forEach(element => {
@@ -154,7 +181,7 @@ class HomeScreen extends React.Component {
         const { search, nameList } = this.state;
 
         // find the correct index of the rest for other data (cover, price) so right info on search
-        
+
         const actualIndex = (item) => { return this.state.title.indexOf(item) }
         //console.log('the index of the rest is   '+restIndex)
 
@@ -167,16 +194,23 @@ class HomeScreen extends React.Component {
                         this.props.navigation.navigate({
                             routeName: 'RestaurantCategory', params: {
                                 categoryId: itemData.item.id,
-                                //pass restaurant DATA
+                                //pass restaurant DATA so it is accesable to detailScreen when on catScreen
                                 title: this.state.title,
                                 price: this.state.price,
                                 cover: this.state.cover,
                                 transactions: this.state.transactions,
                                 restaurantCoordinates: this.state.restaurantCoordinates,
                                 userCoordinates: this.state.location,
+
                                 phoneNumber: this.state.phoneNumber,
                                 address: this.state.address,
                                 yelpUrl: this.state.yelpUrl,
+
+                                yelpRating: this.state.yelpRating,
+                                yelpReviewCount: this.state.yelpReviewCount,
+                                photos: this.state.photos,
+                                openHours: this.state.openHours,
+                                tags: this.state.tags,
                             }
                         })
                     }} />
@@ -243,6 +277,12 @@ class HomeScreen extends React.Component {
                                             phoneNumber: this.state.phoneNumber,
                                             address: this.state.address,
                                             yelpUrl: this.state.yelpUrl,
+
+                                            yelpRating: this.state.yelpRating,
+                                            yelpReviewCount: this.state.yelpReviewCount,
+                                            photos: this.state.photos,
+                                            openHours: this.state.openHours,
+                                            tags: this.state.tags,
                                         }
                                     })
                                 }} />
