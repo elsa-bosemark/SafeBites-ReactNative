@@ -44,6 +44,12 @@ state = {
     openHours: null,
     tags: null,
 
+    //website = null // need google
+    // googlePhoneNumber = null, // need google
+    // googleRating = null, // need google
+    // googleReviewCount = null, // need google
+    // googleMapsUrl = null, // need google 
+
 }
 
 class HomeScreen extends React.Component {
@@ -79,10 +85,11 @@ class HomeScreen extends React.Component {
         let _yelpRating = [];
         let _yelpReviewCount = [];
         let _photos = [];
-        let _openHours = [];
         let _tags = [];
 
-        //let _website = [];
+        //Not working
+        let _openHours = [];
+
 
         this.setState({ loading: true });
         fetch(`https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=5`, {
@@ -125,8 +132,10 @@ class HomeScreen extends React.Component {
                         yelpRating: _yelpRating,
                         yelpReviewCount: _yelpReviewCount,
                         photos: _photos,
-                        openHours: _openHours,
                         tags: _tags,
+                        
+                        //Not working
+                        openHours: _openHours,
                     });
                     //get addresses
                     this.state.restaurantLocations.forEach(element => {
@@ -216,6 +225,11 @@ class HomeScreen extends React.Component {
                     }} />
             );
         }
+        const run = () => {
+            console.log('home screen   ' + this.state.openHours[0].open[0].day)
+        }
+
+
 
         return (
             <SafeAreaView>
@@ -264,6 +278,7 @@ class HomeScreen extends React.Component {
                                 // takeout={false}
                                 // delivery={true}
                                 onSelect={() => {
+
                                     this.props.navigation.navigate({
                                         routeName: 'RetaurantDetail', params: {
                                             //pass restaurant DATA
@@ -285,6 +300,7 @@ class HomeScreen extends React.Component {
                                             tags: this.state.tags,
                                         }
                                     })
+                                    run
                                 }} />
                         )}
                         size="large"

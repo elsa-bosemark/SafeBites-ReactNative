@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, SafeAreaView, Platform, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView, Platform, TouchableNativeFeedback, Linking } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { getDistance } from 'geolib';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,6 +17,7 @@ import ServisRating from '../../components/servisRating';
 import YelpServisRating from '../../components/yelpServisRating';
 import Credit from '../../components/credit';
 import Tags from '../../components/tags';
+import OpenHours from '../../components/openHours';
 
 
 const RestaurantDetailScreen = props => {
@@ -44,6 +45,10 @@ const RestaurantDetailScreen = props => {
     userCoordinates,
     restaurantCoordinates[restIndex]
   );
+  //open link function
+  const openLink = url => Linking.openURL(url).catch(() => {
+    Alert.alert("Sorry, something went wrong.", "Please try again later.")
+  })
 
   return (
     <SafeAreaView>
@@ -69,6 +74,7 @@ const RestaurantDetailScreen = props => {
                   </View>
                 </View>
                 {/* Extra Info*/}
+                {/* <OpenHours hours={openHours[restIndex]}/> */}
                 <Text style={styles.title}>Max capacity: ???</Text>
                 <Text style={styles.title}>Open hours: ???</Text>
               </View>
@@ -79,7 +85,7 @@ const RestaurantDetailScreen = props => {
             </View>
             {/* Make tags into a diff comp being an array*/}
             <Text style={styles.title}>Tags</Text>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <Tags restTags={tags[restIndex]} />
             </View>
           </View>
@@ -99,7 +105,6 @@ const RestaurantDetailScreen = props => {
 
           {/* Rate */}
           <DefaultButton text='Rate' buttonColor={Colors.primaryColor} textColor='white' />
-
 
           <Divider />
 
@@ -136,16 +141,18 @@ const RestaurantDetailScreen = props => {
 
           <Divider />
 
-          {/* Servis Review */}
+          {/* service Review */}
           <View style={styles.card}>
-            <Title text='Food and Servis Review' />
-            <YelpServisRating text='Yelp' rating={yelpRating[restIndex]} reviewCount={yelpReviewCount[restIndex]} />
+            <Title text='Food and Service Review' />
+            <YelpServisRating text='Yelp' rating={yelpRating[restIndex]} reviewCount={yelpReviewCount[restIndex]} onSelect={() => {
+              openLink(yelpUrl[restIndex])
+            }} />
             <ServisRating text='Google' rating={3} reviewCount={100} />
           </View>
 
           <Divider />
           <View style={styles.card}>
-            <Title text='Order Or Reserve Now' />
+            <Title text='Order or Reserve Now' />
           </View>
 
 
