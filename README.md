@@ -13,6 +13,6 @@
 - rate screen
 
 #### Elsa - Help:
-- I can't get the search bar of the CategoryScreen to work
+- ✔️ I can't get the search bar of the CategoryScreen to work
 - Can't parse through the yelp hours data (it's an array of objects)
 - I want also use the google review api (https://developers.google.com/places/web-service/details) to get the phone number, direction, website and their rating
