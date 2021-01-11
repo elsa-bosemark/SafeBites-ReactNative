@@ -54,12 +54,12 @@ const ProfileTabNavigator = createBottomTabNavigator({
             tabBarIcon: tabInfo => {
                 return (
                     <Ionicons
-                      name="ios-restaurant"
-                      size={25}
-                      color={tabInfo.tintColor}
+                        name="ios-restaurant"
+                        size={25}
+                        color={tabInfo.tintColor}
                     />
-                  );
-                
+                );
+
             }
         }
     },
@@ -69,11 +69,11 @@ const ProfileTabNavigator = createBottomTabNavigator({
             tabBarIcon: tabInfo => {
                 return (
                     <Ionicons
-                      name="ios-person"
-                      size={25}
-                      color={tabInfo.tintColor}
+                        name="ios-person"
+                        size={25}
+                        color={tabInfo.tintColor}
                     />
-                  );
+                );
             }
         }
     }
