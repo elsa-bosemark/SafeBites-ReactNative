@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Platform, TouchableNativeFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Platform, Dimensions, TouchableNativeFeedback } from 'react-native';
 import { endAsyncEvent } from 'react-native/Libraries/Performance/Systrace';
 //import Image from 'react-native-remote-svg'
+const screen = Dimensions.get('window'); //screen dimensions
 
 const CategoryGridTile = props => {
     //if on andoid and has ripple effect then use that (looks better)
@@ -26,6 +27,7 @@ const CategoryGridTile = props => {
     )
 }
 const styles = StyleSheet.create({
+
     gridItem: {
         flex: 1,
         margin: 10,
@@ -43,14 +45,19 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         // for android
         elevation: 3,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        width: screen.width * 0.4,
+        aspectRatio: 1.1,
+        alignSelf: 'center',
 
     },
     text: {
         fontFamily: 'rubik',
         fontSize: 18,
-        paddingBottom: 10,
+        paddingBottom: 5,
+        paddingTop: 0,
+        marginTop: 0
     }
 });
 

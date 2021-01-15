@@ -19,6 +19,7 @@ const RestaurantNavigator = createStackNavigator({
     Home: {
         screen: HomeScreen,
         navigationOptions: { //style header
+            headerShown: false,
             headerTitle: 'Home',
             headerStyle: {
                 backgroundColor: Colors.accentColor
@@ -30,9 +31,9 @@ const RestaurantNavigator = createStackNavigator({
         screen: RestaurantCategoryScreen,
         navigationOptions: { //style header
             headerStyle: {
-                backgroundColor: Colors.primaryColor
+                backgroundColor: Colors.lightPurple
             },
-            headerTintColor: 'white'
+            headerTintColor: Colors.primaryColor
         }
     },
     RetaurantDetail: {
@@ -41,9 +42,9 @@ const RestaurantNavigator = createStackNavigator({
 }, {
     defaultNavigationOptions: {
         headerStyle: {
-            backgroundColor: Platform.OS === 'android' ? Colors.accentColor : ''
+            backgroundColor: Colors.lightPurple
         },
-        headerTintColor: Platform.OS === 'android' ? 'white' : Colors.accentColor
+        headerTintColor: Colors.primaryColor
     }
 });
 
@@ -61,7 +62,7 @@ const ProfileTabNavigator = createBottomTabNavigator({
                 );
 
             }
-        }
+        },
     },
     Profile: {
         screen: ProfileScreen,
