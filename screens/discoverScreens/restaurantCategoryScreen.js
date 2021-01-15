@@ -51,6 +51,9 @@ export default ({ props, navigation }) => {
   const phoneNumber = navigation.getParam('phoneNumber');
   const address = navigation.getParam('address');
   const yelpUrl = navigation.getParam('yelpUrl');
+  const tags = navigation.getParam('tags');
+  const yelpRating = navigation.getParam('yelpRating');
+  const yelpReviewCount = navigation.getParam('yelpReviewCount');
 
 
   //get params sent by home screen (the catid) will give title and the resurants that fit into the
@@ -71,59 +74,62 @@ export default ({ props, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.searchBar}>
-          <SearchBar
-            placeholder="Search..."
-            onChangeText={updateSearchBar}
-            value={search}
-            color='black'
-            platform={Platform.OS === 'android' ? 'android' : 'ios'}
-            containerStyle={{
-              backgroundColor: '',
-            }}
-            inputContainerStyle={{
-              borderRadius: 10,
-              backgroundColor: 'white'
-            }}
-          />
-        </View>
-
-        <FlatList
-          //data={displayedRestaurantsArray}
-          data={filteredRestaurants && filteredRestaurants.length > 0 ? filteredRestaurants : displayedRestaurantsArray}
-          renderItem={({ item, index }) => (
-            <RestaurantCard
-              title={item}
-              price={price[actualIndex(item)]}
-              cover={cover[actualIndex(item)]}
-              transactions={transactions[actualIndex(item)]}
-              restaurantCoordinates={restaurantCoordinates[actualIndex(item)]}
-              userCoordinates={userCoordinates}
-              onSelect={() => {
-                // this.props.navigation.navigate({
-                //     routeName: 'RetaurantDetail', params: {
-                //         //pass restaurant DATA
-                //         restIndex: index,
-                //         title: restaurantData,
-                //         price: price,
-                //         cover: cover,
-                //         transactions: transactions,
-                //         restaurantCoordinates: restaurantCoordinates,
-                //         userCoordinates: userCoordinates,
-                //         phoneNumber: phoneNumber,
-                //         address: address,
-                //         yelpUrl: yelpUrl,
-                //     }
-                // })
-              }} />
-          )}
-          size="large"
-          keyExtractor={item => item}
-          refreshing={false}
-          style={styles.list}
+      <View style={styles.searchBar}>
+        <SearchBar
+          placeholder="Search..."
+          onChangeText={updateSearchBar}
+          value={search}
+          color='black'
+          platform={Platform.OS === 'android' ? 'android' : 'ios'}
+          containerStyle={{
+            backgroundColor: '',
+          }}
+          inputContainerStyle={{
+            borderRadius: 10,
+            backgroundColor: 'white'
+          }}
         />
-      </ScrollView>
+      </View>
+
+      <FlatList
+        //data={displayedRestaurantsArray}
+        data={filteredRestaurants && filteredRestaurants.length > 0 ? filteredRestaurants : displayedRestaurantsArray}
+        renderItem={({ item, index }) => (
+          <RestaurantCard
+            title={item}
+            price={price[actualIndex(item)]}
+            cover={cover[actualIndex(item)]}
+            transactions={transactions[actualIndex(item)]}
+            restaurantCoordinates={restaurantCoordinates[actualIndex(item)]}
+            userCoordinates={userCoordinates}
+            onSelect={() => {
+              navigation.navigate({
+                routeName: 'RetaurantDetail', params: {
+                  //pass restaurant DATA
+                  restIndex: index,
+                  title: displayedRestaurantsArray,
+                  //NOTE: the data below is incorrect.
+                  //it displays the correct restaurant, BUT the ones below are still using the master list, not the filtered list. 
+                  price: price,
+                  cover: cover,
+                  transactions: transactions,
+                  restaurantCoordinates: restaurantCoordinates,
+                  userCoordinates: userCoordinates,
+                  phoneNumber: phoneNumber,
+                  address: address,
+                  yelpUrl: yelpUrl,
+                  tags: tags,
+                  yelpRating: yelpRating,
+                  yelpReviewCount: yelpReviewCount,
+                }
+              })
+            }} />
+        )}
+        size="large"
+        keyExtractor={item => item}
+        refreshing={false}
+        style={styles.list}
+      />
 
     </View>
 

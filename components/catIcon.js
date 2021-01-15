@@ -27,11 +27,11 @@ const iconSize = 20;
 const CatIcon = props => {
 
     let transactionArray = [];
-   
+
     //DELIVERY
     const delivery = props.cat.indexOf('delivery');
-    console.log('eawr '+delivery)
-    if (delivery >=0) {
+    console.log('eawr ' + delivery)
+    if (delivery >= 0) {
         transactionArray.push(
             <View style={styles.row}>
                 <Ionicons style={styles.icon} name="checkmark" size={iconSize} color={'green'} />
@@ -53,42 +53,42 @@ const CatIcon = props => {
             </View>
         )
     }
-     //PICKUP
-     const  pickup= props.cat.indexOf('pickup');
+    //PICKUP
+    const pickup = props.cat.indexOf('pickup');
 
-     if(pickup>=0){
-         transactionArray.push(
-             <View style={styles.row}>
-                 <Ionicons style={styles.icon} name="checkmark" size={iconSize} color={'green'} />
-                 <Text style={[styles.text, styles.text]}>pickup</Text>
-             </View>
-         )
-     }else{
-         transactionArray.push(
-             <View style={styles.row}>
-                 <Ionicons style={styles.icon} name="close" size={iconSize} color={'red'} />
-                 <Text style={[styles.text, styles.text]}>pickup</Text>
-             </View>
-         )
-     }
-     //RESERVATION
-     const  reservation= props.cat.indexOf('restaurant_reservation');
+    if (pickup >= 0) {
+        transactionArray.push(
+            <View style={styles.row}>
+                <Ionicons style={styles.icon} name="checkmark" size={iconSize} color={'green'} />
+                <Text style={[styles.text, styles.text]}>pickup</Text>
+            </View>
+        )
+    } else {
+        transactionArray.push(
+            <View style={styles.row}>
+                <Ionicons style={styles.icon} name="close" size={iconSize} color={'red'} />
+                <Text style={[styles.text, styles.text]}>pickup</Text>
+            </View>
+        )
+    }
+    //RESERVATION
+    const reservation = props.cat.indexOf('restaurant_reservation');
 
-     if(reservation>=0){
-         transactionArray.push(
-             <View style={styles.row}>
-                 <Ionicons style={styles.icon} name="checkmark" size={iconSize} color={'green'} />
-                 <Text style={[styles.text, styles.text]}>reservation</Text>
-             </View>
-         )
-     }else{
-         transactionArray.push(
-             <View style={styles.row}>
-                 <Ionicons style={styles.icon} name="close" size={iconSize} color={'red'} />
-                 <Text style={[styles.text, styles.text]}>reservation</Text>
-             </View>
-         )
-     }
+    if (reservation >= 0) {
+        transactionArray.push(
+            <View style={styles.row}>
+                <Ionicons style={styles.icon} name="checkmark" size={iconSize} color={'green'} />
+                <Text style={[styles.text, styles.text]}>reservation</Text>
+            </View>
+        )
+    } else {
+        transactionArray.push(
+            <View style={styles.row}>
+                <Ionicons style={styles.icon} name="close" size={iconSize} color={'red'} />
+                <Text style={[styles.text, styles.text]}>reservation</Text>
+            </View>
+        )
+    }
     return transactionArray;
 }
 
@@ -98,13 +98,15 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'flex-end',
         flex: 1,
     },
     text: {
         fontFamily: 'rubik',
         fontSize: 18,
+        marginLeft: 10,
+        paddingBottom: 5,
     },
 });
 //export default TransactionDeliveryIcon;

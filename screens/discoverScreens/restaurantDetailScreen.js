@@ -82,18 +82,18 @@ const RestaurantDetailScreen = props => {
               {/* Transactions */}
               <View style={{ flex: 1 }} >
                 <CatIcon cat={transactions[restIndex]} />
-                
+
                 {/* Price and Distance */}
-                <View style={{...styles.row,...{marginTop:15,marginBottom:15}}}>
+                <View style={{ ...styles.row, ...{ marginTop: 15, marginBottom: 15 } }}>
                   <View style={styles.tag}>
                     <Text style={{ ...styles.text, ...{ fontSize: 19, color: 'white' } }}>{price[restIndex]}</Text>
                   </View>
                   <View style={{ ...styles.row, ...{ alignItems: 'center', } }}>
-                    <Ionicons name='md-location-sharp' size={35} color={Colors.primaryColor} />
+                    <Ionicons name='navigate' size={30} color={'black'} />
                     <Text style={{ ...styles.text, ...{ fontSize: 20 } }}>{Number((restaurantDistance / 1000).toFixed(1))} km</Text>
                   </View>
                 </View>
-                
+
                 {/* Extra Info*/}
                 {/* <OpenHours hours={openHours[restIndex]}/> */}
                 <Text style={styles.title}>Max capacity: ???</Text>
@@ -105,7 +105,7 @@ const RestaurantDetailScreen = props => {
               </View>
             </View>
             {/* Make tags into a diff comp being an array*/}
-            <Text style={styles.title}>Tags</Text>
+            <Text style={styles.title}>Tags:</Text>
             <View style={{ flexDirection: 'row' }}>
               <Tags restTags={tags[restIndex]} />
             </View>
@@ -115,23 +115,15 @@ const RestaurantDetailScreen = props => {
           <View style={styles.card}>
             {/* Favorites, Call and Directions */}
 
-            <View style={{felx: 1}}>
-              <View style={{  ...styles.row,...{alignItems: 'center'}}}>
-                <CircleButton icon='heart' color='#E0E0E0' title='Favorite' />
-                <CircleButton icon='call' color={Colors.primaryColor} title='Call' />
-                <CircleButton icon='map' color={Colors.primaryColor} title='Direction' />
-                <CircleButton icon='attach' color={Colors.primaryColor} title='Website' />
+            <View style={{ felx: 1 }}>
+              <View style={{ ...styles.row, ...{ alignItems: 'center' } }}>
+                <CircleButton icon='heart-outline' color={Colors.greyple} title='Favorite' />
+                <CircleButton icon='call' color={Colors.greyple} title='Call' />
+                <CircleButton icon='map' color={Colors.greyple} title='Direction' />
+                <CircleButton icon='attach' color={Colors.greyple} title='Website' />
               </View>
             </View>
           </View>
-
-          <Divider />
-
-          {/* Rate */}
-          <DefaultButton text='Rate' buttonColor={Colors.primaryColor} textColor='white' />
-
-          <Divider />
-
           {/* Slider Rating */}
           <View style={styles.card}>
             <Title text='Covid Prevention Rating' />
@@ -243,7 +235,7 @@ const styles = StyleSheet.create({
   },
   tag: {
     padding: 10,
-    backgroundColor: Colors.accentColor,
+    backgroundColor: Colors.primaryColor,
     borderRadius: 5,
     margin: 5,
   },

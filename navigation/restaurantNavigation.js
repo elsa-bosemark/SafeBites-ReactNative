@@ -2,9 +2,8 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { Text } from 'react-native';
 
 import HomeScreen from '../screens/discoverScreens/homeScreen';
 import RestaurantCategoryScreen from '../screens/discoverScreens/restaurantCategoryScreen';
@@ -12,6 +11,7 @@ import RetaurantDetailScreen from '../screens/discoverScreens/restaurantDetailSc
 import ProfileScreen from '../screens/profileScreens/profileScreen';
 
 import Colors from '../constants/Colors';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 //Createing a navigation stack for screens
@@ -38,6 +38,21 @@ const RestaurantNavigator = createStackNavigator({
     },
     RetaurantDetail: {
         screen: RetaurantDetailScreen,
+        navigationOptions: {
+            headerRight: () => (
+                <TouchableOpacity style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: "center" }} onPress={() => {
+                    this.props.navigation.navigate({ routeName: 'Rate' })
+                }}>
+                    <Text style={{ marginRight: 3, fontFamily: 'rubik', color: Colors.primaryColor, fontSize: 15 }}>Rate</Text>
+                    <Ionicons
+                        name="star-half-sharp"
+                        size={30}
+                        color={Colors.primaryColor}
+                        style={{ marginRight: 10, marginBottom: 5 }}
+                    />
+                </TouchableOpacity>
+            )
+        }
     },
 }, {
     defaultNavigationOptions: {

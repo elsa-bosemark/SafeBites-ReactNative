@@ -10,19 +10,20 @@ const Tags = props => {
   const tag = props.restTags.forEach((value) => {
     tagArray.push(
       <View style={styles.tag}>
-        <Text style={{ ...styles.text, ...{ fontSize: 19, color: 'white' } }}>{value.title}</Text>
+        <Text style={{ ...styles.text, ...{ fontSize: 15, color: 'white' } }}>{value.title}</Text>
       </View>
     )
   });
-    return tagArray;
+  return tagArray;
 }
 
 const styles = StyleSheet.create({
   tag: {
     padding: 10,
-    backgroundColor: Colors.accentColor,
+    backgroundColor: Colors.greyple,
     borderRadius: 5,
     margin: 5,
+    flex: 1,
   },
   text: {
     fontFamily: 'rubik',
