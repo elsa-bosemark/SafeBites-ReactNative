@@ -256,7 +256,6 @@ class HomeScreen extends React.Component {
         }
 
         let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
-        console.error("GOT LOCATION");
         const { latitude, longitude } = location.coords
         this.setState({ location: { latitude, longitude } });
         this.fetchApiCall() //fetch api 

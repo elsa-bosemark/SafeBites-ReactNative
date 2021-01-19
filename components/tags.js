@@ -4,7 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import Colors from '../constants/Colors';
 
 
-const Tags = props => {
+export const Tags = props => {
 
   let tagArray = [];
   const tag = props.restTags.forEach((value) => {
@@ -20,7 +20,7 @@ const Tags = props => {
 const styles = StyleSheet.create({
   tag: {
     padding: 10,
-    backgroundColor: Colors.greyple,
+    backgroundColor: Colors.primaryColor,
     borderRadius: 5,
     margin: 5,
     flex: 1,
@@ -31,4 +31,3 @@ const styles = StyleSheet.create({
 
 });
 
-export default Tags;

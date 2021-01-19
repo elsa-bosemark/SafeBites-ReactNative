@@ -1,16 +1,17 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { Slider } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
+const screen = Dimensions.get('window');
 
-const ScoreSlider = props => {
+export const ScoreSlider = props => {
   return (
-    <View style={styles.container}>
+    <View style={styles.scoreContainer}>
       <Text style={styles.title}>{props.safetyTitle}</Text>
       <View style={{ ...styles.row, ...{ width: '100%' } }}>
-        <View style={styles.slider}>
+        <View style={styles.scoreSlider}>
           <Slider
             value={props.score}
             thumbStyle={styles.sliderThumb}
@@ -22,7 +23,7 @@ const ScoreSlider = props => {
           />
         </View>
         <Text style={{ ...styles.title, ...{ paddingLeft: 10 } }}>{props.score}%</Text>
-        <View style={{ ...styles.row,...styles.center, ...{ flex:1} }}>
+        <View style={{ ...styles.row, ...styles.center, ...{ flex: 1 } }}>
           <Ionicons name='person' size={20} color='grey' />
           <Text style={styles.title}>{props.reviewCount}</Text>
         </View>
@@ -30,14 +31,66 @@ const ScoreSlider = props => {
     </View>
   )
 }
+export const RateSlider = props => {
+  const [score, setScore] = useState(0);
+
+  function handleValueChanged(score) {
+    setScore(Math.round(score))
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={{
+        alignSelf: 'center',
+        paddingHorizontal: 10,
+        paddingBottom: 10,
+        fontSize: 18,
+      }}>{props.safetyTitle}</Text>
+      <View style={{
+        width: screen.width, justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <View style={styles.slider}>
+          <Slider
+            value={score}
+            thumbStyle={styles.sliderThumb}
+            trackStyle={styles.sliderTrack}
+            disabled={false}
+            minimumTrackTintColor={Colors.primaryColor}
+            maximumTrackTintColor='#E0E0E0'
+            maximumValue={100}
+            onValueChange={handleValueChanged}
+            step={5}
+            style={{ width: screen.width * 0.5, }}
+          />
+          <Text style={{
+            alignItems: 'flex-start',
+            paddingTop: 5,
+            marginLeft: 5,
+            fontSize: 20,
+            width: 51
+          }}>{score}%</Text>
+        </View>
+
+      </View>
+    </View >
+  )
+}
+
 
 const styles = StyleSheet.create({
-  container:{
-    paddingBottom:20
+  container: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  scoreContainer: {
+    paddingBottom: 20,
   },
   center: {
     alignItems: 'center',
     justifyContent: 'center',
+
   },
   sliderThumb: {
     height: 30,
@@ -49,13 +102,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   slider: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  scoreSlider: {
     width: '70%'
   },
   title: {
     flex: 1,
-    alignItems: 'flex-start',
     padding: 5,
     fontSize: 20,
+    fontFamily: 'rubik'
   },
   row: {
     flexDirection: 'row',
@@ -63,4 +120,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScoreSlider;

@@ -20,7 +20,8 @@ if (!firebase.apps.length) {
   firebase.app(); // if already initialized, use that one
 }
 
-import RestaurantNavigator from './navigation/restaurantNavigation';
+import RestaurantNavigator from './config/restaurantNavigation';
+import RootNavigation from './config/RootNavigation';
 
 enableScreens();
 
@@ -45,7 +46,9 @@ export default function App() {
     />
   }
   return (
-    <RestaurantNavigator />
+    <RestaurantNavigator ref={navigatorRef => {
+      RootNavigation.setTopLevelNavigator(navigatorRef);
+    }} />
   );
 }
 

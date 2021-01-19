@@ -9,9 +9,12 @@ import HomeScreen from '../screens/discoverScreens/homeScreen';
 import RestaurantCategoryScreen from '../screens/discoverScreens/restaurantCategoryScreen';
 import RetaurantDetailScreen from '../screens/discoverScreens/restaurantDetailScreen';
 import ProfileScreen from '../screens/profileScreens/profileScreen';
+import Rate from '../screens/discoverScreens/rateScreen';
 
 import Colors from '../constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { withNavigation } from '@react-navigation/compat';
+import RootNavigation from './RootNavigation';
 
 
 //Createing a navigation stack for screens
@@ -41,7 +44,7 @@ const RestaurantNavigator = createStackNavigator({
         navigationOptions: {
             headerRight: () => (
                 <TouchableOpacity style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: "center" }} onPress={() => {
-                    this.props.navigation.navigate({ routeName: 'Rate' })
+                    RootNavigation.navigate('Rate',);
                 }}>
                     <Text style={{ marginRight: 3, fontFamily: 'rubik', color: Colors.primaryColor, fontSize: 15 }}>Rate</Text>
                     <Ionicons
@@ -54,6 +57,12 @@ const RestaurantNavigator = createStackNavigator({
             )
         }
     },
+    Rate: {
+        screen: Rate,
+        navigationOptions: {
+            headerBackTitle: "Cancel"
+        }
+    }
 }, {
     defaultNavigationOptions: {
         headerStyle: {
