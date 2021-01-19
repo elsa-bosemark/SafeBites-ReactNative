@@ -60,13 +60,13 @@ const RestaurantDetailScreen = props => {
       let usersRated = doc.data().usersRated;
       setUserRating(usersRated);
 
-      setMasks(doc.data().masks / usersRated);
-      setHandSanitizer(doc.data().handSanitizer / usersRated);
-      setShields(doc.data().shields / usersRated)
+      setMasks(Math.round(doc.data().masks / usersRated));
+      setHandSanitizer(Math.round(doc.data().handSanitizer / usersRated));
+      setShields(Math.round(doc.data().shields / usersRated))
       setSanitizeAfter(doc.data().sanitizeSurfaces);
       setTempChecks(doc.data().tempChecks)
       setSigns(doc.data().safetySigns)
-      setFeelSafe(doc.data().safety / usersRated)
+      setFeelSafe(Math.round(doc.data().safety / usersRated))
       // setComments()
     }
   }
@@ -155,21 +155,14 @@ const RestaurantDetailScreen = props => {
           <View style={styles.card}>
             <Title text='Covid Prevention Rating' />
             {/* Sliders */}
-            <ScoreSlider safetyTitle='Enforcement and use of masks by customers and staff ' score={masks} reviewCount={userRating} />
-            <ScoreSlider safetyTitle='Hand sanitizers are availalbe ' score={handSanitizer} reviewCount={userRating} />
-            <ScoreSlider safetyTitle='Sheilds/physical barriers' score={shields} reviewCount={userRating} />
+            <ScoreSlider safetyTitle='There is enforcement and use of masks ' score={masks} reviewCount={userRating} />
+            <ScoreSlider safetyTitle='Hand sanitizers are available ' score={handSanitizer} reviewCount={userRating} />
+            <ScoreSlider safetyTitle='There are sheilds/physical barriers' score={shields} reviewCount={userRating} />
             {/* Yes or no Info  OPTIONS: yes, no, or idk*/}
-            <SafetyCard text='Safety Signs' result={signs} reviewCount={4} reviewCount={userRating} />
-            <SafetyCard text='Surfaces are sanitized after' result={sanitizeAfter} reviewCount={4} reviewCount={userRating} />
+            <SafetyCard text='Surfaces are sanitized after each patron' result={sanitizeAfter} reviewCount={userRating} />
+            <SafetyCard text='Staff give tempature checks to customers' result={tempChecks} reviewCount={userRating} />
+            <SafetyCard text='Signage promoting safety is visible' result={signs} reviewCount={userRating} />
             {/* <SafetyCard text='' result=''/> */}
-          </View>
-
-          <Divider />
-
-          {/* More safety Rating */}
-          <View style={styles.card}>
-            <Title text='In Person Safety Mesures' />
-            <SafetyCard text='Temperature check of customers' result={tempChecks} reviewCount={userRating} />
           </View>
 
           <Divider />

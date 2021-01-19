@@ -7,14 +7,21 @@ import Colors from '../constants/Colors';
 const SafetyCard = props => {
     let color;
     let icon;
+    let style;
     switch (props.result) {
         case 'yes':
             color = Colors.primaryColor;
             icon = 'checkmark';
+            style = {
+                marginTop: 10
+            }
             break;
         case 'no':
             color = 'red';
             icon = 'close';
+            style = {
+                marginTop: 10
+            }
             break;
         case 'idk':
             color = 'grey';
@@ -36,7 +43,7 @@ const SafetyCard = props => {
 
                 </View>
                 <View style={{ felx: 2, alignItems: 'center' }}>
-                    <Ionicons name={icon} size={35} color={color} />
+                    <Ionicons name={icon} size={35} color={color} style={style} />
                 </View>
 
 
@@ -65,7 +72,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-start',
         paddingLeft: 5,
-        fontSize: 20,
+        marginRight: 10,
+        fontSize: 18,
     },
 
 });

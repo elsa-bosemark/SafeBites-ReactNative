@@ -46,7 +46,7 @@ const RateScreen = props => {
     setShields(Math.round(score));
   }
   function safetyValChanged(score) {
-    setSafety(Math.round(score))
+    setSafety(Math.round(score) * 10)
   }
   const setData = async () => {
     let currentRestaurant = getCurrentRestaurant();
@@ -63,13 +63,23 @@ const RateScreen = props => {
       safetySigns: signYes ? "yes" : signNo ? "no" : signIDK ? "idk" : "idk",
       order: deliveryApps ? "deliveryApps" : laminatedMenus ? "laminatedMenus" : QR ? "QR" : paperMenus ? "paperMenus" : "idk",
       method: delivery ? "delivery" : takeout ? "takeout" : outdoorDining ? "outdoorDining" : indoorDining ? "indoorDining" : curbsidePickup ? "curbsidePickup" : "idk",
-      safety: safety,
-      comments: comment
+      safety: safety / 10,
+      // comments: comment
     })
+    let myDoc = await myDB.collection("users").doc(myEmail).collection("comments").doc(currentRestaurant).get();
+    if (!myDoc.exists) {
+      myDB.collection('users').doc(myEmail).collection('comments').doc(currentRestaurant).set({
+        [new Date()]: comment
+      })
+    }
+    else {
+      var n = new Date();
 
-
+      myDB.collection('users').doc(myEmail).collection('comments').doc(currentRestaurant).update({
+        [n]: comment
+      })
+    }
     let doc = await myDB.collection("reviews").doc(currentRestaurant).get();
-    console.error(doc.exists + " exists")
     if (!doc.exists) {
       myDB.collection("reviews").doc(currentRestaurant).set({
         masks: mask,
@@ -81,13 +91,13 @@ const RateScreen = props => {
         safetySigns: signYes ? "yes" : signNo ? "no" : signIDK ? "idk" : "idk",
         order: deliveryApps ? "deliveryApps" : laminatedMenus ? "laminatedMenus" : QR ? "QR" : paperMenus ? "paperMenus" : "idk",
         method: delivery ? "delivery" : takeout ? "takeout" : outdoorDining ? "outdoorDining" : indoorDining ? "indoorDining" : curbsidePickup ? "curbsidePickup" : "idk",
-        safety: safety,
+        safety: safety / 10,
         usersRated: 1,
       })
+      var n = new Date();
       myDB.collection("reviews").doc(currentRestaurant).collection("comments").doc(myEmail).set({
-        comment: comment
+        [n]: comment
       })
-
     }
     else {
       let usersRated = doc.data().usersRated
@@ -103,8 +113,12 @@ const RateScreen = props => {
         order: deliveryApps ? "deliveryApps" : laminatedMenus ? "laminatedMenus" : QR ? "QR" : paperMenus ? "paperMenus" : "idk",
         method: delivery ? "delivery" : takeout ? "takeout" : outdoorDining ? "outdoorDining" : indoorDining ? "indoorDining" : curbsidePickup ? "curbsidePickup" : "idk",
 
-        safety: doc.data().safety + safety,
+        safety: doc.data().safety + (safety / 10),
         usersRated: usersRated += 1,
+      })
+      var n = new Date();
+      myDB.collection("reviews").doc(currentRestaurant).collection("comments").doc(myEmail).update({
+        [n]: comment
       })
     }
   }
@@ -474,7 +488,7 @@ const RateScreen = props => {
                 maximumTrackTintColor='#E0E0E0'
                 maximumValue={10}
                 onValueChange={safetyValChanged}
-                step={5}
+                step={1}
                 style={{ width: screen.width * 0.5, }}
               />
               <Text style={{

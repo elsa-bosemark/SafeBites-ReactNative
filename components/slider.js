@@ -17,7 +17,7 @@ export const ScoreSlider = props => {
             thumbStyle={styles.sliderThumb}
             trackStyle={styles.sliderTrack}
             disabled={true}
-            minimumTrackTintColor={Colors.primaryColor}
+            minimumTrackTintColor={Colors.greyple}
             maximumTrackTintColor='#E0E0E0'
             maximumValue={100}
           />
@@ -29,51 +29,6 @@ export const ScoreSlider = props => {
         </View>
       </View>
     </View>
-  )
-}
-export const RateSlider = props => {
-  const [score, setScore] = useState(0);
-
-  function handleValueChanged(score) {
-    setScore(Math.round(score))
-  }
-
-  return (
-    <View style={styles.container}>
-      <Text style={{
-        alignSelf: 'center',
-        paddingHorizontal: 10,
-        paddingBottom: 10,
-        fontSize: 15,
-      }}>{props.safetyTitle}</Text>
-      <View style={{
-        width: screen.width, justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        <View style={styles.slider}>
-          <Slider
-            value={score}
-            thumbStyle={styles.sliderThumb}
-            trackStyle={styles.sliderTrack}
-            disabled={false}
-            minimumTrackTintColor={Colors.primaryColor}
-            maximumTrackTintColor='#E0E0E0'
-            maximumValue={100}
-            onValueChange={handleValueChanged}
-            step={5}
-            style={{ width: screen.width * 0.5, }}
-          />
-          <Text style={{
-            alignItems: 'flex-start',
-            paddingTop: 5,
-            marginLeft: 5,
-            fontSize: 20,
-            width: 51
-          }}>{score}%</Text>
-        </View>
-
-      </View>
-    </View >
   )
 }
 
@@ -95,7 +50,7 @@ const styles = StyleSheet.create({
   sliderThumb: {
     height: 30,
     width: 30,
-    backgroundColor: '#015440',
+    backgroundColor: Colors.darkColor
   },
   sliderTrack: {
     height: 20,
