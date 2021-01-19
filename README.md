@@ -15,3 +15,4 @@
 - profile screen (in progress)
 - comments (in progress)
 - set up the google Api
+- Getting momuments
