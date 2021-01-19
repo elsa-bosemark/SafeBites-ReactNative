@@ -1,9 +1,3 @@
-## COMPLETED:
-
-#### Athena:
-- fetching api much faster now (1-2 seconds)
-- fixed searchbar on details screen
-- login/signup
 
 ## TO DO: 
 
@@ -17,5 +11,4 @@
 
 #### Athena
 - profile screen (in progress)
-- comments
-- rate screen
+- comments (in progress)
