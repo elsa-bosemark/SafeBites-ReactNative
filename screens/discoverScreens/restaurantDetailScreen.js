@@ -63,7 +63,7 @@ const RestaurantDetailScreen = props => {
       setMasks(doc.data().masks / usersRated);
       setHandSanitizer(doc.data().handSanitizer / usersRated);
       setShields(doc.data().shields / usersRated)
-      setSanitizeAfter(doc.data().sanitizeAfter);
+      setSanitizeAfter(doc.data().sanitizeSurfaces);
       setTempChecks(doc.data().tempChecks)
       setSigns(doc.data().safetySigns)
       setFeelSafe(doc.data().safety / usersRated)
@@ -156,11 +156,11 @@ const RestaurantDetailScreen = props => {
             <Title text='Covid Prevention Rating' />
             {/* Sliders */}
             <ScoreSlider safetyTitle='Enforcement and use of masks by customers and staff ' score={masks} reviewCount={userRating} />
-            <ScoreSlider safetyTitle='Hand sanitizers are avaialbe ' score={handSanitizer} reviewCount={userRating} />
+            <ScoreSlider safetyTitle='Hand sanitizers are availalbe ' score={handSanitizer} reviewCount={userRating} />
             <ScoreSlider safetyTitle='Sheilds/physical barriers' score={shields} reviewCount={userRating} />
             {/* Yes or no Info  OPTIONS: yes, no, or idk*/}
-            <SafetyCard text='Safety Signs' result={feelSafe} reviewCount={4} reviewCount={userRating} />
-            <SafetyCard text='Contactless payment' result='no' reviewCount={4} reviewCount={userRating} />
+            <SafetyCard text='Safety Signs' result={signs} reviewCount={4} reviewCount={userRating} />
+            <SafetyCard text='Surfaces are sanitized after' result={sanitizeAfter} reviewCount={4} reviewCount={userRating} />
             {/* <SafetyCard text='' result=''/> */}
           </View>
 
@@ -169,10 +169,7 @@ const RestaurantDetailScreen = props => {
           {/* More safety Rating */}
           <View style={styles.card}>
             <Title text='In Person Safety Mesures' />
-            <SafetyCard text='Surfaces are sanitized after each patron' result='idk' reviewCount={userRating} />
-            <SafetyCard text='Tempature check of customers' result='yes' reviewCount={userRating} />
-            <SafetyCard text='Hand sanatizer provided' result='no' reviewCount={userRating} />
-            <SafetyCard text='Utensils deliverd in a bag' result='yes' reviewCount={userRating} />
+            <SafetyCard text='Temperature check of customers' result={tempChecks} reviewCount={userRating} />
           </View>
 
           <Divider />
