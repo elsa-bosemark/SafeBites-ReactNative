@@ -7,7 +7,9 @@ import Colors from '../../constants/Colors';
 import Divider from '../../components/divider';
 import * as firebase from 'firebase';
 import { Slider } from 'react-native-elements';
+import { getCurrentRestaurant } from '../../config/data';
 import 'firebase/firestore';
+
 const screen = Dimensions.get('window');
 const RateScreen = props => {
   //STATES
@@ -45,6 +47,66 @@ const RateScreen = props => {
   }
   function safetyValChanged(score) {
     setSafety(Math.round(score))
+  }
+  const setData = async () => {
+    let currentRestaurant = getCurrentRestaurant();
+    let myDB = firebase.firestore();
+    let myEmail = firebase.auth().currentUser.email;
+
+    myDB.collection("users").doc(myEmail).collection("reviews").doc(currentRestaurant).set({
+      masks: mask,
+      handSanitizer: handSan,
+      shields: shields,
+      //crazy ternary operators:
+      sanitizeSurfaces: yes ? "yes" : no ? "no" : idk ? "idk" : "idk",
+      tempChecks: tempYes ? "yes" : tempNo ? "no" : tempIDK ? "idk" : "idk",
+      safetySigns: signYes ? "yes" : signNo ? "no" : signIDK ? "idk" : "idk",
+      order: deliveryApps ? "deliveryApps" : laminatedMenus ? "laminatedMenus" : QR ? "QR" : paperMenus ? "paperMenus" : "idk",
+      method: delivery ? "delivery" : takeout ? "takeout" : outdoorDining ? "outdoorDining" : indoorDining ? "indoorDining" : curbsidePickup ? "curbsidePickup" : "idk",
+      safety: safety,
+      comments: comment
+    })
+
+
+    let doc = await myDB.collection("reviews").doc(currentRestaurant).get();
+    console.error(doc.exists + " exists")
+    if (!doc.exists) {
+      myDB.collection("reviews").doc(currentRestaurant).set({
+        masks: mask,
+        handSanitizer: handSan,
+        shields: shields,
+        //crazy ternary operators:
+        sanitizeSurfaces: yes ? "yes" : no ? "no" : idk ? "idk" : "idk",
+        tempChecks: tempYes ? "yes" : tempNo ? "no" : tempIDK ? "idk" : "idk",
+        safetySigns: signYes ? "yes" : signNo ? "no" : signIDK ? "idk" : "idk",
+        order: deliveryApps ? "deliveryApps" : laminatedMenus ? "laminatedMenus" : QR ? "QR" : paperMenus ? "paperMenus" : "idk",
+        method: delivery ? "delivery" : takeout ? "takeout" : outdoorDining ? "outdoorDining" : indoorDining ? "indoorDining" : curbsidePickup ? "curbsidePickup" : "idk",
+        safety: safety,
+        usersRated: 1,
+      })
+      myDB.collection("reviews").doc(currentRestaurant).collection("comments").doc(myEmail).set({
+        comment: comment
+      })
+
+    }
+    else {
+      let usersRated = doc.data().usersRated
+      myDB.collection("reviews").doc(currentRestaurant).set({
+        masks: doc.data().masks + mask,
+        handSanitizer: doc.data().handSanitizer + handSan,
+        shields: doc.data().shields + shields,
+        //THE PROBLEM: the strings below completely overwrite the ones set in the db
+        //idk how to make an average of them
+        sanitizeSurfaces: yes ? "yes" : no ? "no" : idk ? "idk" : "idk",
+        tempChecks: tempYes ? "yes" : tempNo ? "no" : tempIDK ? "idk" : "idk",
+        safetySigns: signYes ? "yes" : signNo ? "no" : signIDK ? "idk" : "idk",
+        order: deliveryApps ? "deliveryApps" : laminatedMenus ? "laminatedMenus" : QR ? "QR" : paperMenus ? "paperMenus" : "idk",
+        method: delivery ? "delivery" : takeout ? "takeout" : outdoorDining ? "outdoorDining" : indoorDining ? "indoorDining" : curbsidePickup ? "curbsidePickup" : "idk",
+
+        safety: doc.data().safety + safety,
+        usersRated: usersRated += 1,
+      })
+    }
   }
   return (
     <View>
@@ -410,7 +472,7 @@ const RateScreen = props => {
                 disabled={false}
                 minimumTrackTintColor={Colors.greyple}
                 maximumTrackTintColor='#E0E0E0'
-                maximumValue={100}
+                maximumValue={10}
                 onValueChange={safetyValChanged}
                 step={5}
                 style={{ width: screen.width * 0.5, }}
@@ -458,23 +520,8 @@ const RateScreen = props => {
         </View>
         <Button title="submit" onPress={() => {
           //store in firebase 
-          let myDB = firebase.firestore();
-          let myEmail = firebase.auth().currentUser.email;
-          // const restTitles = props.navigation.getParam('title');
-          // const restIndex = props.navigation.getParam('restIndex');
-          myDB.collection("users").doc(myEmail).collection("comments").doc().set({
-            masks: mask,
-            handSanitizer: handSan,
-            shields: shields,
-            //crazy ternary operators:
-            sanitizeSurfaces: yes ? "yes" : no ? "no" : idk ? "idk" : "idk",
-            tempChecks: tempYes ? "yes" : tempNo ? "no" : tempIDK ? "idk" : "idk",
-            safetySigns: signYes ? "yes" : signNo ? "no" : signIDK ? "idk" : "idk",
-            order: deliveryApps ? "deliveryApps" : laminatedMenus ? "laminatedMenus" : QR ? "QR" : paperMenus ? "paperMenus" : "idk",
-            method: delivery ? "delivery" : takeout ? "takeout" : outdoorDining ? "outdoorDining" : indoorDining ? "indoorDining" : curbsidePickup ? "curbsidePickup" : "idk",
-            safety: safety,
-            comments: comment
-          })
+          setData();
+          props.navigation.goBack(); //go back
         }} />
         {/* spacing for keyboard */}
         <View style={styles.break} />
@@ -489,6 +536,8 @@ const RateScreen = props => {
       </ScrollView>
     </View >
   );
+
+
 }
 
 const styles = StyleSheet.create({

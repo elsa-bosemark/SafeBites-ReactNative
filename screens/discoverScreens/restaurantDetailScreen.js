@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, SafeAreaView, Platform, TouchableNativeFeedback, Linking, Dimensions } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { getDistance } from 'geolib';
 import { Ionicons } from '@expo/vector-icons';
-
+import { getData, storeCurrentRestaurant } from '../../config/data';
 
 import CatIcon from '../../components/catIcon';
 import Colors from '../../constants/Colors';
@@ -20,10 +20,19 @@ import { Tags } from '../../components/tags';
 import OpenHours from '../../components/openHours';
 import PhotoSlider from '../../components/photoSlider/photoSlider';
 import SafetyScore from '../../components/handSanatizer';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
-//passing params like this works
 const RestaurantDetailScreen = props => {
-
+  const [masks, setMasks] = useState(0);
+  const [handSanitizer, setHandSanitizer] = useState(0);
+  const [shields, setShields] = useState(0);
+  const [sanitizeAfter, setSanitizeAfter] = useState("");
+  const [tempChecks, setTempChecks] = useState("");
+  const [signs, setSigns] = useState("");
+  const [feelSafe, setFeelSafe] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [userRating, setUserRating] = useState(0);
 
   //getting all params
   const restIndex = props.navigation.getParam('restIndex');
@@ -43,7 +52,25 @@ const RestaurantDetailScreen = props => {
   const openHours = props.navigation.getParam('openHours');
   const tags = props.navigation.getParam('tags');
 
+  const getData = async () => {
+    let myDB = firebase.firestore();
+    let doc = await myDB.collection('reviews').doc(restTitles[restIndex]).get();
+    // let _comments = await myDB.collection('reviews').doc(restTitles[restIndex]).collection('comments').doc()
+    if (doc.exists) {
+      let usersRated = doc.data().usersRated;
+      setUserRating(usersRated);
 
+      setMasks(doc.data().masks / usersRated);
+      setHandSanitizer(doc.data().handSanitizer / usersRated);
+      setShields(doc.data().shields / usersRated)
+      setSanitizeAfter(doc.data().sanitizeAfter);
+      setTempChecks(doc.data().tempChecks)
+      setSigns(doc.data().safetySigns)
+      setFeelSafe(doc.data().safety / usersRated)
+      // setComments()
+    }
+  }
+  storeCurrentRestaurant(restTitles[restIndex]);
   //Calculate the distance of rest
   const restaurantDistance = getDistance(
     userCoordinates,
@@ -53,7 +80,7 @@ const RestaurantDetailScreen = props => {
   const openLink = url => Linking.openURL(url).catch(() => {
     Alert.alert("Sorry, something went wrong.", "Please try again later.")
   })
-
+  getData()
   const screenWidth = Math.round(Dimensions.get('window').width);
   return (
     <SafeAreaView>
@@ -101,7 +128,7 @@ const RestaurantDetailScreen = props => {
               </View>
               {/* Rating Score*/}
               <View style={{ flex: 1, alignItems: 'center' }}>
-                <SafetyScore score={8} size={1.5} />
+                <SafetyScore score={feelSafe} size={1.5} />
               </View>
             </View>
             {/* Make tags into a diff comp being an array*/}
@@ -128,12 +155,12 @@ const RestaurantDetailScreen = props => {
           <View style={styles.card}>
             <Title text='Covid Prevention Rating' />
             {/* Sliders */}
-            <ScoreSlider safetyTitle='Enforcement and use of masks by customers and staff ' score={20} reviewCount={5} />
-            <ScoreSlider safetyTitle='Enforcement of Social Distancing ' score={90} reviewCount={5} />
-            <ScoreSlider safetyTitle='Sheilds/physical barriers' score={80} reviewCount={5} />
+            <ScoreSlider safetyTitle='Enforcement and use of masks by customers and staff ' score={masks} reviewCount={userRating} />
+            <ScoreSlider safetyTitle='Hand sanitizers are avaialbe ' score={handSanitizer} reviewCount={userRating} />
+            <ScoreSlider safetyTitle='Sheilds/physical barriers' score={shields} reviewCount={userRating} />
             {/* Yes or no Info  OPTIONS: yes, no, or idk*/}
-            <SafetyCard text='Staff wear gloves' result='yes' reviewCount={4} reviewCount={5} />
-            <SafetyCard text='Contactless payment' result='no' reviewCount={4} reviewCount={5} />
+            <SafetyCard text='Safety Signs' result={feelSafe} reviewCount={4} reviewCount={userRating} />
+            <SafetyCard text='Contactless payment' result='no' reviewCount={4} reviewCount={userRating} />
             {/* <SafetyCard text='' result=''/> */}
           </View>
 
@@ -142,10 +169,10 @@ const RestaurantDetailScreen = props => {
           {/* More safety Rating */}
           <View style={styles.card}>
             <Title text='In Person Safety Mesures' />
-            <SafetyCard text='Surfaces are sanitized after each patron' result='idk' reviewCount={4} />
-            <SafetyCard text='Tempature check of customers' result='yes' reviewCount={4} />
-            <SafetyCard text='Hand sanatizer provided' result='no' reviewCount={4} />
-            <SafetyCard text='Utensils deliverd in a bag' result='yes' reviewCount={4} />
+            <SafetyCard text='Surfaces are sanitized after each patron' result='idk' reviewCount={userRating} />
+            <SafetyCard text='Tempature check of customers' result='yes' reviewCount={userRating} />
+            <SafetyCard text='Hand sanatizer provided' result='no' reviewCount={userRating} />
+            <SafetyCard text='Utensils deliverd in a bag' result='yes' reviewCount={userRating} />
           </View>
 
           <Divider />

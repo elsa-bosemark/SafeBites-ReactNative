@@ -44,7 +44,7 @@ export const RateSlider = props => {
         alignSelf: 'center',
         paddingHorizontal: 10,
         paddingBottom: 10,
-        fontSize: 18,
+        fontSize: 15,
       }}>{props.safetyTitle}</Text>
       <View style={{
         width: screen.width, justifyContent: 'center',
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     padding: 5,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'rubik'
   },
   row: {

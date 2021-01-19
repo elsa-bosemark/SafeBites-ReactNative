@@ -44,7 +44,7 @@ const RestaurantNavigator = createStackNavigator({
         navigationOptions: {
             headerRight: () => (
                 <TouchableOpacity style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: "center" }} onPress={() => {
-                    RootNavigation.navigate('Rate',);
+                    RootNavigation.navigate('Rate');
                 }}>
                     <Text style={{ marginRight: 3, fontFamily: 'rubik', color: Colors.primaryColor, fontSize: 15 }}>Rate</Text>
                     <Ionicons

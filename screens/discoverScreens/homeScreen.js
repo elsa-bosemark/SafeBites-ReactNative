@@ -23,7 +23,7 @@ import 'firebase/firestore';
 import { headers } from '../../constants/secret'
 import Colors from '../../constants/Colors';
 import { Alert } from 'react-native';
-
+import { storeData } from '../../config/data';
 //global variables (access by this.state and set by this.setState)
 state = {
     location: null,
@@ -199,6 +199,7 @@ class HomeScreen extends React.Component {
         this.setState({ loading: true });
         axios.get(`https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=50`, { headers: headers })
             .then((response) => {
+                storeData(response.data.businesses);
                 response.data.businesses.forEach(element => {
                     names.push(element.name)
                     phoneNums.push(element.display_phone)
