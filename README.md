@@ -6,7 +6,9 @@
  Need to do:
  - dynamic open hours, call, directions
  - navigation of profile page?
- - add handsanatizer image and heart
+ - fix UI
+ - location is wrong
+ 
 
 
 #### Athena
