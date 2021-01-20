@@ -8,6 +8,7 @@ const screen = Dimensions.get('window');
 
 export const ScoreSlider = props => {
   return (
+    
     <View style={styles.scoreContainer}>
       <Text style={styles.title}>{props.safetyTitle}</Text>
       <View style={{ ...styles.row, ...{ width: '100%' } }}>
@@ -17,8 +18,8 @@ export const ScoreSlider = props => {
             thumbStyle={styles.sliderThumb}
             trackStyle={styles.sliderTrack}
             disabled={true}
-            minimumTrackTintColor={Colors.greyple}
-            maximumTrackTintColor='#E0E0E0'
+            minimumTrackTintColor={Colors.grey}
+            maximumTrackTintColor={Colors.grey}
             maximumValue={100}
           />
         </View>
@@ -48,9 +49,8 @@ const styles = StyleSheet.create({
 
   },
   sliderThumb: {
-    height: 30,
-    width: 30,
-    backgroundColor: Colors.darkColor
+    height: 0,
+    width: 0,
   },
   sliderTrack: {
     height: 20,

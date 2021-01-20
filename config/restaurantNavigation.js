@@ -48,8 +48,8 @@ const RestaurantNavigator = createStackNavigator({
                 }}>
                     <Text style={{ marginRight: 3, fontFamily: 'rubik', color: Colors.primaryColor, fontSize: 15 }}>Rate</Text>
                     <Ionicons
-                        name="star-half-sharp"
-                        size={30}
+                        name="star"
+                        size={25}
                         color={Colors.primaryColor}
                         style={{ marginRight: 10, marginBottom: 5 }}
                     />

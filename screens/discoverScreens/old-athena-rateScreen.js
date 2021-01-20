@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { Dimensions, StyleSheet, Text, View, ScrollView, Button, TextInput } from 'react-native';
 import { colors } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-
-
-import RateSlider from '../../components/rateSlider';
-import CircleRate from '../../components/circleRate';
-import Spacer from '../../components/spacer';
-import { getCurrentRestaurant } from '../../config/data';
+import { RateSlider } from '../../components/slider';
 import Colors from '../../constants/Colors';
 import Divider from '../../components/divider';
-import DefaultButton from '../../components/defaultButton';
+import * as firebase from 'firebase';
+import { Slider } from 'react-native-elements';
+import { getCurrentRestaurant } from '../../config/data';
+import 'firebase/firestore';
 
 const screen = Dimensions.get('window');
 const RateScreen = props => {
@@ -132,81 +128,210 @@ const RateScreen = props => {
       <View style={styles.container}>
         <View style={styles.card}>
           <Text style={styles.title}>Covid Prevention Methods</Text>
+          <Text style={{ ...styles.title, fontSize: 18, alignSelf: 'center' }}>There is enforcement and use of masks</Text>
+          <View style={{
+            width: screen.width, justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <View style={styles.slider}>
+              <Slider
+                value={mask}
+                thumbStyle={styles.sliderThumb}
+                trackStyle={styles.sliderTrack}
+                disabled={false}
+                minimumTrackTintColor={Colors.grey}
+                maximumTrackTintColor='#E0E0E0'
+                maximumValue={100}
+                onValueChange={handleValueChanged}
+                step={5}
+                style={{ width: screen.width * 0.5, }}
+              />
+              <Text style={{
+                alignItems: 'flex-start',
+                paddingTop: 5,
+                marginLeft: 5,
+                fontSize: 20,
+                width: 51
+              }}>{mask}%</Text>
+            </View>
 
-          <RateSlider value={mask} onValueChange={handleValueChanged} text="There is enforcement and use of masks" maxVal={100} step={5}/>
-          <RateSlider value={handSan} onValueChange={sanValChanged} text="Hand sanitizers are available" maxVal={100} step={5}/>
-          <RateSlider value={shields} onValueChange={shieldValChanged} text="There are shields and/or physical barriers" maxVal={100} step={5}/>
-          <Spacer height={20}/>
-          <CircleRate
-            text="Surfaces are sanitized after each patron"
-            yesSelect={() => {
-              changeYes(!yes);
-              changeNo(false);
-              changeIDK(false);
-            }}
-            noSelect={() => {
-              changeYes(false);
-              changeNo(!no);
-              changeIDK(false);
-            }}
-            idkSelect={() => {
-              changeYes(false);
-              changeNo(false);
-              changeIDK(!idk);
-            }}
-            yes={yes}
-            no={no}
-            idk={idk}
-          />
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.text}>Disagree</Text>
+            <Text style={styles.otherText}>Agree</Text>
+          </View>
+          <View style={styles.break} />
+          <Text style={{ ...styles.title, fontSize: 18, alignSelf: 'center' }}>Hand sanitizers are available</Text>
+          <View style={{
+            width: screen.width, justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <View style={styles.slider}>
+              <Slider
+                value={handSan}
+                thumbStyle={styles.sliderThumb}
+                trackStyle={styles.sliderTrack}
+                disabled={false}
+                minimumTrackTintColor={Colors.grey}
+                maximumTrackTintColor='#E0E0E0'
+                maximumValue={100}
+                onValueChange={sanValChanged}
+                step={5}
+                style={{ width: screen.width * 0.5, }}
+              />
+              <Text style={{
+                alignItems: 'flex-start',
+                paddingTop: 5,
+                marginLeft: 5,
+                fontSize: 20,
+                width: 51
+              }}>{handSan}%</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.text}>Disagree</Text>
+              <Text style={styles.otherText}>Agree</Text>
+            </View>
+            <View style={styles.break} />
+            <Text style={{ ...styles.title, fontSize: 18, alignSelf: 'center' }}>There are shields and/or physical barriers</Text>
+            <View style={{
+              width: screen.width, justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <View style={styles.slider}>
+                <Slider
+                  value={shields}
+                  thumbStyle={styles.sliderThumb}
+                  trackStyle={styles.sliderTrack}
+                  disabled={false}
+                  minimumTrackTintColor={Colors.grey}
+                  maximumTrackTintColor='#E0E0E0'
+                  maximumValue={100}
+                  onValueChange={shieldValChanged}
+                  step={5}
+                  style={{ width: screen.width * 0.5, }}
+                />
+                <Text style={{
+                  alignItems: 'flex-start',
+                  paddingTop: 5,
+                  marginLeft: 5,
+                  fontSize: 20,
+                  width: 51
+                }}>{shields}%</Text>
+              </View>
 
-          <CircleRate
-            text="Staff give tempature checks to customers"
-            yesSelect={() => {
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.text}>Disagree</Text>
+              <Text style={styles.otherText}>Agree</Text>
+            </View>
+            <View style={styles.break} />
+            <View style={styles.row}>
+              <Text style={styles.rulesText}>Surfaces are sanitized after each patron</Text>
+              <TouchableOpacity onPress={() => {
+                changeYes(!yes);
+                changeNo(false);
+                changeIDK(false);
+              }}>
+                <View style={styles.button}>
+                  <View style={yes ? styles.smallButton : styles.noButton} />
+                </View>
+                <Text>yes</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                changeYes(false);
+                changeNo(!no);
+                changeIDK(false);
+              }}>
+                <View style={styles.button}>
+                  <View style={no ? styles.smallButton : styles.noButton} />
+                </View>
+                <Text> no</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                changeYes(false);
+                changeNo(false);
+                changeIDK(!idk);
+              }} >
+                <View style={styles.button}>
+                  <View style={idk ? styles.smallButton : styles.noButton} />
+                </View>
+                <Text> idk</Text>
+              </TouchableOpacity>
+            </View >
+
+          </View>
+          <View style={styles.break, { height: 20 }} />
+          <View style={styles.row}>
+            <Text style={styles.rulesText}>Staff give tempature checks to customers</Text>
+            <TouchableOpacity onPress={() => {
               changeTempYes(!tempYes);
               changeTempNo(false);
               changeTempIDK(false);
-            }}
-            noSelect={() => {
+            }}>
+              <View style={styles.button}>
+                <View style={tempYes ? styles.smallButton : styles.noButton} />
+              </View>
+              <Text>yes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
               changeTempYes(false);
               changeTempNo(!tempNo);
               changeTempIDK(false);
-            }}
-            idkSelect={() => {
+            }}>
+              <View style={styles.button}>
+                <View style={tempNo ? styles.smallButton : styles.noButton} />
+              </View>
+              <Text> no</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
               changeTempYes(false);
               changeTempNo(false);
               changeTempIDK(!tempIDK);
-            }}
-            yes={tempYes}
-            no={tempNo}
-            idk={tempIDK}
-          />
+            }} >
+              <View style={styles.button}>
+                <View style={tempIDK ? styles.smallButton : styles.noButton} />
+              </View>
+              <Text> idk</Text>
+            </TouchableOpacity>
 
-          <CircleRate
-            text="Signage promoting safety is visible"
-            yesSelect={() => {
+          </View>
+          <View style={styles.break, { height: 20 }} />
+          <View style={styles.row}>
+            <Text style={styles.rulesText}>Signage promoting safety is visible</Text>
+            <TouchableOpacity onPress={() => {
               changeSignYes(!signYes);
               changeSignNo(false);
               changeSignIDK(false);
-            }}
-            noSelect={() => {
+            }}>
+              <View style={styles.button}>
+                <View style={signYes ? styles.smallButton : styles.noButton} />
+              </View>
+              <Text>yes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
               changeSignYes(false);
               changeSignNo(!signNo);
               changeSignIDK(false);
-            }}
-            idkSelect={() => {
-              changeTempYes(false);
-              changeTempNo(false);
-              changeTempIDK(!signIDK);
-            }}
-            yes={signYes}
-            no={signNo}
-            idk={signIDK}
-          />
-          <Spacer height={20}/>
+            }}>
+              <View style={styles.button}>
+                <View style={signNo ? styles.smallButton : styles.noButton} />
+              </View>
+              <Text> no</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+              changeSignYes(false);
+              changeSignNo(false);
+              changeSignIDK(!signIDK);
+            }} >
+              <View style={styles.button}>
+                <View style={signIDK ? styles.smallButton : styles.noButton} />
+              </View>
+              <Text> idk</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.break} />
         </View>
-
         <Divider />
-
         <View style={{ ...styles.card, flex: 1, flexShrink: 1, }}>
           <Text style={styles.title}>Customer Experience</Text>
           <Text style={styles.rulesText}>How did you order?</Text>
@@ -324,21 +449,64 @@ const RateScreen = props => {
                 <Text style={{ ...styles.tagText, fontSize: 15, color: 'white' }}>Curbside Pickup</Text>
               </View>
             </TouchableOpacity>
-          </View>
 
-          <Spacer height={20}/>
-          <RateSlider value={safety} onValueChange={safetyValChanged} text="Did you feel safe in the restaurant?" maxVal={10} step={1}/>
-          <Spacer height={20}/>
+          </View>
+          <View style={{ ...styles.break, height: 20 }} />
+
+          <Text style={{
+            alignSelf: 'center',
+            paddingHorizontal: 10,
+            paddingBottom: 10,
+            fontSize: 15,
+          }}>Did you feel safe in the restaurant?</Text>
+
+
+
+          <View style={{
+            width: screen.width,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <View style={styles.slider}>
+              <Slider
+                value={safety}
+                thumbStyle={styles.sliderThumb}
+                trackStyle={styles.sliderTrack}
+                disabled={false}
+                minimumTrackTintColor={Colors.grey}
+                maximumTrackTintColor='#E0E0E0'
+                maximumValue={10}
+                onValueChange={safetyValChanged}
+                step={1}
+                style={{ flex: 3 }}
+              />
+              <Text style={{
+                alignItems: 'flex-start',
+                paddingTop: 5,
+                marginLeft: 5,
+                fontSize: 20,
+                flex: 1,
+              }}>{safety}%</Text>
+            </View>
+
+          </View>
+          <View style={{ ...styles.row, }}>
+            <Text style={styles.text}>No</Text>
+            <Text style={styles.otherText}>Yes</Text>
+          </View>
+          <View style={styles.break} />
+          <View style={styles.break} />
 
         </View>
         <Divider />
         <View style={styles.card}>
-          <Text style={styles.title}>Comment</Text>
+          <Text style={styles.title}>Comments</Text>
           <View style={{
             margin: 20,
             borderRadius: 10,
-            backgroundColor: Colors.grey,
-            height: 200
+            borderColor: 'black',
+            borderWidth: 1,
+            height: 130
           }}>
             <TextInput style={styles.comment}
               underlineColorAndroid="transparent"
@@ -353,12 +521,20 @@ const RateScreen = props => {
               }} />
           </View>
         </View>
-        <Spacer height={20}/>
-        <DefaultButton text="Submit" buttonColor={Colors.primaryColor} textColor="#fff" onSelect={() => {
+        <Button title="submit" onPress={() => {
           //store in firebase 
           setData();
           props.navigation.goBack(); //go back
-        }}/>
+        }} />
+        {/* spacing for keyboard */}
+        <View style={styles.break} />
+        <View style={styles.break} />
+        <View style={styles.break} />
+        <View style={styles.break} />
+        <View style={styles.break} />
+        <View style={styles.break} />
+        <View style={styles.break} />
+        <View style={styles.break} />
       </View >
     </ScrollView>
 
@@ -377,6 +553,16 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
   },
+  text: {
+    marginTop: -5,
+    marginLeft: 50,
+    fontFamily: 'rubik'
+  },
+  otherText: {
+    marginTop: -5,
+    marginLeft: screen.width * 0.5 / 1.5,
+    fontFamily: 'rubik'
+  },
   break: {
     height: 40,
   },
@@ -387,12 +573,31 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     fontSize: 25,
+
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,
-  },  
+  },
+  button: {
+    backgroundColor: Colors.grey,
+    borderRadius: 100,
+    height: 25,
+    aspectRatio: 1,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  smallButton: {
+    backgroundColor: Colors.darkColor,
+    borderRadius: 100,
+    height: 15,
+    aspectRatio: 1,
+  },
+  noButton: {
+
+  },
   rulesText: {
     marginLeft: 30,
     flex: 1,
@@ -401,14 +606,14 @@ const styles = StyleSheet.create({
   },
   tag: {
     padding: 10,
-    backgroundColor: Colors.darkGrey,
+    backgroundColor: Colors.grey,
     borderRadius: 5,
     margin: 5,
     height: 40,
   },
   yesTag: {
     padding: 10,
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: Colors.darkColor,
     borderRadius: 5,
     margin: 5,
     height: 40,

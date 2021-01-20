@@ -4,6 +4,9 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { getDistance } from 'geolib';
 import { Ionicons } from '@expo/vector-icons';
 import { getData, storeCurrentRestaurant } from '../../config/data';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+
 
 import CatIcon from '../../components/catIcon';
 import Colors from '../../constants/Colors';
@@ -18,10 +21,12 @@ import YelpServisRating from '../../components/yelpServisRating';
 import Credit from '../../components/credit';
 import { Tags } from '../../components/tags';
 import OpenHours from '../../components/openHours';
-import PhotoSlider from '../../components/photoSlider/photoSlider';
+// import PhotoSlider from '../../components/photoSlider/photoSlider';
 import SafetyScore from '../../components/handSanatizer';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
+
+
+
+
 
 const RestaurantDetailScreen = props => {
   const [masks, setMasks] = useState(0);
@@ -87,21 +92,6 @@ const RestaurantDetailScreen = props => {
       <ScrollView >
         <View style={styles.container}>
           <View style={styles.card}>
-            {/* Cover */}
-            {/* <PhotoSlider
-            data={photos[restIndex]}
-            timer={2000}
-            imageKey={'image'}
-            local={false}
-            width={screenWidth}
-            separator={0}
-            loop={true}
-            autoscroll={true}
-            currentIndexCallback={index => console.log('Index', index)}
-            onPress={item => alert(JSON.stringify(item))}
-            indicator
-            animation
-          /> */}
             <Image style={styles.image} source={{ uri: cover[restIndex] }} />
             {/* Restaurant Title */}
             <Title text={restTitles[restIndex]} />
@@ -116,7 +106,7 @@ const RestaurantDetailScreen = props => {
                     <Text style={{ ...styles.text, ...{ fontSize: 19, color: 'white' } }}>{price[restIndex]}</Text>
                   </View>
                   <View style={{ ...styles.row, ...{ alignItems: 'center', } }}>
-                    <Ionicons name='navigate' size={30} color={'black'} />
+                  <Ionicons style={styles.icon} name='md-location-sharp' size={35} color={Colors.primaryColor} />
                     <Text style={{ ...styles.text, ...{ fontSize: 20 } }}>{Number((restaurantDistance / 1000).toFixed(1))} km</Text>
                   </View>
                 </View>
@@ -139,18 +129,23 @@ const RestaurantDetailScreen = props => {
           </View>
           <Credit logo={require('../../assets/yelpStars/yelpLogo.png')} />
           <Divider />
+          <DefaultButton text="Rate" buttonColor={Colors.primaryColor} textColor="#fff" onSelect={() => {
+                    // navigation.push('Rate'); Doesn't work
+                }}/>
+          <Divider />
           <View style={styles.card}>
             {/* Favorites, Call and Directions */}
 
             <View style={{ felx: 1 }}>
               <View style={{ ...styles.row, ...{ alignItems: 'center' } }}>
-                <CircleButton icon='heart-outline' color={Colors.greyple} title='Favorite' />
-                <CircleButton icon='call' color={Colors.greyple} title='Call' />
-                <CircleButton icon='map' color={Colors.greyple} title='Direction' />
-                <CircleButton icon='attach' color={Colors.greyple} title='Website' />
+                <CircleButton icon='heart-outline' color={Colors.grey} title='Favorite' />
+                <CircleButton icon='call' color={Colors.grey} title='Call' />
+                <CircleButton icon='map' color={Colors.grey} title='Direction' />
+                <CircleButton icon='attach' color={Colors.grey} title='Website' />
               </View>
             </View>
           </View>
+          <Divider />
           {/* Slider Rating */}
           <View style={styles.card}>
             <Title text='Covid Prevention Rating' />

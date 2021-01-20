@@ -377,13 +377,13 @@ class HomeScreen extends React.Component {
                             <TextInput style={styles.input}
                                 underlineColorAndroid="transparent"
                                 placeholder="enter email"
-                                placeholderTextColor={Colors.greyple}
+                                placeholderTextColor={Colors.grey}
                                 autoCapitalize="none"
                                 onChangeText={this.handleEmail} />
                             <TextInput style={styles.input}
                                 underlineColorAndroid="transparent"
                                 placeholder="enter password"
-                                placeholderTextColor={Colors.greyple}
+                                placeholderTextColor={Colors.grey}
                                 autoCapitalize="none"
                                 onChangeText={this.handlePassword} />
                             <TouchableHighlight
@@ -419,25 +419,25 @@ class HomeScreen extends React.Component {
                             <TextInput style={styles.input}
                                 underlineColorAndroid="transparent"
                                 placeholder="enter first name"
-                                placeholderTextColor={Colors.greyple}
+                                placeholderTextColor={Colors.grey}
                                 autoCapitalize="none"
                                 onChangeText={this.handleFirstName} />
                             <TextInput style={styles.input}
                                 underlineColorAndroid="transparent"
                                 placeholder="enter last name"
-                                placeholderTextColor={Colors.greyple}
+                                placeholderTextColor={Colors.grey}
                                 autoCapitalize="none"
                                 onChangeText={this.handleLastName} />
                             <TextInput style={styles.input}
                                 underlineColorAndroid="transparent"
                                 placeholder="enter email"
-                                placeholderTextColor={Colors.greyple}
+                                placeholderTextColor={Colors.grey}
                                 autoCapitalize="none"
                                 onChangeText={this.handleEmail} />
                             <TextInput style={styles.input}
                                 underlineColorAndroid="transparent"
                                 placeholder="enter password"
-                                placeholderTextColor={Colors.greyple}
+                                placeholderTextColor={Colors.grey}
                                 autoCapitalize="none"
                                 onChangeText={this.handlePassword} />
                             <TouchableHighlight
@@ -595,7 +595,7 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40,
-        borderColor: Colors.greyple,
+        borderColor: Colors.grey,
         borderWidth: 1,
         paddingLeft: 10,
         width: 200,

@@ -1,7 +1,9 @@
 export default {
     primaryColor: '#4AC9AA',
     accentColor: '#00B288',
+    darkColor: '#2d9e82',
     lightPurple: '#FCFBFF',
-    greyple: '#D9D5E3',
-    darkColor: '#9088A5'
+    grey: '#E0E0E0',
+    darkGrey:'#7a7a7a'
+    // darkColor: '#9088A5'
 }
