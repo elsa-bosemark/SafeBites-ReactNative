@@ -4,6 +4,6 @@ export default {
     darkColor: '#2d9e82',
     lightPurple: '#FCFBFF',
     grey: '#E0E0E0',
-    darkGrey:'#7a7a7a'
+    darkGrey: '#a1a1a1'
     // darkColor: '#9088A5'
 }

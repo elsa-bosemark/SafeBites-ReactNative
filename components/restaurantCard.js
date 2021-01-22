@@ -20,7 +20,6 @@ const RestaurantCard = props => {
         props.userCoordinates,
         props.restaurantCoordinates
     );
-
     return (
         <View style={styles.gridItem}>
             <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
@@ -46,13 +45,13 @@ const RestaurantCard = props => {
                         {/* Hand Sanatizer */}
                         <SafetyScore style={{ flex: 1 }} score={8} size={1} />
                     </View>
-                 
-                        <View style={styles.row}>
-                            {/* Heart =>Favorites */}
-                            <Ionicons style={{...styles.icon,...{paddingTop:10,paddingRight:10}}} name='heart' size={25} color='grey' />
-                            {/* Title */}
-                            <Text style={[styles.text, styles.title]}>{props.title}</Text>
-                     
+
+                    <View style={styles.row}>
+                        {/* Heart =>Favorites */}
+                        <Ionicons style={{ ...styles.icon, ...{ paddingTop: 10, paddingRight: 10 } }} name='heart' size={25} color='grey' />
+                        {/* Title */}
+                        <Text style={[styles.text, styles.title]}>{props.title}</Text>
+
                     </View>
 
                 </View>

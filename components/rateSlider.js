@@ -26,7 +26,7 @@ const RateSlider = props => {
                 <Text style={{
                     alignItems: 'flex-start',
                     paddingTop: 5,
-                    marginLeft: 5,
+                    marginLeft: 20,
                     fontSize: 20,
                     width: 51
                 }}>{props.value}%</Text>
@@ -43,7 +43,7 @@ const RateSlider = props => {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 10,
-        paddingBottom:10,
+        paddingBottom: 10,
     },
     row: {
         flexDirection: 'row',
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         alignSelf: 'center',
-        marginBottom:5,
+        marginBottom: 5,
     }
 });
 

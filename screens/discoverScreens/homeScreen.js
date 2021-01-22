@@ -7,13 +7,14 @@ import {
     Platform,
     Modal,
     TextInput,
-    TouchableHighlight
+    TouchableHighlight,
+    TouchableCmp,
+    Image,
 } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { SearchBar } from 'react-native-elements';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-
 import { CATEGORIES } from '../../data/categoryData';
 import CategoryGridTile from '../../components/categoryGridTile';
 import RestaurantCard from '../../components/restaurantCard';
@@ -86,6 +87,7 @@ class HomeScreen extends React.Component {
     handlePassword = (text) => {
         this.setState({ password: text })
     }
+
     login = (email, password) => {
         if (email == "" || password == "") {
             this.setState({ error: "please fill in all fields" })
@@ -109,7 +111,7 @@ class HomeScreen extends React.Component {
                     );
                 })
                 .catch((error) => {
-                    this.setState({ error: error.message })
+                    this.setState({ error: error })
                 })
         }
     }
@@ -147,14 +149,14 @@ class HomeScreen extends React.Component {
                     );                    // this.props.navigation.navigate('Home')
                 })
                 .catch(error => {
-                    this.setState({ error: error.message })
+                    this.setState({ error: error })
                     console.error(error)
                 })
         }
     }
     //screen did load
     componentDidMount() {
-        //this.getLocationAsync()
+        this.getLocationAsync()
         //this takes longer and since we don't display it, we can do it later 
         if (this.state.restaurantLocations != null || this.state.response != undefined) {
             this.state.restaurantLocations.forEach(element => {
@@ -173,7 +175,6 @@ class HomeScreen extends React.Component {
     }
     constructor(props) {
         super(props);
-        this.getLocationAsync();
     }
     //fetch yelp api
     fetchApiCall = () => {
@@ -197,7 +198,7 @@ class HomeScreen extends React.Component {
 
 
         this.setState({ loading: true });
-        axios.get(`https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=50`, { headers: headers })
+        axios.get(`https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=50&radius=400`, { headers: headers })
             .then((response) => {
                 storeData(response.data.businesses);
                 response.data.businesses.forEach(element => {
@@ -255,11 +256,10 @@ class HomeScreen extends React.Component {
                 errorMessage: 'Permission to access location was denied',
             });
         }
-
         let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
         const { latitude, longitude } = location.coords
         this.setState({ location: { latitude, longitude } });
-        this.fetchApiCall() //fetch api 
+        this.fetchApiCall()
     }
 
     //get the geocode
@@ -314,7 +314,6 @@ class HomeScreen extends React.Component {
                                 tags: this.state.tags,
                             }
                         })
-                        console.warn(this.state.title,)
                     }} />
             );
         }
@@ -486,54 +485,64 @@ class HomeScreen extends React.Component {
                             backgroundColor: 'white'
                         }}
                     /></View>
-
                 <FlatList
                     data={this.state.filteredRestaurants && this.state.filteredRestaurants.length > 0 ? this.state.filteredRestaurants : this.state.title}
-                    getItemLayout={(data, index) => (
-                        { length: 30, offset: 2 * index, index }
-                    )}
-                    renderItem={({ item, index }) => (
-                        <RestaurantCard
-                            title={item}
-                            price={this.state.price[actualIndex(item)]}
-                            cover={this.state.cover[actualIndex(item)]}
-                            transactions={this.state.transactions[actualIndex(item)]}
-                            restaurantCoordinates={this.state.restaurantCoordinates[actualIndex(item)]}
-                            userCoordinates={this.state.location}
-                            // curbsidePickup={true}
-                            // takeout={false}
-                            // delivery={true}
-                            onSelect={() => {
+                    renderItem={({ item, index }) => {
+                        console.log(this.state.title)
+                        //const restaurantDistance = getDistance(
+                        //   this.state.location,
+                        //   this.state.restaurantCoordinates[index]
+                        //);
+                        return (
+                            //  <Text style={{ marginBottom: 10 }}>{item}</Text>
 
-                                this.props.navigation.navigate({
-                                    routeName: 'RetaurantDetail', params: {
-                                        //pass restaurant DATA
-                                        restIndex: index,
-                                        title: this.state.title,
-                                        price: this.state.price,
-                                        cover: this.state.cover,
-                                        transactions: this.state.transactions,
-                                        restaurantCoordinates: this.state.restaurantCoordinates,
-                                        userCoordinates: this.state.location,
-                                        phoneNumber: this.state.phoneNumber,
-                                        address: this.state.address,
-                                        yelpUrl: this.state.yelpUrl,
+                            <RestaurantCard
+                                title={item}
+                                price={this.state.price[index]}
+                                cover={this.state.cover[actualIndex(item)] ? this.state.cover[actualIndex(item)] : null}
+                                transactions={this.state.transactions[actualIndex(item)]}
+                                restaurantCoordinates={this.state.restaurantCoordinates[actualIndex(item)]}
+                                userCoordinates={this.state.location}
 
-                                        yelpRating: this.state.yelpRating,
-                                        yelpReviewCount: this.state.yelpReviewCount,
-                                        photos: this.state.photos,
-                                        openHours: this.state.openHours,
-                                        tags: this.state.tags,
-                                    }
-                                })
-                                run
-                            }} />
-                    )}
+                                // curbsidePickup={true}
+                                // takeout={false}
+                                // delivery={true}
+                                onSelect={() => {
+
+                                    this.props.navigation.navigate({
+                                        routeName: 'RetaurantDetail', params: {
+                                            //pass restaurant DATA
+                                            restIndex: index,
+                                            title: this.state.title,
+                                            price: this.state.price,
+                                            cover: this.state.cover,
+                                            transactions: this.state.transactions,
+                                            restaurantCoordinates: this.state.restaurantCoordinates,
+                                            userCoordinates: this.state.location,
+                                            phoneNumber: this.state.phoneNumber,
+                                            address: this.state.address,
+                                            yelpUrl: this.state.yelpUrl,
+
+                                            yelpRating: this.state.yelpRating,
+                                            yelpReviewCount: this.state.yelpReviewCount,
+                                            photos: this.state.photos,
+                                            openHours: this.state.openHours,
+                                            tags: this.state.tags,
+                                        }
+                                    })
+                                }} />
+                        )
+
+
+
+                    }}
                     size="large"
                     keyExtractor={item => item}
                     refreshing={false}
-                    style={styles.dataContainer}
+                    style={{ marginBottom: 350 }}
                 />
+
+
             </SafeAreaView >
         );
     }

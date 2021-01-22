@@ -38,7 +38,7 @@ const RestaurantDetailScreen = props => {
   const [feelSafe, setFeelSafe] = useState(0);
   const [comments, setComments] = useState([]);
   const [userRating, setUserRating] = useState(0);
-
+  const [calledOnce, setCalledOnce] = useState(false);
   //getting all params
   const restIndex = props.navigation.getParam('restIndex');
   const restTitles = props.navigation.getParam('title');
@@ -56,7 +56,6 @@ const RestaurantDetailScreen = props => {
   const photos = props.navigation.getParam('photos');
   const openHours = props.navigation.getParam('openHours');
   const tags = props.navigation.getParam('tags');
-
   const getData = async () => {
     let myDB = firebase.firestore();
     let doc = await myDB.collection('reviews').doc(restTitles[restIndex]).get();
@@ -85,7 +84,27 @@ const RestaurantDetailScreen = props => {
   const openLink = url => Linking.openURL(url).catch(() => {
     Alert.alert("Sorry, something went wrong.", "Please try again later.")
   })
-  getData()
+
+  async function getMarker() {
+    var myArr = []
+    const snapshot = await firebase.firestore().collection('reviews').doc(restTitles[restIndex]).collection('comments').get()
+    let docs = snapshot.docs.map(doc => doc.data());
+    docs.forEach(element => {
+      for (var key in element) {
+        myArr.push(element[key])
+      }
+
+    })
+
+    setComments(myArr);
+  }
+  if (!calledOnce) {
+    getData()
+    getMarker();
+    setCalledOnce(true)
+  }
+
+
   const screenWidth = Math.round(Dimensions.get('window').width);
   return (
     <SafeAreaView>
@@ -106,7 +125,7 @@ const RestaurantDetailScreen = props => {
                     <Text style={{ ...styles.text, ...{ fontSize: 19, color: 'white' } }}>{price[restIndex]}</Text>
                   </View>
                   <View style={{ ...styles.row, ...{ alignItems: 'center', } }}>
-                  <Ionicons style={styles.icon} name='md-location-sharp' size={35} color={Colors.primaryColor} />
+                    <Ionicons style={styles.icon} name='md-location-sharp' size={35} color={Colors.primaryColor} />
                     <Text style={{ ...styles.text, ...{ fontSize: 20 } }}>{Number((restaurantDistance / 1000).toFixed(1))} km</Text>
                   </View>
                 </View>
@@ -130,8 +149,8 @@ const RestaurantDetailScreen = props => {
           <Credit logo={require('../../assets/yelpStars/yelpLogo.png')} />
           <Divider />
           <DefaultButton text="Rate" buttonColor={Colors.primaryColor} textColor="#fff" onSelect={() => {
-                    // navigation.push('Rate'); Doesn't work
-                }}/>
+            // navigation.push('Rate'); Doesn't work
+          }} />
           <Divider />
           <View style={styles.card}>
             {/* Favorites, Call and Directions */}
