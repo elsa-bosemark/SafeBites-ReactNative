@@ -25,13 +25,14 @@ import { headers } from '../../constants/secret'
 import Colors from '../../constants/Colors';
 import { Alert } from 'react-native';
 import { storeData } from '../../config/data';
+import { ActivityIndicator } from 'react-native';
 //global variables (access by this.state and set by this.setState)
 state = {
     location: null,
     geocode: null,
     errorMessage: "",
     error: "",
-    loading: false,
+    loading: true,
     refreshing: true,
     filteredData: null,
 
@@ -166,13 +167,23 @@ class HomeScreen extends React.Component {
                 })
             })
         }
-        const user = firebase.auth().currentUser;
+        this.unsubscribe();
+    }
+
+
+    unsubscribe = firebase.auth().onAuthStateChanged(function (user) {
         if (!user) {
             this.setState({
                 authVisible: true, signupVisible: false, loginVisible: false,
             });
+        } else {
+            this.setState({
+                authVisible: false, signupVisible: false, loginVisible: false,
+            });
         }
-    }
+
+    });
+
     constructor(props) {
         super(props);
     }
@@ -197,7 +208,7 @@ class HomeScreen extends React.Component {
         let _openHours = [];
 
 
-        this.setState({ loading: true });
+        // this.setState({ loading: true });
         axios.get(`https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=50&radius=400`, { headers: headers })
             .then((response) => {
                 storeData(response.data.businesses);
@@ -485,6 +496,8 @@ class HomeScreen extends React.Component {
                             backgroundColor: 'white'
                         }}
                     /></View>
+                <ActivityIndicator animating={this.state.loading} />
+
                 <FlatList
                     data={this.state.filteredRestaurants && this.state.filteredRestaurants.length > 0 ? this.state.filteredRestaurants : this.state.title}
                     renderItem={({ item, index }) => {
