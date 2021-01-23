@@ -51,7 +51,7 @@ state = {
     photos: null,
     openHours: null,
     tags: null,
-    authVisible: false,
+    authVisible: true,
     signupVisible: false,
     loginVisible: false,
 
@@ -124,7 +124,6 @@ class HomeScreen extends React.Component {
         else {
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(() => {
-                    console.warn('User account created adn signed in!');
                     this.setState({ authVisible: false, loginVisible: false, signupVisible: false })
                     var myDB = firebase.firestore();
                     var doc = myDB.collection("users").doc(`${email}`).get();
@@ -167,22 +166,13 @@ class HomeScreen extends React.Component {
                 })
             })
         }
-        this.unsubscribe();
+        firebase.auth().onAuthStateChanged(userAuth => {
+            if (userAuth) {
+                this.setState({ authVisible: false, loginVisible: false, signupVisible: false })
+            }
+        });
     }
 
-
-    unsubscribe = firebase.auth().onAuthStateChanged(function (user) {
-        if (!user) {
-            this.setState({
-                authVisible: true, signupVisible: false, loginVisible: false,
-            });
-        } else {
-            this.setState({
-                authVisible: false, signupVisible: false, loginVisible: false,
-            });
-        }
-
-    });
 
     constructor(props) {
         super(props);

@@ -184,17 +184,25 @@ const RestaurantDetailScreen = props => {
           <View style={styles.card}>
             <Title text='Comments' />
             {/* <Text>{comments}</Text> */}
-            <FlatList
-              data={comments}
-              renderItem={({ item, index }) => {
-                console.warn(item);
-                return (
-                  <Text>{item}</Text>
-                )
-              }
-              }
-              keyExtractor={item => item}
-            />
+            <View style={{
+              width: "80%",
+              borderRadius: 10,
+              alignSelf: 'center',
+              borderColor: 'black',
+              borderWidth: 0.2,
+            }}>
+
+              <FlatList
+                data={comments}
+                renderItem={({ item, index }) => {
+                  return (
+                    <Text style={{ paddingLeft: 10 }}>{item}</Text>
+                  )
+                }
+                }
+                keyExtractor={item => item}
+              />
+            </View>
           </View>
 
           <Divider />

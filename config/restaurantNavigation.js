@@ -36,6 +36,7 @@ const RestaurantNavigator = createStackNavigator({
             headerStyle: {
                 backgroundColor: Colors.lightPurple
             },
+            headerTitle: '',
             headerTintColor: Colors.primaryColor
         }
     },
