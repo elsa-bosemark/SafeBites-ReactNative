@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, SafeAreaView, Platform, TouchableNativeFeedback, Linking, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView, Platform, FlatList, Linking, Dimensions } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { getDistance } from 'geolib';
 import { Ionicons } from '@expo/vector-icons';
@@ -85,7 +85,7 @@ const RestaurantDetailScreen = props => {
     Alert.alert("Sorry, something went wrong.", "Please try again later.")
   })
 
-  async function getMarker() {
+  async function getComments() {
     var myArr = []
     const snapshot = await firebase.firestore().collection('reviews').doc(restTitles[restIndex]).collection('comments').get()
     let docs = snapshot.docs.map(doc => doc.data());
@@ -93,14 +93,13 @@ const RestaurantDetailScreen = props => {
       for (var key in element) {
         myArr.push(element[key])
       }
-
     })
 
     setComments(myArr);
   }
   if (!calledOnce) {
     getData()
-    getMarker();
+    getComments();
     setCalledOnce(true)
   }
 
@@ -184,6 +183,18 @@ const RestaurantDetailScreen = props => {
           {/* Comments */}
           <View style={styles.card}>
             <Title text='Comments' />
+            {/* <Text>{comments}</Text> */}
+            <FlatList
+              data={comments}
+              renderItem={({ item, index }) => {
+                console.warn(item);
+                return (
+                  <Text>{item}</Text>
+                )
+              }
+              }
+              keyExtractor={item => item}
+            />
           </View>
 
           <Divider />
