@@ -13,4 +13,3 @@
 
 #### Athena
 - profile screen (in progress)
-- comments (in progress)
