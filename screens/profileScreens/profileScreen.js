@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, SafeAreaView, FlatList, View, Image } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, FlatList, View, Image, Button, Alert } from 'react-native';
 import 'firebase/firestore'
 import * as firebase from 'firebase';
 
@@ -50,16 +50,24 @@ const ProfileScreen = props => {
             <View style={[styles.greyCard, styles.row]}>
               <View>
                 <Text style={styles.infoText}>reviews</Text>
-                <Text style={styles.num}>4</Text>
+                <Text style={styles.num}>{comments.length - 1}</Text>
               </View >
               <View >
                 <Text style={styles.infoText}>photos</Text>
                 <Text style={styles.num}>1</Text>
               </View>
             </View>
-
           </View>
+          <Button title="Logout" onPress={() => {
+            firebase.auth().signOut().then(() => {
+              Alert.alert("Successfully logged out", "See you later!");
+              this.props.navigation.navigate("Home");
+            }).catch((error) => {
+              // An error happened.
+              Alert.alert("ERROR SIGNING OUT", "please try again later");
+            });
 
+          }} />
         </View>
         <Text style={styles.title}>Comments</Text>
         <View style={{
@@ -108,7 +116,7 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 50,
   },
-  greyCard:{
+  greyCard: {
     justifyContent: 'space-between',
     backgroundColor: '#E0E0E0',
     padding: 15,

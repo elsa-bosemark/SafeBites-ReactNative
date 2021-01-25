@@ -346,30 +346,30 @@ class HomeScreen extends React.Component {
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
                             <Text style={styles.modalText}>You haven't logged in yet! You can't rate anything yet.</Text>
-                            <TouchableHighlight
+                            <TouchableOpacity
                                 style={{ ...styles.closedButton, backgroundColor: Colors.accentColor }}
                                 onPress={() => {
-                                    this.setState({ authVisible: !this.state.authVisible, loginVisible: false })
+                                    this.setState({ authVisible: !this.state.authVisible, loginVisible: !this.state.loginVisible })
                                 }}
                             >
                                 <Text style={styles.textStyle}>Login</Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight
+                            </TouchableOpacity>
+                            <TouchableOpacity
                                 style={{ ...styles.closedButton }}
                                 onPress={() => {
                                     this.setState({ signupVisible: !this.state.signupVisible, authVisible: !this.state.authVisible })
                                 }}
                             >
                                 <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Signup</Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight
+                            </TouchableOpacity>
+                            <TouchableOpacity
                                 style={{ ...styles.closedButton }}
                                 onPress={() => {
                                     this.setState({ authVisible: !this.state.authVisible })
                                 }}
                             >
                                 <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Continue as Guest</Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>
@@ -396,21 +396,21 @@ class HomeScreen extends React.Component {
                                 placeholderTextColor={Colors.grey}
                                 autoCapitalize="none"
                                 onChangeText={this.handlePassword} />
-                            <TouchableHighlight
+                            <TouchableOpacity
                                 style={{ ...styles.closedButton, backgroundColor: Colors.primaryColor, width: 100 }}
                                 onPress={
                                     () => this.login(this.state.email, this.state.password)
                                 }>
                                 <Text style={styles.textStyle}> Submit </Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight
+                            </TouchableOpacity>
+                            <TouchableOpacity
                                 style={{ ...styles.closedButton, width: 100 }}
                                 onPress={() => {
-                                    this.setState({ loginVisible: false, authVisible: !this.state.authVisible })
+                                    this.setState({ loginVisible: !this.state.loginVisible, authVisible: !this.state.authVisible })
                                 }}
                             >
                                 <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Close</Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                             <Text>{this.state.error}</Text>
                         </View>
                     </View>
@@ -450,7 +450,7 @@ class HomeScreen extends React.Component {
                                 placeholderTextColor={Colors.grey}
                                 autoCapitalize="none"
                                 onChangeText={this.handlePassword} />
-                            <TouchableHighlight
+                            <TouchableOpacity
                                 style={{ ...styles.closedButton, backgroundColor: Colors.primaryColor, width: 100 }}
                                 onPress={
                                     () => {
@@ -458,15 +458,15 @@ class HomeScreen extends React.Component {
                                     }
                                 }>
                                 <Text style={styles.textStyle}> Submit </Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight
+                            </TouchableOpacity>
+                            <TouchableOpacity
                                 style={{ ...styles.closedButton, width: 100 }}
                                 onPress={() => {
                                     this.setState({ signupVisible: !this.state.signupVisible, authVisible: !this.state.authVisible })
                                 }}
                             >
                                 <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Close</Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                             <Text>{this.state.error}</Text>
                         </View>
                     </View>
