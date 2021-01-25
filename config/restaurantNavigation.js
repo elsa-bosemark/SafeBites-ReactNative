@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -15,8 +15,12 @@ import Colors from '../constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from '@react-navigation/compat';
 import RootNavigation from './RootNavigation';
+import * as firebase from 'firebase';
+import { Alert } from 'react-native';
+import 'firebase/auth'
 
 
+var user = false;
 //Createing a navigation stack for screens
 const RestaurantNavigator = createStackNavigator({
     Home: {
@@ -51,7 +55,12 @@ const RestaurantNavigator = createStackNavigator({
         navigationOptions: {
             headerRight: () => (
                 <TouchableOpacity style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: "center" }} onPress={() => {
-                    RootNavigation.navigate('Rate');
+                    if (user) {
+                        RootNavigation.navigate('Rate')
+                    } else {
+                        //no user logged in
+                        Alert.alert("You must login to rate", "")
+                    }
                 }}>
                     <Text style={{ marginRight: 3, fontFamily: 'rubik', color: Colors.primaryColor, fontSize: 15 }}>Rate</Text>
                     <Ionicons
@@ -62,7 +71,7 @@ const RestaurantNavigator = createStackNavigator({
                     />
                 </TouchableOpacity>
             )
-        }
+        },
     },
     Rate: {
         screen: Rate,
@@ -99,7 +108,13 @@ const ProfileNavigator = createStackNavigator({
         headerTintColor: Colors.primaryColor
     }
 });
-
+firebase.auth().onAuthStateChanged(userAuth => {
+    if (userAuth != null || userAuth != undefined) {
+        user = true;
+    } else {
+        user = false;
+    }
+}).bind(this);
 const ProfileTabNavigator = createBottomTabNavigator({
     Discover: {
         screen: RestaurantNavigator,
