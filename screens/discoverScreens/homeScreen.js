@@ -11,7 +11,7 @@ import {
     TouchableCmp,
     Image,
 } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { SearchBar } from 'react-native-elements';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -294,28 +294,33 @@ class HomeScreen extends React.Component {
                     title={itemData.item.title}
                     icon={itemData.item.icon}
                     onSelect={() => {
-                        this.props.navigation.navigate({
-                            routeName: 'RestaurantCategory', params: {
-                                categoryId: itemData.item.id,
-                                //pass restaurant DATA so it is accesable to detailScreen when on catScreen
-                                title: this.state.title,
-                                price: this.state.price,
-                                cover: this.state.cover,
-                                transactions: this.state.transactions,
-                                restaurantCoordinates: this.state.restaurantCoordinates,
-                                userCoordinates: this.state.location,
+                        if (this.state.loading) {
+                            Alert.alert("Please wait", "Our data is currently loading. Please wait a couple seconds until you can search by categories! Thanks so much!")
+                        }
+                        else {
+                            this.props.navigation.navigate({
+                                routeName: 'RestaurantCategory', params: {
+                                    categoryId: itemData.item.id,
+                                    //pass restaurant DATA so it is accesable to detailScreen when on catScreen
+                                    title: this.state.title,
+                                    price: this.state.price,
+                                    cover: this.state.cover,
+                                    transactions: this.state.transactions,
+                                    restaurantCoordinates: this.state.restaurantCoordinates,
+                                    userCoordinates: this.state.location,
 
-                                phoneNumber: this.state.phoneNumber,
-                                address: this.state.address,
-                                yelpUrl: this.state.yelpUrl,
+                                    phoneNumber: this.state.phoneNumber,
+                                    address: this.state.address,
+                                    yelpUrl: this.state.yelpUrl,
 
-                                yelpRating: this.state.yelpRating,
-                                yelpReviewCount: this.state.yelpReviewCount,
-                                photos: this.state.photos,
-                                openHours: this.state.openHours,
-                                tags: this.state.tags,
-                            }
-                        })
+                                    yelpRating: this.state.yelpRating,
+                                    yelpReviewCount: this.state.yelpReviewCount,
+                                    photos: this.state.photos,
+                                    openHours: this.state.openHours,
+                                    tags: this.state.tags,
+                                }
+                            })
+                        }
                     }} />
             );
         }
@@ -344,7 +349,7 @@ class HomeScreen extends React.Component {
                             <TouchableHighlight
                                 style={{ ...styles.closedButton, backgroundColor: Colors.accentColor }}
                                 onPress={() => {
-                                    this.setState({ authVisible: !this.state.authVisible, loginVisible: !this.state.loginVisible })
+                                    this.setState({ authVisible: !this.state.authVisible, loginVisible: false })
                                 }}
                             >
                                 <Text style={styles.textStyle}>Login</Text>
@@ -371,7 +376,7 @@ class HomeScreen extends React.Component {
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={this.state.loginVisible}
+                    visible={this.state.loginVisible ? this.state.loginVisible : false}
                     onRequestClose={() => {
                         // Alert.alert("Modal has been closed.");
                     }}
@@ -401,7 +406,7 @@ class HomeScreen extends React.Component {
                             <TouchableHighlight
                                 style={{ ...styles.closedButton, width: 100 }}
                                 onPress={() => {
-                                    this.setState({ loginVisible: !this.state.loginVisible, authVisible: !this.state.authVisible })
+                                    this.setState({ loginVisible: false, authVisible: !this.state.authVisible })
                                 }}
                             >
                                 <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Close</Text>
@@ -413,7 +418,7 @@ class HomeScreen extends React.Component {
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={this.state.signupVisible}
+                    visible={this.state.signupVisible ? this.state.signupVisible : false}
                     onRequestClose={() => {
                         // Alert.alert("Modal has been closed.");
                     }}
@@ -469,9 +474,10 @@ class HomeScreen extends React.Component {
 
 
 
-                
 
-                    <Text style={styles.title}>Categories</Text>
+                <Text style={styles.title}>Categories</Text>
+                <ScrollView>
+
                     <FlatList
                         data={CATEGORIES}
                         renderItem={renderGridItem}
@@ -480,35 +486,36 @@ class HomeScreen extends React.Component {
                         nestedScrollEnabled={true}
                         keyExtractor={item => item}
                     />
+                </ScrollView>
 
 
 
 
 
 
-                    <Text style={styles.title}>Find</Text>
-                    <View style={styles.searchBar}>
-                        <SearchBar
-                            placeholder="Search..."
-                            onChangeText={this.updateSearch}
-                            value={search}
-                            color='black'
-                            platform={Platform.OS === 'android' ? 'android' : 'ios'}
-                            containerStyle={{
-                                backgroundColor: '',
-                            }}
-                            inputContainerStyle={{
-                                borderRadius: 10,
-                                backgroundColor: 'white'
-                            }}
-                        /></View>
-               
+
+                <Text style={styles.title}>Find</Text>
+                <View style={styles.searchBar}>
+                    <SearchBar
+                        placeholder="Search..."
+                        onChangeText={this.updateSearch}
+                        value={search}
+                        color='black'
+                        platform={Platform.OS === 'android' ? 'android' : 'ios'}
+                        containerStyle={{
+                            backgroundColor: '',
+                        }}
+                        inputContainerStyle={{
+                            borderRadius: 10,
+                            backgroundColor: 'white'
+                        }}
+                    /></View>
+
                 <ActivityIndicator animating={this.state.loading} />
 
                 <FlatList
                     data={this.state.filteredRestaurants && this.state.filteredRestaurants.length > 0 ? this.state.filteredRestaurants : this.state.title}
                     renderItem={({ item, index }) => {
-                        console.log(this.state.title)
                         //const restaurantDistance = getDistance(
                         //   this.state.location,
                         //   this.state.restaurantCoordinates[index]

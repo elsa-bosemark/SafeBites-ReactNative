@@ -30,7 +30,6 @@ const CatIcon = props => {
 
     //DELIVERY
     const delivery = props.cat.indexOf('delivery');
-    console.log('eawr ' + delivery)
     if (delivery >= 0) {
         transactionArray.push(
             <View style={styles.row}>

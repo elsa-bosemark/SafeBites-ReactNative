@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        padding: 15,
+        padding: 5,
         borderRadius: 10,
         // for IOS
         shadowColor: 'black',
@@ -48,9 +48,11 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: screen.width * 0.4,
-        aspectRatio: 1.1,
+        aspectRatio: 1.4,
         alignSelf: 'center',
-
+    },
+    image: {
+        marginTop: 15,
     },
     text: {
         fontFamily: 'rubik',
