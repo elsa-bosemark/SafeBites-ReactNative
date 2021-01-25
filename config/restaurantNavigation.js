@@ -22,10 +22,10 @@ const RestaurantNavigator = createStackNavigator({
     Home: {
         screen: HomeScreen,
         navigationOptions: { //style header
-            headerShown: false,
+            headerShown: true,
             headerTitle: 'Home',
             headerStyle: {
-                backgroundColor: Colors.accentColor
+                backgroundColor: Colors.primaryColor
             },
             headerTintColor: 'white'
         }
@@ -33,11 +33,17 @@ const RestaurantNavigator = createStackNavigator({
     RestaurantCategory: {
         screen: RestaurantCategoryScreen,
         navigationOptions: { //style header
-            headerStyle: {
-                backgroundColor: Colors.lightPurple
-            },
+            headerShown: true,
             headerTitle: '',
-            headerTintColor: Colors.primaryColor
+            headerStyle: {
+                backgroundColor: Colors.accentColor
+            },
+            headerTintColor: 'white'
+            // headerStyle: {
+            //     backgroundColor: Colors.lightPurple
+            // },
+            // headerTitle: '',
+            // headerTintColor: Colors.primaryColor
         }
     },
     RetaurantDetail: {
@@ -67,7 +73,28 @@ const RestaurantNavigator = createStackNavigator({
 }, {
     defaultNavigationOptions: {
         headerStyle: {
-            backgroundColor: Colors.lightPurple
+            backgroundColor: '#fff'
+        },
+        headerTintColor: Colors.primaryColor
+    }
+});
+
+const ProfileNavigator = createStackNavigator({
+    Profile: {
+        screen: ProfileScreen,
+        navigationOptions: {
+            headerShown: true,
+            headerTitle: 'Profile',
+            headerStyle: {
+                backgroundColor: Colors.primaryColor
+            },
+            headerTintColor: 'white',
+        }
+    }
+}, {
+    defaultNavigationOptions: {
+        headerStyle: {
+            backgroundColor: '#fff'
         },
         headerTintColor: Colors.primaryColor
     }
@@ -89,8 +116,8 @@ const ProfileTabNavigator = createBottomTabNavigator({
             }
         },
     },
-    Profile: {
-        screen: ProfileScreen,
+    User: {
+        screen: ProfileNavigator,
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return (

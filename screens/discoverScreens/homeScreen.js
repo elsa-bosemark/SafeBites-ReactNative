@@ -15,17 +15,18 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { SearchBar } from 'react-native-elements';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { CATEGORIES } from '../../data/categoryData';
-import CategoryGridTile from '../../components/categoryGridTile';
-import RestaurantCard from '../../components/restaurantCard';
 import axios from 'axios';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { ActivityIndicator } from 'react-native';
+import { Alert } from 'react-native';
+
 import { headers } from '../../constants/secret'
 import Colors from '../../constants/Colors';
-import { Alert } from 'react-native';
 import { storeData } from '../../config/data';
-import { ActivityIndicator } from 'react-native';
+import { CATEGORIES } from '../../data/categoryData';
+import CategoryGridTile from '../../components/categoryGridTile';
+import RestaurantCard from '../../components/restaurantCard';
 //global variables (access by this.state and set by this.setState)
 state = {
     location: null,
@@ -318,9 +319,13 @@ class HomeScreen extends React.Component {
                     }} />
             );
         }
+
+
+
         const run = () => {
             console.log('home screen   ' + this.state.openHours[0].open[0].day)
         }
+
 
 
         return (
@@ -461,31 +466,43 @@ class HomeScreen extends React.Component {
                         </View>
                     </View>
                 </Modal>
-                <Text style={styles.title}>Categories</Text>
-                <FlatList
-                    data={CATEGORIES}
-                    renderItem={renderGridItem}
-                    numColumns={3}
-                    scrollEnabled={false}
-                    nestedScrollEnabled={true}
-                    keyExtractor={item => item}
-                />
-                <Text style={styles.title}>Find</Text>
-                <View style={styles.searchBar}>
-                    <SearchBar
-                        placeholder="Search..."
-                        onChangeText={this.updateSearch}
-                        value={search}
-                        color='black'
-                        platform={Platform.OS === 'android' ? 'android' : 'ios'}
-                        containerStyle={{
-                            backgroundColor: '',
-                        }}
-                        inputContainerStyle={{
-                            borderRadius: 10,
-                            backgroundColor: 'white'
-                        }}
-                    /></View>
+
+
+
+                
+
+                    <Text style={styles.title}>Categories</Text>
+                    <FlatList
+                        data={CATEGORIES}
+                        renderItem={renderGridItem}
+                        numColumns={2}
+                        scrollEnabled={false}
+                        nestedScrollEnabled={true}
+                        keyExtractor={item => item}
+                    />
+
+
+
+
+
+
+                    <Text style={styles.title}>Find</Text>
+                    <View style={styles.searchBar}>
+                        <SearchBar
+                            placeholder="Search..."
+                            onChangeText={this.updateSearch}
+                            value={search}
+                            color='black'
+                            platform={Platform.OS === 'android' ? 'android' : 'ios'}
+                            containerStyle={{
+                                backgroundColor: '',
+                            }}
+                            inputContainerStyle={{
+                                borderRadius: 10,
+                                backgroundColor: 'white'
+                            }}
+                        /></View>
+               
                 <ActivityIndicator animating={this.state.loading} />
 
                 <FlatList
