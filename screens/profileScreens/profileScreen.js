@@ -5,6 +5,8 @@ import * as firebase from 'firebase';
 import RootNavigation from '../../config/RootNavigation';
 import Colors from '../../constants/Colors';
 import { firebaseConfig } from '../../constants/secret';
+import RestaurantCard from '../../components/restaurantCard';
+import { ScrollView } from 'react-native-gesture-handler';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -13,7 +15,7 @@ if (!firebase.apps.length) {
 }
 const ProfileScreen = props => {
   const [name, setName] = useState("");
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState({});
   const [calledOnce, setCalledOnce] = useState(false);
   const [user, setUser] = useState(false);
   const [authVisible, setAuthVisible] = useState(false);
@@ -25,6 +27,8 @@ const ProfileScreen = props => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [num, setNum] = useState(0);
+  const [favorites, setFavorites] = useState([]);
+  const [data, setData] = useState();
 
   const handleFirstName = (text) => {
     setFirstName(text);
@@ -34,7 +38,6 @@ const ProfileScreen = props => {
   }
   const handleEmail = (text) => {
     setEmail(text);
-    console.warn(loginVisible + " LOGIN VISIBLE");
 
   }
   const handlePassword = (text) => {
@@ -111,7 +114,7 @@ const ProfileScreen = props => {
         })
     }
   }
-  async function getData() {
+  async function getFirebaseData() {
     var myDB = firebase.firestore();
     var doc = await myDB.collection("users").doc(`${firebase.auth().currentUser.email}`).get();
     if (doc.exists) {
@@ -131,12 +134,30 @@ const ProfileScreen = props => {
 
     setComments(myArr);
   }
+  async function getFavorites() {
+    var myArr = []
+    var index = 0;
+    const snapshot = await firebase.firestore().collection('users').doc(`${firebase.auth().currentUser.email}`).collection('reviews').get()
+    let docs = snapshot.docs.map(doc => doc.data());
+    let docNames = snapshot.docs.map(doc => doc.id);
+    docs.forEach(element => {
+      for (var key in element) {
+        if (key == "favorite") {
+          if (element[key] == 'heart') {
+            myArr.push(docNames[index])
+          }
+        }
+      }
+      index += 1;
+    })
+
+    setFavorites(myArr);
+  }
 
   firebase.auth().onAuthStateChanged(userAuth => {
     if (userAuth) {
       if (num == 0) {
         setUser(true);
-        console.warn("yes user");
         setAuthVisible(false);
         setNum(1)
       }
@@ -144,7 +165,6 @@ const ProfileScreen = props => {
     else {
       if (num == 0) {
         setUser(false);
-        console.warn("no user");
         setAuthVisible(true);
         setNum(1)
       }
@@ -153,15 +173,15 @@ const ProfileScreen = props => {
 
   if (!calledOnce) {
     if (user) {
-      getData();
+      getFirebaseData();
       getComments();
       setCalledOnce(true)
+      getFavorites();
     }
   }
 
   const Profile = () => {
     if (user) {
-      console.warn("we got teh user");
       return (
         <SafeAreaView>
           <View style={styles.container}>
@@ -195,25 +215,77 @@ const ProfileScreen = props => {
               });
 
             }} />
-            <Text style={styles.title}>Comments</Text>
-            <View style={{
-              width: "80%",
-              borderRadius: 10,
-              alignSelf: 'center',
-              borderColor: 'black',
-              borderWidth: 0.2,
-            }}>
+            <ScrollView>
+              <Text style={styles.title}>Comments</Text>
+              <View style={{
+                width: "80%",
+                borderRadius: 10,
+                alignSelf: 'center',
+                borderColor: 'black',
+                borderWidth: 0.2,
+              }}>
+                <FlatList
+                  data={comments}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <Text style={{ paddingLeft: 10 }}>{item}</Text>
+                    )
+                  }
+                  }
+                  keyExtractor={item => item}
+                />
+              </View>
+              <Text style={styles.title}>Favorites</Text>
               <FlatList
-                data={comments}
+                data={favorites}
                 renderItem={({ item, index }) => {
                   return (
-                    <Text style={{ paddingLeft: 10 }}>{item}</Text>
+                    <RestaurantCard
+                      //hard coded data right now .. have to find way to access it. data.js isn't working for some reason...
+                      title={item}
+                      price={'$$'}
+                      cover={null}
+                      transactions={'delivery'}
+                      restaurantCoordinates={[23, 12]}
+                      userCoordinates={[23, 12.23]}
+                      // price={this.state.price[index]}
+                      // cover={this.state.cover[actualIndex(item)] ? this.state.cover[actualIndex(item)] : null}
+                      // transactions={this.state.transactions[actualIndex(item)]}
+                      // restaurantCoordinates={this.state.restaurantCoordinates[actualIndex(item)]}
+                      // userCoordinates={this.state.location}
+
+                      onSelect={() => {
+                        alert("todo!");
+                        // this.props.navigation.navigate({
+                        //   routeName: 'RetaurantDetail', params: {
+                        //     //pass restaurant DATA
+                        //     // restIndex: index,
+                        //     // title: this.state.title,
+                        //     // price: this.state.price,
+                        //     // cover: this.state.cover,
+                        //     // transactions: this.state.transactions,
+                        //     // restaurantCoordinates: this.state.restaurantCoordinates,
+                        //     // userCoordinates: this.state.location,
+                        //     // phoneNumber: this.state.phoneNumber,
+                        //     // address: this.state.address,
+                        //     // yelpUrl: this.state.yelpUrl,
+
+                        //     // yelpRating: this.state.yelpRating,
+                        //     // yelpReviewCount: this.state.yelpReviewCount,
+                        //     // photos: this.state.photos,
+                        //     // openHours: this.state.openHours,
+                        //     // tags: this.state.tags,
+                        //   }
+                        // })
+                      }}
+                    />
                   )
                 }
                 }
                 keyExtractor={item => item}
               />
-            </View>
+              <View style={{ height: 500 }}></View>
+            </ScrollView>
           </View>
         </SafeAreaView>
 

@@ -28,6 +28,7 @@ import { CATEGORIES } from '../../data/categoryData';
 import CategoryGridTile from '../../components/categoryGridTile';
 import RestaurantCard from '../../components/restaurantCard';
 //global variables (access by this.state and set by this.setState)
+export var didSetApi = false;
 state = {
     location: null,
     geocode: null,
@@ -172,6 +173,7 @@ class HomeScreen extends React.Component {
                 this.setState({ authVisible: false, loginVisible: false, signupVisible: false })
             }
         });
+
     }
 
 
@@ -203,6 +205,7 @@ class HomeScreen extends React.Component {
         axios.get(`https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=50&radius=400`, { headers: headers })
             .then((response) => {
                 storeData(response.data.businesses);
+                didSetApi = true;
                 response.data.businesses.forEach(element => {
                     names.push(element.name)
                     phoneNums.push(element.display_phone)

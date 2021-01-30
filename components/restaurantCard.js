@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Platform, TouchableNativeFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getDistance } from 'geolib';
@@ -6,20 +6,53 @@ import { getDistance } from 'geolib';
 import CatIcon from './catIcon';
 import Colors from '../constants/Colors';
 import SafetyScore from '../components/handSanatizer';
-
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 const RestaurantCard = props => {
+    const [favorite, setFavorite] = useState('heart-outline');
+    const [fav, setFav] = useState([]);
+    const [calledOnce, setCalledOnce] = useState(false);
     //if on andoid and has ripple effect then use that (looks better)
     let TouchableCmp = TouchableOpacity;
 
     if (Platform.OS === 'android' && Platform.Version >= 21) {
         TouchableCmp = TouchableNativeFeedback;
     }
+    async function getFavorites() {
+        var myArr = []
+        var index = 0;
+        const snapshot = await firebase.firestore().collection('users').doc(`${firebase.auth().currentUser.email}`).collection('reviews').get()
+        let docs = snapshot.docs.map(doc => doc.data());
+        let docNames = snapshot.docs.map(doc => doc.id);
+        docs.forEach(element => {
+            for (var key in element) {
+                if (key == "favorite") {
+                    if (element[key] == 'heart') {
+                        myArr.push(docNames[index])
+                    }
+                }
+            }
+            index += 1;
+        })
+        setFav(myArr);
+
+        if (myArr.includes(props.title)) {
+            setFavorite('heart');
+        }
+    }
+
 
     const restaurantDistance = getDistance(
         props.userCoordinates,
         props.restaurantCoordinates
+
+
     );
+    if (!calledOnce) {
+        getFavorites();
+        setCalledOnce(true);
+    }
     return (
         <View style={styles.gridItem}>
             <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
@@ -48,7 +81,32 @@ const RestaurantCard = props => {
 
                     <View style={styles.row}>
                         {/* Heart =>Favorites */}
-                        <Ionicons style={{ ...styles.icon, ...{ paddingTop: 10, paddingRight: 10 } }} name='heart' size={25} color='grey' />
+                        <TouchableOpacity onPress={() => {
+                            if (favorite == "heart") {
+                                setFavorite("heart-outline");
+                                let myDB = firebase.firestore();
+                                let thisUser = firebase.auth().currentUser.email;
+                                if (thisUser) {
+                                    myDB.collection("users").doc(thisUser).collection("reviews").doc(props.title).set({
+                                        favorite: "heart-outline"
+                                    }, { merge: true })
+                                }
+                            }
+                            else {
+                                setFavorite("heart");
+                                let myDB = firebase.firestore();
+                                let thisUser = firebase.auth().currentUser.email;
+
+                                if (thisUser) {
+                                    myDB.collection("users").doc(thisUser).collection("reviews").doc(props.title).set({
+                                        favorite: "heart"
+                                    }, { merge: true })
+                                }
+                            }
+                        }
+                        }>
+                            <Ionicons style={{ ...styles.icon, ...{ paddingTop: 10, paddingRight: 10 } }} name={favorite} size={25} color={Colors.darkGrey} />
+                        </TouchableOpacity>
                         {/* Title */}
                         <Text style={[styles.text, styles.title]}>{props.title}</Text>
 

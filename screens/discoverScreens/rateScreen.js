@@ -69,19 +69,21 @@ const RateScreen = props => {
       method: delivery ? "delivery" : takeout ? "takeout" : outdoorDining ? "outdoorDining" : indoorDining ? "indoorDining" : curbsidePickup ? "curbsidePickup" : "idk",
       safety: safety / 10,
       // comments: comment
-    })
-    let myDoc = await myDB.collection("users").doc(myEmail).collection("comments").doc(currentRestaurant).get();
-    if (!myDoc.exists) {
-      myDB.collection('users').doc(myEmail).collection('comments').doc(currentRestaurant).set({
-        [new Date()]: comment
-      })
-    }
-    else {
-      var n = new Date();
+    }, { merge: true })
+    if (comment != "") {
+      let myDoc = await myDB.collection("users").doc(myEmail).collection("comments").doc(currentRestaurant).get();
+      if (!myDoc.exists) {
+        myDB.collection('users').doc(myEmail).collection('comments').doc(currentRestaurant).set({
+          [new Date()]: comment
+        })
+      }
+      else {
+        var n = new Date();
 
-      myDB.collection('users').doc(myEmail).collection('comments').doc(currentRestaurant).update({
-        [n]: comment
-      })
+        myDB.collection('users').doc(myEmail).collection('comments').doc(currentRestaurant).update({
+          [n]: comment
+        })
+      }
     }
     let doc = await myDB.collection("reviews").doc(currentRestaurant).get();
     if (!doc.exists) {
@@ -98,10 +100,12 @@ const RateScreen = props => {
         safety: safety / 10,
         usersRated: 1,
       })
-      var n = new Date();
-      myDB.collection("reviews").doc(currentRestaurant).collection("comments").doc(myEmail).set({
-        [n]: comment
-      })
+      if (comment != "") {
+        var n = new Date();
+        myDB.collection("reviews").doc(currentRestaurant).collection("comments").doc(myEmail).set({
+          [n]: comment
+        })
+      }
     }
     else {
       let usersRated = doc.data().usersRated
@@ -120,10 +124,12 @@ const RateScreen = props => {
         safety: doc.data().safety + (safety / 10),
         usersRated: usersRated += 1,
       })
-      var n = new Date();
-      myDB.collection("reviews").doc(currentRestaurant).collection("comments").doc(myEmail).update({
-        [n]: comment
-      })
+      if (comment != "") {
+        var n = new Date();
+        myDB.collection("reviews").doc(currentRestaurant).collection("comments").doc(myEmail).update({
+          [n]: comment
+        })
+      }
     }
   }
   return (
@@ -133,10 +139,10 @@ const RateScreen = props => {
         <View style={styles.card}>
           <Text style={styles.title}>Covid Prevention Methods</Text>
 
-          <RateSlider value={mask} onValueChange={handleValueChanged} text="There is enforcement and use of masks" maxVal={100} step={5}/>
-          <RateSlider value={handSan} onValueChange={sanValChanged} text="Hand sanitizers are available" maxVal={100} step={5}/>
-          <RateSlider value={shields} onValueChange={shieldValChanged} text="There are shields and/or physical barriers" maxVal={100} step={5}/>
-          <Spacer height={20}/>
+          <RateSlider value={mask} onValueChange={handleValueChanged} text="There is enforcement and use of masks" maxVal={100} step={5} />
+          <RateSlider value={handSan} onValueChange={sanValChanged} text="Hand sanitizers are available" maxVal={100} step={5} />
+          <RateSlider value={shields} onValueChange={shieldValChanged} text="There are shields and/or physical barriers" maxVal={100} step={5} />
+          <Spacer height={20} />
           <CircleRate
             text="Surfaces are sanitized after each patron"
             yesSelect={() => {
@@ -202,7 +208,7 @@ const RateScreen = props => {
             no={signNo}
             idk={signIDK}
           />
-          <Spacer height={20}/>
+          <Spacer height={20} />
         </View>
 
         <Divider />
@@ -326,9 +332,9 @@ const RateScreen = props => {
             </TouchableOpacity>
           </View>
 
-          <Spacer height={20}/>
-          <RateSlider value={safety} onValueChange={safetyValChanged} text="Did you feel safe in the restaurant?" maxVal={10} step={1}/>
-          <Spacer height={20}/>
+          <Spacer height={20} />
+          <RateSlider value={safety} onValueChange={safetyValChanged} text="Did you feel safe in the restaurant?" maxVal={10} step={1} />
+          <Spacer height={20} />
 
         </View>
         <Divider />
@@ -353,12 +359,12 @@ const RateScreen = props => {
               }} />
           </View>
         </View>
-        <Spacer height={20}/>
+        <Spacer height={20} />
         <DefaultButton text="Submit" buttonColor={Colors.primaryColor} textColor="#fff" onSelect={() => {
           //store in firebase 
           setData();
           props.navigation.goBack(); //go back
-        }}/>
+        }} />
       </View >
     </ScrollView>
 
@@ -392,7 +398,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,
-  },  
+  },
   rulesText: {
     marginLeft: 30,
     flex: 1,

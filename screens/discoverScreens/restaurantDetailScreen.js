@@ -98,7 +98,6 @@ const RestaurantDetailScreen = props => {
     setComments(myArr);
   }
   if (!calledOnce) {
-    getData()
     getComments();
     setCalledOnce(true)
   }

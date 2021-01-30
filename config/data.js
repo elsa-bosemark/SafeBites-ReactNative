@@ -6,7 +6,6 @@ var currentRestaurant;
 export function storeData(data) {
     data = data
 }
-
 export function getData() {
     return data;
 }
