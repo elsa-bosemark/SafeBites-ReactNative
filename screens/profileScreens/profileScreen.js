@@ -1,19 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, SafeAreaView, FlatList, View, Image, Button, Alert, Modal, TouchableOpacity, TextInput } from 'react-native';
-import 'firebase/firestore'
-import * as firebase from 'firebase';
-import RootNavigation from '../../config/RootNavigation';
-import Colors from '../../constants/Colors';
-import { firebaseConfig } from '../../constants/secret';
-import RestaurantCard from '../../components/restaurantCard';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  FlatList,
+  View,
+  Image,
+  Button,
+  Alert,
+  Modal,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import "firebase/firestore";
+import * as firebase from "firebase";
+import RootNavigation from "../../config/RootNavigation";
+import Colors from "../../constants/Colors";
+import { firebaseConfig } from "../../constants/secret";
+import RestaurantCard from "../../components/restaurantCard";
+import { ScrollView, TapGestureHandler } from "react-native-gesture-handler";
+import { getData } from "../../config/data";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 } else {
   firebase.app(); // if already initialized, use that one
 }
-const ProfileScreen = props => {
+const ProfileScreen = (props) => {
   const [name, setName] = useState("");
   const [comments, setComments] = useState({});
   const [calledOnce, setCalledOnce] = useState(false);
@@ -28,27 +41,26 @@ const ProfileScreen = props => {
   const [error, setError] = useState("");
   const [num, setNum] = useState(0);
   const [favorites, setFavorites] = useState([]);
-  const [data, setData] = useState();
 
   const handleFirstName = (text) => {
     setFirstName(text);
-  }
+  };
   const handleLastName = (text) => {
     setLastName(text);
-  }
+  };
   const handleEmail = (text) => {
     setEmail(text);
-
-  }
+  };
   const handlePassword = (text) => {
     setPassword(text);
-  }
+  };
   const login = (email, password) => {
     if (email == "" || password == "") {
       setError("Please fill in all fields");
-    }
-    else {
-      firebase.auth().signInWithEmailAndPassword(email, password)
+    } else {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
         .then((user) => {
           setAuthVisible(false);
           setLoginVisible(false);
@@ -61,7 +73,7 @@ const ProfileScreen = props => {
               {
                 text: "Ok",
                 onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
+                style: "cancel",
               },
             ],
             { cancelable: true }
@@ -69,30 +81,30 @@ const ProfileScreen = props => {
         })
         .catch((error) => {
           setError(error);
-        })
+        });
     }
-  }
+  };
 
   const signup = (email, password, firstName, lastName) => {
     if (email == "" || password == "") {
       setError("Please fill in all fields");
-    }
-    else {
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+    } else {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
         .then(() => {
           setAuthVisible(false);
           setLoginVisible(false);
           setSignupVisible(false);
 
-
           var myDB = firebase.firestore();
           var doc = myDB.collection("users").doc(`${email}`).get();
           if (!doc.exists) {
-            console.log("No document")
+            console.log("No document");
             myDB.collection("users").doc(`${email}`).set({
               firstName: firstName,
               lastName: lastName,
-            })
+            });
           }
 
           Alert.alert(
@@ -102,71 +114,82 @@ const ProfileScreen = props => {
               {
                 text: "Ok",
                 onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
+                style: "cancel",
               },
             ],
             { cancelable: false }
-          );                    // this.props.navigation.navigate('Home')
+          ); // this.props.navigation.navigate('Home')
         })
-        .catch(error => {
-          setError(error)
-          console.error(error)
-        })
+        .catch((error) => {
+          setError(error);
+          console.error(error);
+        });
     }
-  }
+  };
   async function getFirebaseData() {
     var myDB = firebase.firestore();
-    var doc = await myDB.collection("users").doc(`${firebase.auth().currentUser.email}`).get();
+    var doc = await myDB
+      .collection("users")
+      .doc(`${firebase.auth().currentUser.email}`)
+      .get();
     if (doc.exists) {
       setName(doc.data().firstName + " " + doc.data().lastName);
     }
   }
 
   async function getComments() {
-    var myArr = []
-    const snapshot = await firebase.firestore().collection('users').doc(`${firebase.auth().currentUser.email}`).collection('comments').get()
-    let docs = snapshot.docs.map(doc => doc.data());
-    docs.forEach(element => {
+    var myArr = [];
+    const snapshot = await firebase
+      .firestore()
+      .collection("users")
+      .doc(`${firebase.auth().currentUser.email}`)
+      .collection("comments")
+      .get();
+    let docs = snapshot.docs.map((doc) => doc.data());
+    docs.forEach((element) => {
       for (var key in element) {
-        myArr.push(element[key])
+        myArr.push(element[key]);
       }
-    })
+    });
 
     setComments(myArr);
   }
   async function getFavorites() {
-    var myArr = []
+    var myArr = [];
     var index = 0;
-    const snapshot = await firebase.firestore().collection('users').doc(`${firebase.auth().currentUser.email}`).collection('reviews').get()
-    let docs = snapshot.docs.map(doc => doc.data());
-    let docNames = snapshot.docs.map(doc => doc.id);
-    docs.forEach(element => {
+    const snapshot = await firebase
+      .firestore()
+      .collection("users")
+      .doc(`${firebase.auth().currentUser.email}`)
+      .collection("reviews")
+      .get();
+    let docs = snapshot.docs.map((doc) => doc.data());
+    let docNames = snapshot.docs.map((doc) => doc.id);
+    docs.forEach((element) => {
       for (var key in element) {
         if (key == "favorite") {
-          if (element[key] == 'heart') {
-            myArr.push(docNames[index])
+          if (element[key] == "heart") {
+            myArr.push(docNames[index]);
           }
         }
       }
       index += 1;
-    })
-
+    });
     setFavorites(myArr);
   }
 
-  firebase.auth().onAuthStateChanged(userAuth => {
+  firebase.auth().onAuthStateChanged((userAuth) => {
     if (userAuth) {
       if (num == 0) {
         setUser(true);
         setAuthVisible(false);
-        setNum(1)
+        setNum(1);
       }
-    }
-    else {
+    } else {
       if (num == 0) {
         setUser(false);
         setAuthVisible(true);
-        setNum(1)
+        setNum(1);
       }
     }
   });
@@ -175,7 +198,7 @@ const ProfileScreen = props => {
     if (user) {
       getFirebaseData();
       getComments();
-      setCalledOnce(true)
+      setCalledOnce(true);
       getFavorites();
     }
   }
@@ -187,7 +210,13 @@ const ProfileScreen = props => {
           <View style={styles.container}>
             <View style={[styles.card, styles.row]}>
               {/* image placeholder */}
-              <Image style={styles.profileImage} source={{ url: 'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg', }} />
+              <Image
+                style={styles.profileImage}
+                source={{
+                  url:
+                    "https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg",
+                }}
+              />
               <View>
                 {/* username */}
                 <Text style={styles.title}>{`hello, ${name}`}</Text>
@@ -196,43 +225,48 @@ const ProfileScreen = props => {
                   <View>
                     <Text style={styles.infoText}>reviews</Text>
                     <Text style={styles.num}>{comments.length - 1}</Text>
-                  </View >
-                  <View >
+                  </View>
+                  <View>
                     <Text style={styles.infoText}>photos</Text>
                     <Text style={styles.num}>1</Text>
                   </View>
                 </View>
               </View>
             </View>
-            <Button title="Logout" onPress={() => {
-              firebase.auth().signOut().then(() => {
-                Alert.alert("Successfully logged out", "See you later!");
-                RootNavigation.navigate('Home');
-              }).catch((error) => {
-                // An error happened.
-                console.error(error)
-                Alert.alert("ERROR SIGNING OUT", error);
-              });
-
-            }} />
+            <Button
+              title="Logout"
+              onPress={() => {
+                firebase
+                  .auth()
+                  .signOut()
+                  .then(() => {
+                    Alert.alert("Successfully logged out", "See you later!");
+                    RootNavigation.navigate("Home");
+                  })
+                  .catch((error) => {
+                    // An error happened.
+                    console.error(error);
+                    Alert.alert("ERROR SIGNING OUT", error);
+                  });
+              }}
+            />
             <ScrollView>
               <Text style={styles.title}>Comments</Text>
-              <View style={{
-                width: "80%",
-                borderRadius: 10,
-                alignSelf: 'center',
-                borderColor: 'black',
-                borderWidth: 0.2,
-              }}>
+              <View
+                style={{
+                  width: "80%",
+                  borderRadius: 10,
+                  alignSelf: "center",
+                  borderColor: "black",
+                  borderWidth: 0.2,
+                }}
+              >
                 <FlatList
                   data={comments}
                   renderItem={({ item, index }) => {
-                    return (
-                      <Text style={{ paddingLeft: 10 }}>{item}</Text>
-                    )
-                  }
-                  }
-                  keyExtractor={item => item}
+                    return <Text style={{ paddingLeft: 10 }}>{item}</Text>;
+                  }}
+                  keyExtractor={(item) => item}
                 />
               </View>
               <Text style={styles.title}>Favorites</Text>
@@ -241,19 +275,12 @@ const ProfileScreen = props => {
                 renderItem={({ item, index }) => {
                   return (
                     <RestaurantCard
-                      //hard coded data right now .. have to find way to access it. data.js isn't working for some reason...
                       title={item}
-                      price={'$$'}
+                      price={"$$"}
                       cover={null}
-                      transactions={'delivery'}
-                      restaurantCoordinates={[23, 12]}
-                      userCoordinates={[23, 12.23]}
-                      // price={this.state.price[index]}
-                      // cover={this.state.cover[actualIndex(item)] ? this.state.cover[actualIndex(item)] : null}
-                      // transactions={this.state.transactions[actualIndex(item)]}
-                      // restaurantCoordinates={this.state.restaurantCoordinates[actualIndex(item)]}
-                      // userCoordinates={this.state.location}
-
+                      transactions={[23, 23]}
+                      restaurantCoordinates={[23, 23]}
+                      userCoordinates={[23, 23.1]}
                       onSelect={() => {
                         alert("todo!");
                         // this.props.navigation.navigate({
@@ -279,21 +306,21 @@ const ProfileScreen = props => {
                         // })
                       }}
                     />
-                  )
-                }
-                }
-                keyExtractor={item => item}
+                  );
+                }}
+                keyExtractor={(item) => item}
               />
               <View style={{ height: 500 }}></View>
             </ScrollView>
           </View>
         </SafeAreaView>
-
-      )
+      );
     } else {
       return (
         <View>
-          <Text style={styles.title}>You must login to have a profile page!</Text>
+          <Text style={styles.title}>
+            You must login to have a profile page!
+          </Text>
           <Modal
             animationType="slide"
             transparent={true}
@@ -304,9 +331,14 @@ const ProfileScreen = props => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>You haven't logged in yet! You can't rate anything yet.</Text>
+                <Text style={styles.modalText}>
+                  You haven't logged in yet! You can't rate anything yet.
+                </Text>
                 <TouchableOpacity
-                  style={{ ...styles.closedButton, backgroundColor: Colors.accentColor }}
+                  style={{
+                    ...styles.closedButton,
+                    backgroundColor: Colors.accentColor,
+                  }}
                   onPress={() => {
                     setAuthVisible(false);
                     setLoginVisible(true);
@@ -319,10 +351,13 @@ const ProfileScreen = props => {
                   onPress={() => {
                     setSignupVisible(true);
                     setAuthVisible(false);
-
                   }}
                 >
-                  <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Signup</Text>
+                  <Text
+                    style={{ ...styles.textStyle, color: Colors.primaryColor }}
+                  >
+                    Signup
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{ ...styles.closedButton }}
@@ -330,7 +365,11 @@ const ProfileScreen = props => {
                     setAuthVisible(false);
                   }}
                 >
-                  <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Continue as Guest</Text>
+                  <Text
+                    style={{ ...styles.textStyle, color: Colors.primaryColor }}
+                  >
+                    Continue as Guest
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -346,33 +385,44 @@ const ProfileScreen = props => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>LOGIN</Text>
-                <TextInput style={styles.input}
+                <TextInput
+                  style={styles.input}
                   underlineColorAndroid="transparent"
                   placeholder="enter email"
                   placeholderTextColor={Colors.grey}
                   autoCapitalize="none"
-                  onChangeText={handleEmail} />
-                <TextInput style={styles.input}
+                  onChangeText={handleEmail}
+                />
+                <TextInput
+                  style={styles.input}
                   underlineColorAndroid="transparent"
                   placeholder="enter password"
                   placeholderTextColor={Colors.grey}
                   autoCapitalize="none"
-                  onChangeText={handlePassword} />
+                  onChangeText={handlePassword}
+                />
                 <TouchableOpacity
-                  style={{ ...styles.closedButton, backgroundColor: Colors.primaryColor, width: 100 }}
-                  onPress={
-                    () => login(email, password)
-                  }>
+                  style={{
+                    ...styles.closedButton,
+                    backgroundColor: Colors.primaryColor,
+                    width: 100,
+                  }}
+                  onPress={() => login(email, password)}
+                >
                   <Text style={styles.textStyle}> Submit </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{ ...styles.closedButton, width: 100 }}
                   onPress={() => {
-                    setLoginVisible(!loginVisible)
-                    setAuthVisible(true)
+                    setLoginVisible(!loginVisible);
+                    setAuthVisible(true);
                   }}
                 >
-                  <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Close</Text>
+                  <Text
+                    style={{ ...styles.textStyle, color: Colors.primaryColor }}
+                  >
+                    Close
+                  </Text>
                 </TouchableOpacity>
                 <Text>{error}</Text>
               </View>
@@ -389,37 +439,48 @@ const ProfileScreen = props => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>SIGNUP</Text>
-                <TextInput style={styles.input}
+                <TextInput
+                  style={styles.input}
                   underlineColorAndroid="transparent"
                   placeholder="enter first name"
                   placeholderTextColor={Colors.grey}
                   autoCapitalize="none"
-                  onChangeText={handleFirstName} />
-                <TextInput style={styles.input}
+                  onChangeText={handleFirstName}
+                />
+                <TextInput
+                  style={styles.input}
                   underlineColorAndroid="transparent"
                   placeholder="enter last name"
                   placeholderTextColor={Colors.grey}
                   autoCapitalize="none"
-                  onChangeText={handleLastName} />
-                <TextInput style={styles.input}
+                  onChangeText={handleLastName}
+                />
+                <TextInput
+                  style={styles.input}
                   underlineColorAndroid="transparent"
                   placeholder="enter email"
                   placeholderTextColor={Colors.grey}
                   autoCapitalize="none"
-                  onChangeText={handleEmail} />
-                <TextInput style={styles.input}
+                  onChangeText={handleEmail}
+                />
+                <TextInput
+                  style={styles.input}
                   underlineColorAndroid="transparent"
                   placeholder="enter password"
                   placeholderTextColor={Colors.grey}
                   autoCapitalize="none"
-                  onChangeText={handlePassword} />
+                  onChangeText={handlePassword}
+                />
                 <TouchableOpacity
-                  style={{ ...styles.closedButton, backgroundColor: Colors.primaryColor, width: 100 }}
-                  onPress={
-                    () => {
-                      signup(email, password, firstName, lastName)
-                    }
-                  }>
+                  style={{
+                    ...styles.closedButton,
+                    backgroundColor: Colors.primaryColor,
+                    width: 100,
+                  }}
+                  onPress={() => {
+                    signup(email, password, firstName, lastName);
+                  }}
+                >
                   <Text style={styles.textStyle}> Submit </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -429,39 +490,40 @@ const ProfileScreen = props => {
                     setSignupVisible(false);
                   }}
                 >
-                  <Text style={{ ...styles.textStyle, color: Colors.primaryColor }}>Close</Text>
+                  <Text
+                    style={{ ...styles.textStyle, color: Colors.primaryColor }}
+                  >
+                    Close
+                  </Text>
                 </TouchableOpacity>
                 <Text>{error}</Text>
               </View>
             </View>
           </Modal>
         </View>
-      )
+      );
     }
-  }
+  };
 
-
-  return (
-    <Profile />
-  );
-}
+  return <Profile />;
+};
 
 const styles = StyleSheet.create({
   container: {
     margin: 20,
   },
   title: {
-    fontFamily: 'rubik',
+    fontFamily: "rubik",
     fontSize: 20,
     padding: 20,
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 15,
     borderRadius: 10,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     //justifyContent: 'space-between',
   },
   profileImage: {
@@ -470,8 +532,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   greyCard: {
-    justifyContent: 'space-between',
-    backgroundColor: '#E0E0E0',
+    justifyContent: "space-between",
+    backgroundColor: "#E0E0E0",
     padding: 15,
     borderRadius: 10,
   },
@@ -479,7 +541,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -490,11 +552,11 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   closedButton: {
     borderColor: Colors.primaryColor,
@@ -508,11 +570,11 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   input: {
     height: 40,
@@ -521,7 +583,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     width: 200,
     marginTop: 5,
-
   },
 });
 export default ProfileScreen;

@@ -3,11 +3,11 @@
 var data;
 var currentRestaurant;
 
-export function storeData(data) {
-    data = data
+export function storeData(_data) {
+    data = _data
 }
-export function getData() {
-    return data;
+export async function getData() {
+    return await data;
 }
 
 export function storeCurrentRestaurant(_currentRestaurant) {
