@@ -84,6 +84,15 @@ const RestaurantDetailScreen = (props) => {
       setSigns(doc.data().safetySigns);
       setFeelSafe(Math.round(doc.data().safety / usersRated));
       // setComments()
+    } else {
+      setUserRating("?");
+      setMasks("?");
+      setHandSanitizer("?");
+      setShields("?");
+      setSanitizeAfter("?");
+      setTempChecks("?");
+      setSigns("?");
+      setFeelSafe("?");
     }
   };
   storeCurrentRestaurant(restTitles[restIndex]);

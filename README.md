@@ -12,7 +12,6 @@
 - make `Restaurant Detail` directions, and website buttons actually work
 - i'm not _too_ sure if the call buttons works or not. you'd have to run it on a real device; it won't work on the simulator. but i'm pretty sure it should work.
 
-elsa 4 athena:
+##### elsa 4 athena:
 
 - when I complete the rating my info doesn't show up (I'm not logged in fyi)
-- when a rest doesn't have a safety score is should have ?/10 not 0/10
