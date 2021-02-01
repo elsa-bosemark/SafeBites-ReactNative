@@ -141,6 +141,7 @@ const ProfileScreen = (props) => {
             underlineColorAndroid="transparent"
             autoCapitalize="none"
             placeholder="enter password"
+            secureTextEntry={true}
             placeholderTextColor={Colors.darkGrey}
           />
           <TouchableOpacity
@@ -294,6 +295,7 @@ const ProfileScreen = (props) => {
             autoCapitalize="none"
             placeholder="enter password"
             placeholderTextColor={Colors.darkGrey}
+            secureTextEntry={true}
           />
           <TouchableOpacity
             style={{

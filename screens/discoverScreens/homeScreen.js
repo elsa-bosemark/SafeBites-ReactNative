@@ -471,6 +471,7 @@ class HomeScreen extends React.Component {
                 placeholder="enter password"
                 placeholderTextColor={Colors.grey}
                 autoCapitalize="none"
+                secureTextEntry={true}
                 onChangeText={this.handlePassword}
               />
               <TouchableOpacity
