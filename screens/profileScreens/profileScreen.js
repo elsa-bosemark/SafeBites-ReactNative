@@ -56,6 +56,7 @@ const ProfileScreen = (props) => {
   const [num, setNum] = useState(0);
   const [favorites, setFavorites] = useState([]);
 
+  const [nameList, setNameList] = useState([]);
   const [favPrice, setFavPrice] = useState([]);
   const [favCover, setFavCover] = useState([]);
   const [favURL, setFavURl] = useState([]);
@@ -230,6 +231,7 @@ const ProfileScreen = (props) => {
     var transactionsArr = [];
     var urlArr = [];
 
+    setNameList(names);
     myArr.forEach((element) => {
       let index = names.indexOf(element);
       coverArr.push(cover[index]);
@@ -354,6 +356,11 @@ const ProfileScreen = (props) => {
               <FlatList
                 data={favorites}
                 renderItem={({ item, index }) => {
+                  var coordArray = [];
+                  favRestCoords.forEach((element) => {
+                    coordArray.push(Object.values(element));
+                  });
+
                   if (
                     favRestCoords != null &&
                     favRestCoords != undefined &&
@@ -365,34 +372,28 @@ const ProfileScreen = (props) => {
                         price={favPrice[index]}
                         cover={favCover[index]}
                         transactions={favTransactions[index]}
-                        restaurantCoordinates={[
-                          favRestCoords[index].latitude,
-                          favRestCoords[index].longitude,
-                        ]}
+                        restaurantCoordinates={coordArray[index]}
                         userCoordinates={userLocation}
                         onSelect={() => {
-                          alert("todo!");
-                          // this.props.navigation.navigate({
-                          //   routeName: 'RetaurantDetail', params: {
-                          //     //pass restaurant DATA
-                          //     // restIndex: index,
-                          //     // title: this.state.title,
-                          //     // price: this.state.price,
-                          //     // cover: this.state.cover,
-                          //     // transactions: this.state.transactions,
-                          //     // restaurantCoordinates: this.state.restaurantCoordinates,
-                          //     // userCoordinates: this.state.location,
-                          //     // phoneNumber: this.state.phoneNumber,
-                          //     // address: this.state.address,
-                          //     // yelpUrl: this.state.yelpUrl,
-
-                          //     // yelpRating: this.state.yelpRating,
-                          //     // yelpReviewCount: this.state.yelpReviewCount,
-                          //     // photos: this.state.photos,
-                          //     // openHours: this.state.openHours,
-                          //     // tags: this.state.tags,
-                          //   }
-                          // })
+                          props.navigation.navigate({
+                            routeName: "RetaurantDetail",
+                            params: {
+                              //pass restaurant DATA
+                              restIndex: index,
+                              title: favorites,
+                              price: favPrice,
+                              cover: favCover,
+                              transactions: favTransactions,
+                              restaurantCoordinates: coordArray,
+                              userCoordinates: userLocation,
+                              phoneNumber: favPhoneNumber,
+                              yelpUrl: favURL,
+                              yelpRating: favRating,
+                              yelpReviewCount: favReviewCount,
+                              photos: favPhotos,
+                              tags: [favTags[index]],
+                            },
+                          });
                         }}
                       />
                     );
