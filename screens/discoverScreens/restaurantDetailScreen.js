@@ -185,7 +185,7 @@ const RestaurantDetailScreen = (props) => {
             buttonColor={Colors.primaryColor}
             textColor="#fff"
             onSelect={() => {
-              // navigation.push('Rate'); Doesn't work
+              props.navigation.navigate("Rate");
             }}
           />
           <Divider />

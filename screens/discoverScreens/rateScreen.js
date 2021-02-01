@@ -252,6 +252,17 @@ const RateScreen = (props) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.card}>
+          <Text style={styles.title}>Rate</Text>
+          <RateSlider
+            value={safety}
+            onValueChange={safetyValChanged}
+            text="Did you feel safe in the restaurant?"
+            maxVal={10}
+            step={1}
+          />
+        </View>
+        <Divider />
+        <View style={styles.card}>
           <Text style={styles.title}>Covid Prevention Methods</Text>
 
           <RateSlider
@@ -549,14 +560,6 @@ const RateScreen = (props) => {
           </View>
 
           <Spacer height={20} />
-          <RateSlider
-            value={safety}
-            onValueChange={safetyValChanged}
-            text="Did you feel safe in the restaurant?"
-            maxVal={10}
-            step={1}
-          />
-          <Spacer height={20} />
         </View>
         <Divider />
         <View style={styles.card}>
@@ -565,7 +568,7 @@ const RateScreen = (props) => {
             style={{
               margin: 20,
               borderRadius: 10,
-              backgroundColor: Colors.grey,
+              backgroundColor: Colors.lightGrey,
               height: 200,
             }}
           >
