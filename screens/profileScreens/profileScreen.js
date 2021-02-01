@@ -229,9 +229,8 @@ const ProfileScreen = (props) => {
     var tagArr = [];
     var transactionsArr = [];
     var urlArr = [];
-    console.error("EHLLOOOO");
+
     myArr.forEach((element) => {
-      console.error(element);
       let index = names.indexOf(element);
       coverArr.push(cover[index]);
       priceArr.push(price[index]);
@@ -360,10 +359,6 @@ const ProfileScreen = (props) => {
                     favRestCoords != undefined &&
                     favRestCoords.length > 0
                   ) {
-                    console.error(
-                      JSON.stringify(favRestCoords[index]) +
-                        " coordinates in rendering"
-                    );
                     return (
                       <RestaurantCard
                         title={item}
