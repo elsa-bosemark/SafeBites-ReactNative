@@ -4,6 +4,8 @@
 
 - **fix ui**
 - dynamic open hours
+- make hearts red when clicked
+- fix home screen scrolling
 
 account:
 elsa b
