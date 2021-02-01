@@ -1,179 +1,233 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Platform, TouchableNativeFeedback } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { getDistance } from 'geolib';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Platform,
+  TouchableNativeFeedback,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { getDistance } from "geolib";
 
-import CatIcon from './catIcon';
-import Colors from '../constants/Colors';
-import SafetyScore from '../components/handSanatizer';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
+import CatIcon from "./catIcon";
+import Colors from "../constants/Colors";
+import SafetyScore from "../components/handSanatizer";
+import * as firebase from "firebase";
+import "firebase/firestore";
 
-const RestaurantCard = props => {
-    const [favorite, setFavorite] = useState('heart-outline');
-    const [fav, setFav] = useState([]);
-    const [calledOnce, setCalledOnce] = useState(false);
-    //if on andoid and has ripple effect then use that (looks better)
-    let TouchableCmp = TouchableOpacity;
+const RestaurantCard = (props) => {
+  const [favorite, setFavorite] = useState("heart-outline");
+  const [fav, setFav] = useState([]);
+  const [calledOnce, setCalledOnce] = useState(false);
+  //if on andoid and has ripple effect then use that (looks better)
+  let TouchableCmp = TouchableOpacity;
 
-    if (Platform.OS === 'android' && Platform.Version >= 21) {
-        TouchableCmp = TouchableNativeFeedback;
-    }
-    async function getFavorites() {
-        var myArr = []
-        var index = 0;
-        const snapshot = await firebase.firestore().collection('users').doc(`${firebase.auth().currentUser.email}`).collection('reviews').get()
-        let docs = snapshot.docs.map(doc => doc.data());
-        let docNames = snapshot.docs.map(doc => doc.id);
-        docs.forEach(element => {
-            for (var key in element) {
-                if (key == "favorite") {
-                    if (element[key] == 'heart') {
-                        myArr.push(docNames[index])
-                    }
-                }
-            }
-            index += 1;
-        })
-        setFav(myArr);
-
-        if (myArr.includes(props.title)) {
-            setFavorite('heart');
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
+  async function getFavorites() {
+    var myArr = [];
+    var index = 0;
+    const snapshot = await firebase
+      .firestore()
+      .collection("users")
+      .doc(`${firebase.auth().currentUser.email}`)
+      .collection("reviews")
+      .get();
+    let docs = snapshot.docs.map((doc) => doc.data());
+    let docNames = snapshot.docs.map((doc) => doc.id);
+    docs.forEach((element) => {
+      for (var key in element) {
+        if (key == "favorite") {
+          if (element[key] == "heart") {
+            myArr.push(docNames[index]);
+          }
         }
+      }
+      index += 1;
+    });
+    setFav(myArr);
+
+    if (myArr.includes(props.title)) {
+      setFavorite("heart");
     }
+  }
 
+  var restaurantDistance;
 
-    const restaurantDistance = getDistance(
-        props.userCoordinates,
-        props.restaurantCoordinates
-
-
+  if (
+    props.userCoordinates != null &&
+    props.userCoordinates != undefined &&
+    props.restaurantCoordinates != null &&
+    props.restaurantCoordinates != undefined
+  ) {
+    restaurantDistance = getDistance(
+      props.userCoordinates,
+      props.restaurantCoordinates
     );
-    if (!calledOnce) {
-        getFavorites();
-        setCalledOnce(true);
-    }
-    return (
-        <View style={styles.gridItem}>
-            <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
-                <View style={styles.container}>
-                    <View style={styles.row}>
-                        {/* Image */}
-                        <Image style={styles.image} source={{ uri: props.cover }} />
+  }
+  if (!calledOnce) {
+    getFavorites();
+    setCalledOnce(true);
+  }
+  return (
+    <View style={styles.gridItem}>
+      <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
+        <View style={styles.container}>
+          <View style={styles.row}>
+            {/* Image */}
+            <Image style={styles.image} source={{ uri: props.cover }} />
 
-                        {/* Info */}
-                        <View style={{ flex: 1 }}>
-                            <View style={{ ...styles.row, ...{ flex: 1, alignItems: 'center' } }}>
-                                <View style={styles.tag}>
-                                    <Text style={[styles.text, styles.mediumText, styles.whiteText]}>{props.price}</Text>
-                                </View>
-                                <View style={{ ...styles.row, ...{ alignItems: 'center' } }}>
-                                    <Ionicons style={styles.icon} name='md-location-sharp' size={35} color={Colors.accentColor} />
-                                    <Text style={[styles.text, styles.largeText]}>{Number((restaurantDistance / 1000).toFixed(1))} km</Text>
-                                </View>
-                            </View>
-                            <CatIcon style={{ alignItem: 'flex-end', margin: 20 }} cat={props.transactions} />
-                        </View >
-
-                        {/* Hand Sanatizer */}
-                        <SafetyScore style={{ flex: 1 }} score={8} size={1} />
-                    </View>
-
-                    <View style={styles.row}>
-                        {/* Heart =>Favorites */}
-                        <TouchableOpacity onPress={() => {
-                            if (favorite == "heart") {
-                                setFavorite("heart-outline");
-                                let myDB = firebase.firestore();
-                                let thisUser = firebase.auth().currentUser.email;
-                                if (thisUser) {
-                                    myDB.collection("users").doc(thisUser).collection("reviews").doc(props.title).set({
-                                        favorite: "heart-outline"
-                                    }, { merge: true })
-                                }
-                            }
-                            else {
-                                setFavorite("heart");
-                                let myDB = firebase.firestore();
-                                let thisUser = firebase.auth().currentUser.email;
-
-                                if (thisUser) {
-                                    myDB.collection("users").doc(thisUser).collection("reviews").doc(props.title).set({
-                                        favorite: "heart"
-                                    }, { merge: true })
-                                }
-                            }
-                        }
-                        }>
-                            <Ionicons style={{ ...styles.icon, ...{ paddingTop: 10, paddingRight: 10 } }} name={favorite} size={25} color={Colors.darkGrey} />
-                        </TouchableOpacity>
-                        {/* Title */}
-                        <Text style={[styles.text, styles.title]}>{props.title}</Text>
-
-                    </View>
-
+            {/* Info */}
+            <View style={{ flex: 1 }}>
+              <View
+                style={{ ...styles.row, ...{ flex: 1, alignItems: "center" } }}
+              >
+                <View style={styles.tag}>
+                  <Text
+                    style={[styles.text, styles.mediumText, styles.whiteText]}
+                  >
+                    {props.price}
+                  </Text>
                 </View>
-            </TouchableCmp>
+                <View style={{ ...styles.row, ...{ alignItems: "center" } }}>
+                  <Ionicons
+                    style={styles.icon}
+                    name="md-location-sharp"
+                    size={35}
+                    color={Colors.accentColor}
+                  />
+                  <Text style={[styles.text, styles.largeText]}>
+                    {Number((restaurantDistance / 1000).toFixed(1))} km
+                  </Text>
+                </View>
+              </View>
+              <CatIcon
+                style={{ alignItem: "flex-end", margin: 20 }}
+                cat={props.transactions}
+              />
+            </View>
+
+            {/* Hand Sanatizer */}
+            <SafetyScore style={{ flex: 1 }} score={8} size={1} />
+          </View>
+
+          <View style={styles.row}>
+            {/* Heart =>Favorites */}
+            <TouchableOpacity
+              onPress={() => {
+                if (favorite == "heart") {
+                  setFavorite("heart-outline");
+                  let myDB = firebase.firestore();
+                  let thisUser = firebase.auth().currentUser.email;
+                  if (thisUser) {
+                    myDB
+                      .collection("users")
+                      .doc(thisUser)
+                      .collection("reviews")
+                      .doc(props.title)
+                      .set(
+                        {
+                          favorite: "heart-outline",
+                        },
+                        { merge: true }
+                      );
+                  }
+                } else {
+                  setFavorite("heart");
+                  let myDB = firebase.firestore();
+                  let thisUser = firebase.auth().currentUser.email;
+
+                  if (thisUser) {
+                    myDB
+                      .collection("users")
+                      .doc(thisUser)
+                      .collection("reviews")
+                      .doc(props.title)
+                      .set(
+                        {
+                          favorite: "heart",
+                        },
+                        { merge: true }
+                      );
+                  }
+                }
+              }}
+            >
+              <Ionicons
+                style={{
+                  ...styles.icon,
+                  ...{ paddingTop: 10, paddingRight: 10 },
+                }}
+                name={favorite}
+                size={25}
+                color={Colors.darkGrey}
+              />
+            </TouchableOpacity>
+            {/* Title */}
+            <Text style={[styles.text, styles.title]}>{props.title}</Text>
+          </View>
         </View>
-
-    )
-}
+      </TouchableCmp>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
-    gridItem: {
-        flex: 1,
-        margin: 10,
-        borderRadius: 10,
-        overflow: 'hidden',
-    },
-    container: {
-        width: '100%',
-        backgroundColor: 'white',
-        padding: 15,
-        borderRadius: 10,
-    },
-    text: {
-        fontFamily: 'rubik',
-    },
-    title: {
-        flex: 1,
-        alignItems: 'flex-start',
-        paddingTop: 10,
-        fontSize: 20,
-    },
-    image: {
-        flex: 1,
-        width: '40%',
-        height: 150,
-        marginRight: 10,
-        borderRadius: 10,
-        alignItems: 'flex-start'
-    },
-    row: {
-        flexDirection: 'row',
-    },
-    smallText: {
-        fontSize: 15,
-    },
-    mediumText: {
-        fontSize: 19,
-    },
-    largeText: {
-        fontSize: 20,
-    },
-    tag: {
-        padding: 10,
-        backgroundColor: Colors.accentColor,
-        borderRadius: 5,
-        height: 40,
-
-    },
-    whiteText: {
-        color: 'white',
-    },
-    icon: {
-        paddingBottom: 5,
-    }
-
+  gridItem: {
+    flex: 1,
+    margin: 10,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  container: {
+    width: "100%",
+    backgroundColor: "white",
+    padding: 15,
+    borderRadius: 10,
+  },
+  text: {
+    fontFamily: "rubik",
+  },
+  title: {
+    flex: 1,
+    alignItems: "flex-start",
+    paddingTop: 10,
+    fontSize: 20,
+  },
+  image: {
+    flex: 1,
+    width: "40%",
+    height: 150,
+    marginRight: 10,
+    borderRadius: 10,
+    alignItems: "flex-start",
+  },
+  row: {
+    flexDirection: "row",
+  },
+  smallText: {
+    fontSize: 15,
+  },
+  mediumText: {
+    fontSize: 19,
+  },
+  largeText: {
+    fontSize: 20,
+  },
+  tag: {
+    padding: 10,
+    backgroundColor: Colors.accentColor,
+    borderRadius: 5,
+    height: 40,
+  },
+  whiteText: {
+    color: "white",
+  },
+  icon: {
+    paddingBottom: 5,
+  },
 });
 
 export default RestaurantCard;

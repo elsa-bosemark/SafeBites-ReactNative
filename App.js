@@ -8,7 +8,7 @@ import RestaurantNavigator from "./config/restaurantNavigation";
 import RootNavigation from "./config/RootNavigation";
 
 enableScreens();
-//Showing launtch Screen until have all fonts
+//Showing launch Screen until have all fonts
 const fetchFonts = () => {
   return Font.loadAsync({
     rubik: require("./assets/fonts/Rubik-Regular.ttf"),

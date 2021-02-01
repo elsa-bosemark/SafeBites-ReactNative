@@ -19,7 +19,21 @@ import Colors from "../../constants/Colors";
 import { firebaseConfig } from "../../constants/secret";
 import RestaurantCard from "../../components/restaurantCard";
 import { ScrollView, TapGestureHandler } from "react-native-gesture-handler";
-import { getData } from "../../config/data";
+import {
+  getCover,
+  getNames,
+  getPrice,
+  getPhoneNumbers,
+  getPhotos,
+  getRestaurantCoords,
+  getRestaurantLoc,
+  getReviewCount,
+  getRating,
+  getTags,
+  getTransactions,
+  getYelpUrl,
+  getUserLocation,
+} from "../../config/data";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -41,6 +55,19 @@ const ProfileScreen = (props) => {
   const [error, setError] = useState("");
   const [num, setNum] = useState(0);
   const [favorites, setFavorites] = useState([]);
+
+  const [favPrice, setFavPrice] = useState([]);
+  const [favCover, setFavCover] = useState([]);
+  const [favURL, setFavURl] = useState([]);
+  const [favPhoneNumber, setFavPhoneNumber] = useState([]);
+  const [favPhotos, setFavPhotos] = useState([]);
+  const [favRestCoords, setFavRestCoords] = useState([]);
+  const [favRestLoc, setFavRestLoc] = useState([]);
+  const [favReviewCount, setFavReviewCount] = useState([]);
+  const [favRating, setFavRating] = useState([]);
+  const [favTags, setFavTags] = useState([]);
+  const [favTransactions, setFavTransactions] = useState([]);
+  const [userLocation, setUserLocation] = useState([]);
 
   const handleFirstName = (text) => {
     setFirstName(text);
@@ -176,6 +203,61 @@ const ProfileScreen = (props) => {
       index += 1;
     });
     setFavorites(myArr);
+
+    var names = await getNames();
+    var cover = await getCover();
+    var price = await getPrice();
+    var phoneNum = await getPhoneNumbers();
+    var photos = await getPhotos();
+    var restCoords = await getRestaurantCoords();
+    var restLoc = await getRestaurantLoc();
+    var reviewCount = await getReviewCount();
+    var rating = await getRating();
+    var tags = await getTags();
+    var transactions = await getTransactions();
+    var url = await getYelpUrl();
+    var userLoc = await getUserLocation();
+
+    var coverArr = [];
+    var priceArr = [];
+    var phoneArr = [];
+    var photoArr = [];
+    var coordsArr = [];
+    var locArr = [];
+    var countArr = [];
+    var ratingArr = [];
+    var tagArr = [];
+    var transactionsArr = [];
+    var urlArr = [];
+
+    myArr.forEach((element) => {
+      let index = names.indexOf(element);
+      coverArr.push(cover[index]);
+      priceArr.push(price[index]);
+      phoneArr.push(phoneNum[index]);
+      photoArr.push(photos[index]);
+      coordsArr.push(restCoords[index]);
+      locArr.push(restLoc[index]);
+      countArr.push(reviewCount[index]);
+      ratingArr.push(rating[index]);
+      tagArr.push(tags[index]);
+      transactionsArr.push(transactions[index]);
+      urlArr.push(url[index]);
+    });
+    console.error(userLoc);
+
+    setFavCover(coverArr);
+    setFavPrice(priceArr);
+    setFavPhoneNumber(phoneArr);
+    setFavPhotos(photoArr);
+    setFavRestCoords(coordsArr);
+    setFavRestLoc(locArr);
+    setFavReviewCount(countArr);
+    setFavRating(ratingArr);
+    setFavTags(tagArr);
+    setFavTransactions(transactionsArr);
+    setFavURl(urlArr);
+    setUserLocation(userLoc);
   }
 
   firebase.auth().onAuthStateChanged((userAuth) => {
@@ -273,14 +355,20 @@ const ProfileScreen = (props) => {
               <FlatList
                 data={favorites}
                 renderItem={({ item, index }) => {
+                  console.error(
+                    JSON.stringify(favRestCoords[index]) + " rest coords"
+                  );
                   return (
                     <RestaurantCard
                       title={item}
-                      price={"$$"}
-                      cover={null}
-                      transactions={[23, 23]}
-                      restaurantCoordinates={[23, 23]}
-                      userCoordinates={[23, 23.1]}
+                      price={favPrice[index]}
+                      cover={favCover[index]}
+                      transactions={favTransactions[index]}
+                      restaurantCoordinates={[
+                        favRestCoords[index].latitude,
+                        favRestCoords[index].longitude,
+                      ]}
+                      userCoordinates={userLocation}
                       onSelect={() => {
                         alert("todo!");
                         // this.props.navigation.navigate({
