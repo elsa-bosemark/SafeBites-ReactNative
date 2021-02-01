@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, PureComponent } from "react";
 import {
   StyleSheet,
   Text,
@@ -34,6 +34,8 @@ import {
   getYelpUrl,
   getUserLocation,
 } from "../../config/data";
+import Spacer from "../../components/spacer";
+import DefaultButton from "../../components/defaultButton";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -45,14 +47,8 @@ const ProfileScreen = (props) => {
   const [comments, setComments] = useState({});
   const [calledOnce, setCalledOnce] = useState(false);
   const [user, setUser] = useState(false);
-  const [authVisible, setAuthVisible] = useState(false);
   const [loginVisible, setLoginVisible] = useState(false);
   const [signupVisible, setSignupVisible] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [num, setNum] = useState(0);
   const [favorites, setFavorites] = useState([]);
 
@@ -70,90 +66,272 @@ const ProfileScreen = (props) => {
   const [favTransactions, setFavTransactions] = useState([]);
   const [userLocation, setUserLocation] = useState([]);
 
-  const handleFirstName = (text) => {
-    setFirstName(text);
-  };
-  const handleLastName = (text) => {
-    setLastName(text);
-  };
-  const handleEmail = (text) => {
-    setEmail(text);
-  };
-  const handlePassword = (text) => {
-    setPassword(text);
-  };
-  const login = (email, password) => {
-    if (email == "" || password == "") {
-      setError("Please fill in all fields");
-    } else {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((user) => {
-          setAuthVisible(false);
-          setLoginVisible(false);
-          setSignupVisible(false);
-
-          Alert.alert(
-            "Succesfully Signed Up!",
-            "Thanks for signing up!",
-            [
-              {
-                text: "Ok",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel",
-              },
-            ],
-            { cancelable: true }
-          );
-        })
-        .catch((error) => {
-          setError(error);
-        });
+  class LoginInput extends React.Component {
+    constructor() {
+      super();
+      this.state = { value: "", email: "", error: "" };
     }
-  };
 
-  const signup = (email, password, firstName, lastName) => {
-    if (email == "" || password == "") {
-      setError("Please fill in all fields");
-    } else {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          setAuthVisible(false);
-          setLoginVisible(false);
-          setSignupVisible(false);
+    update = (e) => {
+      this.setState({ value: e });
+    };
 
-          var myDB = firebase.firestore();
-          var doc = myDB.collection("users").doc(`${email}`).get();
-          if (!doc.exists) {
-            console.log("No document");
-            myDB.collection("users").doc(`${email}`).set({
-              firstName: firstName,
-              lastName: lastName,
-            });
-          }
+    updateEmail = (e) => {
+      this.setState({ email: e });
+    };
 
-          Alert.alert(
-            "Succesfully Signed Up!",
-            "Thanks for signing up!",
-            [
-              {
-                text: "Ok",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel",
-              },
-            ],
-            { cancelable: false }
-          ); // this.props.navigation.navigate('Home')
-        })
-        .catch((error) => {
-          setError(error);
-          console.error(error);
-        });
+    validate = (text) => {
+      console.log(text);
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (reg.test(text) === false) {
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    login = (email, password) => {
+      const validator = this.validate(email);
+      if (email == "" || password == "") {
+        this.setState({ error: "please fill in all fields" });
+      } else if (!validator) {
+        this.setState({ error: "please enter a valid email address" });
+      } else {
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
+          .then((user) => {
+            setLoginVisible(false);
+            setSignupVisible(false);
+
+            Alert.alert(
+              "Successfully Signed Up!",
+              "Thanks for signing up!",
+              [
+                {
+                  text: "Ok",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+              ],
+              { cancelable: true }
+            );
+          })
+          .catch((error) => {
+            this.setState({ error: error });
+          });
+      }
+    };
+    render() {
+      return (
+        <View>
+          <TextInput
+            onChangeText={this.updateEmail}
+            value={this.state.email}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="enter email"
+            placeholderTextColor={Colors.darkGrey}
+            autoCapitalize="none"
+          />
+          <TextInput
+            onChangeText={this.update}
+            value={this.state.value}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            placeholder="enter password"
+            placeholderTextColor={Colors.darkGrey}
+          />
+          <TouchableOpacity
+            style={{
+              ...styles.closedButton,
+              backgroundColor: Colors.primaryColor,
+              width: 200,
+            }}
+            onPress={() => this.login(this.state.email, this.state.value)}
+          >
+            <Text style={styles.textStyle}>Submit</Text>
+          </TouchableOpacity>
+          <View style={{ height: 10 }} />
+          <Text style={(styles.textStyle, { color: "#c90404" })}>
+            {this.state.error}
+          </Text>
+
+          <View style={{ height: 20 }} />
+          <TouchableOpacity
+            onPress={() => {
+              setLoginVisible(false);
+              setSignupVisible(true);
+            }}
+          >
+            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+              Don't have an account? Sign up here!
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
     }
-  };
+  }
+
+  class SignupInput extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        password: "",
+        email: "",
+        error: "",
+        firstName: "",
+        lastName: "",
+      };
+    }
+
+    updatePassword = (e) => {
+      this.setState({ password: e });
+    };
+
+    updateEmail = (e) => {
+      this.setState({ email: e });
+    };
+
+    updateFirstName = (e) => {
+      this.setState({ firstName: e });
+    };
+
+    updateLastName = (e) => {
+      this.setState({ lastName: e });
+    };
+
+    validate = (text) => {
+      console.log(text);
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (reg.test(text) === false) {
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    signup = (email, password, firstName, lastName) => {
+      const validator = this.validate(email);
+      if (email == "" || password == "") {
+        this.setState({ error: "please fill in all fields" });
+      } else if (!validator) {
+        this.setState({ error: "please enter a valid email address" });
+      } else {
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then(() => {
+            setLoginVisible(false);
+            setSignupVisible(false);
+
+            var myDB = firebase.firestore();
+            var doc = myDB.collection("users").doc(`${email}`).get();
+            if (!doc.exists) {
+              console.log("No document");
+              myDB.collection("users").doc(`${email}`).set({
+                firstName: firstName,
+                lastName: lastName,
+              });
+            }
+
+            Alert.alert(
+              "Successfully Signed Up!",
+              "Thanks for signing up!",
+              [
+                {
+                  text: "Ok",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+              ],
+              { cancelable: false }
+            );
+          })
+          .catch((error) => {
+            this.setState({ error: error });
+            console.error(error);
+          });
+      }
+    };
+
+    render() {
+      return (
+        <View>
+          <TextInput
+            onChangeText={this.updateFirstName}
+            value={this.state.value}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            placeholder="enter first name"
+            placeholderTextColor={Colors.darkGrey}
+          />
+          <TextInput
+            onChangeText={this.updateLastName}
+            value={this.state.value}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            placeholder="enter last name"
+            placeholderTextColor={Colors.darkGrey}
+          />
+          <TextInput
+            onChangeText={this.updateEmail}
+            value={this.state.email}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="enter email"
+            placeholderTextColor={Colors.darkGrey}
+            autoCapitalize="none"
+          />
+          <TextInput
+            onChangeText={this.updatePassword}
+            value={this.state.value}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            placeholder="enter password"
+            placeholderTextColor={Colors.darkGrey}
+          />
+          <TouchableOpacity
+            style={{
+              ...styles.closedButton,
+              backgroundColor: Colors.primaryColor,
+              width: 200,
+            }}
+            onPress={() =>
+              this.signup(
+                this.state.email,
+                this.state.password,
+                this.state.firstName,
+                this.state.lastName
+              )
+            }
+          >
+            <Text style={styles.textStyle}>Submit</Text>
+          </TouchableOpacity>
+          <View style={{ height: 10 }} />
+          <Text style={(styles.textStyle, { color: "#c90404" })}>
+            {this.state.error ? this.state.error : ""}
+          </Text>
+          <View style={{ height: 20 }} />
+          <TouchableOpacity
+            onPress={() => {
+              setLoginVisible(true);
+              setSignupVisible(false);
+            }}
+          >
+            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+              Have an account already? Login here!
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  }
+
   async function getFirebaseData() {
     var myDB = firebase.firestore();
     var doc = await myDB
@@ -265,13 +443,13 @@ const ProfileScreen = (props) => {
     if (userAuth) {
       if (num == 0) {
         setUser(true);
-        setAuthVisible(false);
+        setLoginVisible(false);
         setNum(1);
       }
     } else {
       if (num == 0) {
         setUser(false);
-        setAuthVisible(true);
+        setLoginVisible(true);
         setNum(1);
       }
     }
@@ -421,192 +599,34 @@ const ProfileScreen = (props) => {
         </SafeAreaView>
       );
     } else {
-      return (
-        <View>
-          <Text style={styles.title}>
-            You must login to have a profile page!
-          </Text>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={authVisible}
-            onRequestClose={() => {
-              // Alert.alert("Modal has been closed.");
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>
-                  You haven't logged in yet! You can't rate anything yet.
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    ...styles.closedButton,
-                    backgroundColor: Colors.accentColor,
-                  }}
-                  onPress={() => {
-                    setAuthVisible(false);
-                    setLoginVisible(true);
-                  }}
-                >
-                  <Text style={styles.textStyle}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ ...styles.closedButton }}
-                  onPress={() => {
-                    setSignupVisible(true);
-                    setAuthVisible(false);
-                  }}
-                >
-                  <Text
-                    style={{ ...styles.textStyle, color: Colors.primaryColor }}
-                  >
-                    Signup
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ ...styles.closedButton }}
-                  onPress={() => {
-                    setAuthVisible(false);
-                  }}
-                >
-                  <Text
-                    style={{ ...styles.textStyle, color: Colors.primaryColor }}
-                  >
-                    Continue as Guest
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={loginVisible}
-            onRequestClose={() => {
-              // Alert.alert("Modal has been closed.");
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>LOGIN</Text>
-                <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  placeholder="enter email"
-                  placeholderTextColor={Colors.grey}
-                  autoCapitalize="none"
-                  onChangeText={handleEmail}
-                />
-                <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  placeholder="enter password"
-                  placeholderTextColor={Colors.grey}
-                  autoCapitalize="none"
-                  onChangeText={handlePassword}
-                />
-                <TouchableOpacity
-                  style={{
-                    ...styles.closedButton,
-                    backgroundColor: Colors.primaryColor,
-                    width: 100,
-                  }}
-                  onPress={() => login(email, password)}
-                >
-                  <Text style={styles.textStyle}> Submit </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ ...styles.closedButton, width: 100 }}
-                  onPress={() => {
-                    setLoginVisible(!loginVisible);
-                    setAuthVisible(true);
-                  }}
-                >
-                  <Text
-                    style={{ ...styles.textStyle, color: Colors.primaryColor }}
-                  >
-                    Close
-                  </Text>
-                </TouchableOpacity>
-                <Text>{error}</Text>
-              </View>
-            </View>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={signupVisible}
-            onRequestClose={() => {
-              // Alert.alert("Modal has been closed.");
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>SIGNUP</Text>
-                <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  placeholder="enter first name"
-                  placeholderTextColor={Colors.grey}
-                  autoCapitalize="none"
-                  onChangeText={handleFirstName}
-                />
-                <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  placeholder="enter last name"
-                  placeholderTextColor={Colors.grey}
-                  autoCapitalize="none"
-                  onChangeText={handleLastName}
-                />
-                <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  placeholder="enter email"
-                  placeholderTextColor={Colors.grey}
-                  autoCapitalize="none"
-                  onChangeText={handleEmail}
-                />
-                <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  placeholder="enter password"
-                  placeholderTextColor={Colors.grey}
-                  autoCapitalize="none"
-                  onChangeText={handlePassword}
-                />
-                <TouchableOpacity
-                  style={{
-                    ...styles.closedButton,
-                    backgroundColor: Colors.primaryColor,
-                    width: 100,
-                  }}
-                  onPress={() => {
-                    signup(email, password, firstName, lastName);
-                  }}
-                >
-                  <Text style={styles.textStyle}> Submit </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ ...styles.closedButton, width: 100 }}
-                  onPress={() => {
-                    setAuthVisible(true);
-                    setSignupVisible(false);
-                  }}
-                >
-                  <Text
-                    style={{ ...styles.textStyle, color: Colors.primaryColor }}
-                  >
-                    Close
-                  </Text>
-                </TouchableOpacity>
-                <Text>{error}</Text>
-              </View>
-            </View>
-          </Modal>
-        </View>
-      );
+      if (loginVisible) {
+        return (
+          <View style={styles.centeredView}>
+            <Text style={styles.title}>
+              You must login to have a profile page
+            </Text>
+            <Text style={styles.title}>Login</Text>
+            <Spacer />
+            <View style={{ height: 10 }} />
+            <LoginInput />
+          </View>
+        );
+      } else if (signupVisible) {
+        return (
+          <View style={styles.centeredView}>
+            <Text style={styles.title}>
+              You must login to have a profile page
+            </Text>
+            <Text style={styles.title}>Signup</Text>
+            <Spacer />
+            <View style={{ height: 10 }} />
+            <SignupInput />
+          </View>
+        );
+      } else {
+        //uh oh
+        return <Text>You must login first to have a profile page</Text>;
+      }
     }
   };
 
@@ -644,7 +664,7 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: "center",
+    //justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
   },
@@ -671,6 +691,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: 200,
     marginTop: 10,
+    alignSelf: "center",
   },
   textStyle: {
     color: "white",
@@ -686,8 +707,9 @@ const styles = StyleSheet.create({
     borderColor: Colors.grey,
     borderWidth: 1,
     paddingLeft: 10,
-    width: 200,
+    width: 300,
     marginTop: 5,
   },
 });
+
 export default ProfileScreen;

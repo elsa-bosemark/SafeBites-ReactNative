@@ -9,6 +9,7 @@ import {
   FlatList,
   Linking,
   Dimensions,
+  Alert,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { getDistance } from "geolib";
@@ -44,6 +45,8 @@ const RestaurantDetailScreen = (props) => {
   const [comments, setComments] = useState([]);
   const [userRating, setUserRating] = useState(0);
   const [calledOnce, setCalledOnce] = useState(false);
+  const [favorite, setFavorite] = useState("heart-outline");
+  ("fav");
   //getting all params
   const restIndex = props.navigation.getParam("restIndex");
   const restTitles = props.navigation.getParam("title");
@@ -83,7 +86,34 @@ const RestaurantDetailScreen = (props) => {
     }
   };
   storeCurrentRestaurant(restTitles[restIndex]);
-
+  const getFavorites = async () => {
+    var myArr = [];
+    var index = 0;
+    if (
+      firebase.auth().currentUser != null &&
+      firebase.auth().currentUser != undefined
+    ) {
+      const snapshot = await firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.email)
+        .collection("reviews")
+        .get();
+      let docs = snapshot.docs.map((doc) => doc.data());
+      let docNames = snapshot.docs.map((doc) => doc.id);
+      docs.forEach((element) => {
+        for (var key in element) {
+          if (element[key] == "heart") {
+            myArr.push(docNames[index]);
+          }
+        }
+        index += 1;
+      });
+      if (myArr.includes(restTitles[restIndex])) {
+        setFavorite("heart");
+      }
+    }
+  };
   //Calculate the distance of rest
   const restaurantDistance = getDistance(
     userCoordinates,
@@ -103,6 +133,7 @@ const RestaurantDetailScreen = (props) => {
       .doc(restTitles[restIndex])
       .collection("comments")
       .get();
+
     let docs = snapshot.docs.map((doc) => doc.data());
     docs.forEach((element) => {
       for (var key in element) {
@@ -116,6 +147,7 @@ const RestaurantDetailScreen = (props) => {
     getComments();
     setCalledOnce(true);
     getData();
+    getFavorites();
   }
 
   const screenWidth = Math.round(Dimensions.get("window").width);
@@ -195,20 +227,81 @@ const RestaurantDetailScreen = (props) => {
             <View style={{ felx: 1 }}>
               <View style={{ ...styles.row, ...{ alignItems: "center" } }}>
                 <CircleButton
-                  icon="heart-outline"
-                  color={Colors.grey}
+                  icon={favorite}
+                  color={favorite === "heart" ? "#c90404" : Colors.grey}
                   title="Favorite"
+                  onSelect={() => {
+                    if (
+                      firebase.auth().currentUser != null &&
+                      firebase.auth().currentUser != undefined
+                    ) {
+                      if (favorite == "heart") {
+                        setFavorite("heart-outline");
+                        let myDB = firebase.firestore();
+                        let thisUser = firebase.auth().currentUser.email;
+                        if (thisUser) {
+                          myDB
+                            .collection("users")
+                            .doc(thisUser)
+                            .collection("reviews")
+                            .doc(restTitles[restIndex])
+                            .set(
+                              {
+                                favorite: "heart-outline",
+                              },
+                              { merge: true }
+                            );
+                        }
+                      } else {
+                        setFavorite("heart");
+                        let myDB = firebase.firestore();
+                        let thisUser = firebase.auth().currentUser.email;
+
+                        if (thisUser) {
+                          myDB
+                            .collection("users")
+                            .doc(thisUser)
+                            .collection("reviews")
+                            .doc(restTitles[restIndex])
+                            .set(
+                              {
+                                favorite: "heart",
+                              },
+                              { merge: true }
+                            );
+                        }
+                      }
+                    } else {
+                      Alert.alert(
+                        "Login",
+                        "Sorry! To use features like saving favorite restaurants, you have to login! "
+                      );
+                    }
+                  }}
                 />
-                <CircleButton icon="call" color={Colors.grey} title="Call" />
+                <CircleButton
+                  icon="call"
+                  color={Colors.grey}
+                  title="Call"
+                  onSelect={() => {
+                    Alert.alert("TODO");
+                  }}
+                />
                 <CircleButton
                   icon="map"
                   color={Colors.grey}
                   title="Direction"
+                  onSelect={() => {
+                    Alert.alert("TODO");
+                  }}
                 />
                 <CircleButton
                   icon="attach"
                   color={Colors.grey}
                   title="Website"
+                  onSelect={() => {
+                    Alert.alert("TODO");
+                  }}
                 />
               </View>
             </View>
@@ -320,6 +413,20 @@ const styles = StyleSheet.create({
   center: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  circle: {
+    backgroundColor: "white",
+    width: 80,
+    height: 80,
+    borderRadius: 100,
+    padding: 10,
+    borderWidth: 2,
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  circleTitle: {
+    flex: 1,
+    alignItems: "flex-start",
   },
   image: {
     flex: 1,

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   Platform,
+  Alert,
   TouchableNativeFeedback,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -118,41 +119,51 @@ const RestaurantCard = (props) => {
             {/* Heart =>Favorites */}
             <TouchableOpacity
               onPress={() => {
-                if (favorite == "heart") {
-                  setFavorite("heart-outline");
-                  let myDB = firebase.firestore();
-                  let thisUser = firebase.auth().currentUser.email;
-                  if (thisUser) {
-                    myDB
-                      .collection("users")
-                      .doc(thisUser)
-                      .collection("reviews")
-                      .doc(props.title)
-                      .set(
-                        {
-                          favorite: "heart-outline",
-                        },
-                        { merge: true }
-                      );
+                if (
+                  firebase.auth().currentUser != null &&
+                  firebase.auth().currentUser != undefined
+                ) {
+                  if (favorite == "heart") {
+                    setFavorite("heart-outline");
+                    let myDB = firebase.firestore();
+                    let thisUser = firebase.auth().currentUser.email;
+                    if (thisUser) {
+                      myDB
+                        .collection("users")
+                        .doc(thisUser)
+                        .collection("reviews")
+                        .doc(props.title)
+                        .set(
+                          {
+                            favorite: "heart-outline",
+                          },
+                          { merge: true }
+                        );
+                    }
+                  } else {
+                    setFavorite("heart");
+                    let myDB = firebase.firestore();
+                    let thisUser = firebase.auth().currentUser.email;
+
+                    if (thisUser) {
+                      myDB
+                        .collection("users")
+                        .doc(thisUser)
+                        .collection("reviews")
+                        .doc(props.title)
+                        .set(
+                          {
+                            favorite: "heart",
+                          },
+                          { merge: true }
+                        );
+                    }
                   }
                 } else {
-                  setFavorite("heart");
-                  let myDB = firebase.firestore();
-                  let thisUser = firebase.auth().currentUser.email;
-
-                  if (thisUser) {
-                    myDB
-                      .collection("users")
-                      .doc(thisUser)
-                      .collection("reviews")
-                      .doc(props.title)
-                      .set(
-                        {
-                          favorite: "heart",
-                        },
-                        { merge: true }
-                      );
-                  }
+                  Alert.alert(
+                    "Login",
+                    "Sorry! To use features like saving favorite restaurants, you have to login! "
+                  );
                 }
               }}
             >
@@ -163,7 +174,7 @@ const RestaurantCard = (props) => {
                 }}
                 name={favorite}
                 size={25}
-                color={Colors.darkGrey}
+                color={favorite === "heart" ? "#c90404" : Colors.grey}
               />
             </TouchableOpacity>
             {/* Title */}
