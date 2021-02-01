@@ -229,8 +229,9 @@ const ProfileScreen = (props) => {
     var tagArr = [];
     var transactionsArr = [];
     var urlArr = [];
-
+    console.error("EHLLOOOO");
     myArr.forEach((element) => {
+      console.error(element);
       let index = names.indexOf(element);
       coverArr.push(cover[index]);
       priceArr.push(price[index]);
@@ -244,7 +245,6 @@ const ProfileScreen = (props) => {
       transactionsArr.push(transactions[index]);
       urlArr.push(url[index]);
     });
-    console.error(userLoc);
 
     setFavCover(coverArr);
     setFavPrice(priceArr);
@@ -355,46 +355,67 @@ const ProfileScreen = (props) => {
               <FlatList
                 data={favorites}
                 renderItem={({ item, index }) => {
-                  console.error(
-                    JSON.stringify(favRestCoords[index]) + " rest coords"
-                  );
-                  return (
-                    <RestaurantCard
-                      title={item}
-                      price={favPrice[index]}
-                      cover={favCover[index]}
-                      transactions={favTransactions[index]}
-                      restaurantCoordinates={[
-                        favRestCoords[index].latitude,
-                        favRestCoords[index].longitude,
-                      ]}
-                      userCoordinates={userLocation}
-                      onSelect={() => {
-                        alert("todo!");
-                        // this.props.navigation.navigate({
-                        //   routeName: 'RetaurantDetail', params: {
-                        //     //pass restaurant DATA
-                        //     // restIndex: index,
-                        //     // title: this.state.title,
-                        //     // price: this.state.price,
-                        //     // cover: this.state.cover,
-                        //     // transactions: this.state.transactions,
-                        //     // restaurantCoordinates: this.state.restaurantCoordinates,
-                        //     // userCoordinates: this.state.location,
-                        //     // phoneNumber: this.state.phoneNumber,
-                        //     // address: this.state.address,
-                        //     // yelpUrl: this.state.yelpUrl,
+                  if (
+                    favRestCoords != null &&
+                    favRestCoords != undefined &&
+                    favRestCoords.length > 0
+                  ) {
+                    console.error(
+                      JSON.stringify(favRestCoords[index]) +
+                        " coordinates in rendering"
+                    );
+                    return (
+                      <RestaurantCard
+                        title={item}
+                        price={favPrice[index]}
+                        cover={favCover[index]}
+                        transactions={favTransactions[index]}
+                        restaurantCoordinates={[
+                          favRestCoords[index].latitude,
+                          favRestCoords[index].longitude,
+                        ]}
+                        userCoordinates={userLocation}
+                        onSelect={() => {
+                          alert("todo!");
+                          // this.props.navigation.navigate({
+                          //   routeName: 'RetaurantDetail', params: {
+                          //     //pass restaurant DATA
+                          //     // restIndex: index,
+                          //     // title: this.state.title,
+                          //     // price: this.state.price,
+                          //     // cover: this.state.cover,
+                          //     // transactions: this.state.transactions,
+                          //     // restaurantCoordinates: this.state.restaurantCoordinates,
+                          //     // userCoordinates: this.state.location,
+                          //     // phoneNumber: this.state.phoneNumber,
+                          //     // address: this.state.address,
+                          //     // yelpUrl: this.state.yelpUrl,
 
-                        //     // yelpRating: this.state.yelpRating,
-                        //     // yelpReviewCount: this.state.yelpReviewCount,
-                        //     // photos: this.state.photos,
-                        //     // openHours: this.state.openHours,
-                        //     // tags: this.state.tags,
-                        //   }
-                        // })
-                      }}
-                    />
-                  );
+                          //     // yelpRating: this.state.yelpRating,
+                          //     // yelpReviewCount: this.state.yelpReviewCount,
+                          //     // photos: this.state.photos,
+                          //     // openHours: this.state.openHours,
+                          //     // tags: this.state.tags,
+                          //   }
+                          // })
+                        }}
+                      />
+                    );
+                  } else {
+                    return (
+                      <RestaurantCard
+                        title={item}
+                        price={favPrice[index]}
+                        cover={favCover[index]}
+                        transactions={favTransactions[index]}
+                        restaurantCoordinates={[0, 0]}
+                        userCoordinates={userLocation}
+                        onSelect={() => {
+                          alert("todo!");
+                        }}
+                      />
+                    );
+                  }
                 }}
                 keyExtractor={(item) => item}
               />
