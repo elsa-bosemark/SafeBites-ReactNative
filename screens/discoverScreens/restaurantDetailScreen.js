@@ -33,6 +33,7 @@ import { Tags } from "../../components/tags";
 import OpenHours from "../../components/openHours";
 // import PhotoSlider from '../../components/photoSlider/photoSlider';
 import SafetyScore from "../../components/handSanatizer";
+import { callNumber } from "../../config/Call";
 
 const RestaurantDetailScreen = (props) => {
   const [masks, setMasks] = useState(0);
@@ -284,7 +285,9 @@ const RestaurantDetailScreen = (props) => {
                   color={Colors.grey}
                   title="Call"
                   onSelect={() => {
-                    Alert.alert("TODO");
+                    // Linking.openURL(`tel://+14156068631`);
+                    // console.error(phoneNumber[restIndex]);
+                    callNumber(phoneNumber[restIndex]);
                   }}
                 />
                 <CircleButton

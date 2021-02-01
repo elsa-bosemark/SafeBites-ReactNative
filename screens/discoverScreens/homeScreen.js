@@ -244,7 +244,7 @@ class HomeScreen extends React.Component {
         response.data.businesses
           .forEach((element) => {
             names.push(element.name);
-            phoneNums.push(element.display_phone);
+            phoneNums.push(element.phone);
             _cover.push(element.image_url);
             _restaurantLocation.push(element.location);
             _yelpUrl.push(element.url);
