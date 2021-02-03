@@ -11,3 +11,7 @@
 - make `Restaurant Detail` directions, and website buttons actually work
 - i'm not _too_ sure if the call buttons works or not. you'd have to run it on a real device; it won't work on the simulator. but i'm pretty sure it should work.
 - show updated score after rating 
+
+elsa for Athena
+- hide password **** but have a visibility button
+- have a forgot passowrd option
