@@ -227,6 +227,7 @@ const RestaurantDetailScreen = (props) => {
             buttonColor={Colors.primaryColor}
             textColor="#fff"
             onSelect={() => {
+              setCalledOnce(false);
               props.navigation.navigate("Rate");
             }}
           />
