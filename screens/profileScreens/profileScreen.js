@@ -35,6 +35,7 @@ import {
   getUserLocation,
 } from "../../config/data";
 import Spacer from "../../components/spacer";
+import Comment from "../../components/comment";
 import DefaultButton from "../../components/defaultButton";
 
 if (!firebase.apps.length) {
@@ -496,7 +497,9 @@ const ProfileScreen = (props) => {
                 </View>
               </View>
             </View>
+
             <Button
+              style={styles.logoutButton}
               title="Logout"
               onPress={() => {
                 firebase
@@ -515,23 +518,16 @@ const ProfileScreen = (props) => {
             />
             <ScrollView>
               <Text style={styles.title}>Comments</Text>
-              <View
-                style={{
-                  width: "80%",
-                  borderRadius: 10,
-                  alignSelf: "center",
-                  borderColor: "black",
-                  borderWidth: 0.2,
+
+              <FlatList
+                data={comments}
+                renderItem={({ item, index }) => {
+                  return <Comment text={item} date="10/10/10" />;
+                  // <Text style={{ paddingLeft: 10 }}>{item} what doe this</Text>;
                 }}
-              >
-                <FlatList
-                  data={comments}
-                  renderItem={({ item, index }) => {
-                    return <Text style={{ paddingLeft: 10 }}>{item}</Text>;
-                  }}
-                  keyExtractor={(item) => item}
-                />
-              </View>
+                keyExtractor={(item) => item}
+              />
+
               <Text style={styles.title}>Favorites</Text>
               <FlatList
                 data={favorites}
@@ -712,6 +708,9 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 5,
   },
+  logoutButton: {
+    color: '#000',
+  }
 });
 
 export default ProfileScreen;

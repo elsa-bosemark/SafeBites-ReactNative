@@ -586,19 +586,16 @@ class HomeScreen extends React.Component {
         </Modal>
 
         <Text style={styles.title}>Categories</Text>
-
-        <FlatList
-          // horizontal
-          pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          data={CATEGORIES}
-          renderItem={renderGridItem}
-          numColumns={2}
-          // scrollEnabled={false}
-          // nestedScrollEnabled={true}
-          keyExtractor={(item) => item}
-        />
-
+        <ScrollView>
+          <FlatList
+            data={CATEGORIES}
+            renderItem={renderGridItem}
+            numColumns={2}
+            scrollEnabled={false}
+            nestedScrollEnabled={true}
+            keyExtractor={(item) => item}
+          />
+        </ScrollView>
 
         <Text style={styles.title}>Find</Text>
         <View style={styles.searchBar}>
@@ -621,16 +618,20 @@ class HomeScreen extends React.Component {
         <ActivityIndicator animating={this.state.loading} />
 
         <FlatList
-          // horizontal
           data={
             this.state.filteredRestaurants &&
-              this.state.filteredRestaurants.length > 0
+            this.state.filteredRestaurants.length > 0
               ? this.state.filteredRestaurants
               : this.state.title
           }
           renderItem={({ item, index }) => {
-
+            //const restaurantDistance = getDistance(
+            //   this.state.location,
+            //   this.state.restaurantCoordinates[index]
+            //);
             return (
+              //  <Text style={{ marginBottom: 10 }}>{item}</Text>
+
               <RestaurantCard
                 title={item}
                 price={this.state.price[index]}
@@ -674,10 +675,10 @@ class HomeScreen extends React.Component {
               />
             );
           }}
-          // size="large"
+          size="large"
           keyExtractor={(item) => item}
           refreshing={false}
-        // style={{ marginBottom: 350 }}
+          style={{ marginBottom: 350 }}
         />
       </SafeAreaView>
     );
