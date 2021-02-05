@@ -29,30 +29,35 @@ const RestaurantCard = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
   async function getFavorites() {
-    var myArr = [];
-    var index = 0;
-    const snapshot = await firebase
-      .firestore()
-      .collection("users")
-      .doc(`${firebase.auth().currentUser.email}`)
-      .collection("reviews")
-      .get();
-    let docs = snapshot.docs.map((doc) => doc.data());
-    let docNames = snapshot.docs.map((doc) => doc.id);
-    docs.forEach((element) => {
-      for (var key in element) {
-        if (key == "favorite") {
-          if (element[key] == "heart") {
-            myArr.push(docNames[index]);
+    if (
+      firebase.auth().currentUser != null &&
+      firebase.auth().currentUser != undefined
+    ) {
+      var myArr = [];
+      var index = 0;
+      const snapshot = await firebase
+        .firestore()
+        .collection("users")
+        .doc(`${firebase.auth().currentUser.email}`)
+        .collection("reviews")
+        .get();
+      let docs = snapshot.docs.map((doc) => doc.data());
+      let docNames = snapshot.docs.map((doc) => doc.id);
+      docs.forEach((element) => {
+        for (var key in element) {
+          if (key == "favorite") {
+            if (element[key] == "heart") {
+              myArr.push(docNames[index]);
+            }
           }
         }
-      }
-      index += 1;
-    });
-    setFav(myArr);
+        index += 1;
+      });
+      setFav(myArr);
 
-    if (myArr.includes(props.title)) {
-      setFavorite("heart");
+      if (myArr.includes(props.title)) {
+        setFavorite("heart");
+      }
     }
   }
 

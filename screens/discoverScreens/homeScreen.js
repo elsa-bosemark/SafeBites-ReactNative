@@ -24,6 +24,7 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { ActivityIndicator } from "react-native";
 import { Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import { headers } from "../../constants/secret";
 import Colors from "../../constants/Colors";
@@ -94,6 +95,7 @@ class HomeScreen extends React.Component {
     error: "",
     firstName: "",
     lastName: "",
+    passwordVisible: "eye-off-outline",
   };
   handleFirstName = (text) => {
     this.setState({ firstName: text });
@@ -409,8 +411,8 @@ class HomeScreen extends React.Component {
                 }}
                 onPress={() => {
                   this.setState({
-                    authVisible: !this.state.authVisible,
-                    loginVisible: !this.state.loginVisible,
+                    authVisible: false,
+                    loginVisible: true,
                   });
                 }}
               >
@@ -420,8 +422,8 @@ class HomeScreen extends React.Component {
                 style={{ ...styles.closedButton }}
                 onPress={() => {
                   this.setState({
-                    signupVisible: !this.state.signupVisible,
-                    authVisible: !this.state.authVisible,
+                    signupVisible: true,
+                    authVisible: false,
                   });
                 }}
               >
@@ -465,15 +467,33 @@ class HomeScreen extends React.Component {
                 autoCapitalize="none"
                 onChangeText={this.handleEmail}
               />
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                placeholder="enter password"
-                placeholderTextColor={Colors.grey}
-                autoCapitalize="none"
-                secureTextEntry={true}
-                onChangeText={this.handlePassword}
-              />
+              <View style={{ flexDirection: "row" }}>
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="enter password"
+                  placeholderTextColor={Colors.grey}
+                  autoCapitalize="none"
+                  secureTextEntry={
+                    this.state.passwordVisible == "eye-off-outline"
+                      ? true
+                      : false
+                  }
+                  onChangeText={this.handlePassword}
+                />
+                <TouchableOpacity
+                  style={{ justifyContent: "center" }}
+                  onPress={() => {
+                    if (this.state.passwordVisible == "eye-off-outline") {
+                      this.setState({ passwordVisible: "eye-outline" });
+                    } else {
+                      this.setState({ passwordVisible: "eye-off-outline" });
+                    }
+                  }}
+                >
+                  <Ionicons name={this.state.passwordVisible} size={20} />
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 style={{
                   ...styles.closedButton,
@@ -490,8 +510,8 @@ class HomeScreen extends React.Component {
                 style={{ ...styles.closedButton, width: 100 }}
                 onPress={() => {
                   this.setState({
-                    loginVisible: !this.state.loginVisible,
-                    authVisible: !this.state.authVisible,
+                    loginVisible: false,
+                    authVisible: true,
                   });
                 }}
               >
@@ -540,14 +560,33 @@ class HomeScreen extends React.Component {
                 autoCapitalize="none"
                 onChangeText={this.handleEmail}
               />
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                placeholder="enter password"
-                placeholderTextColor={Colors.grey}
-                autoCapitalize="none"
-                onChangeText={this.handlePassword}
-              />
+              <View style={{ flexDirection: "row" }}>
+                <TextInput
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="enter password"
+                  placeholderTextColor={Colors.grey}
+                  autoCapitalize="none"
+                  secureTextEntry={
+                    this.state.passwordVisible == "eye-off-outline"
+                      ? true
+                      : false
+                  }
+                  onChangeText={this.handlePassword}
+                />
+                <TouchableOpacity
+                  style={{ justifyContent: "center" }}
+                  onPress={() => {
+                    if (this.state.passwordVisible == "eye-off-outline") {
+                      this.setState({ passwordVisible: "eye-outline" });
+                    } else {
+                      this.setState({ passwordVisible: "eye-off-outline" });
+                    }
+                  }}
+                >
+                  <Ionicons name={this.state.passwordVisible} size={20} />
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 style={{
                   ...styles.closedButton,
@@ -570,7 +609,7 @@ class HomeScreen extends React.Component {
                 onPress={() => {
                   this.setState({
                     signupVisible: !this.state.signupVisible,
-                    authVisible: !this.state.authVisible,
+                    authVisible: true,
                   });
                 }}
               >
@@ -599,7 +638,6 @@ class HomeScreen extends React.Component {
           keyExtractor={(item) => item}
         />
 
-
         <Text style={styles.title}>Find</Text>
         <View style={styles.searchBar}>
           <SearchBar
@@ -624,12 +662,11 @@ class HomeScreen extends React.Component {
           // horizontal
           data={
             this.state.filteredRestaurants &&
-              this.state.filteredRestaurants.length > 0
+            this.state.filteredRestaurants.length > 0
               ? this.state.filteredRestaurants
               : this.state.title
           }
           renderItem={({ item, index }) => {
-
             return (
               <RestaurantCard
                 title={item}
@@ -677,7 +714,7 @@ class HomeScreen extends React.Component {
           // size="large"
           keyExtractor={(item) => item}
           refreshing={false}
-        // style={{ marginBottom: 350 }}
+          // style={{ marginBottom: 350 }}
         />
       </SafeAreaView>
     );

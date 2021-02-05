@@ -307,16 +307,34 @@ const ProfileScreen = (props) => {
             placeholderTextColor={Colors.darkGrey}
             autoCapitalize="none"
           />
-          <TextInput
-            onChangeText={this.updatePassword}
-            value={this.state.value}
-            style={styles.input}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            placeholder="enter password"
-            placeholderTextColor={Colors.darkGrey}
-            secureTextEntry={true}
-          />
+          <View style={styles.row}>
+            <TextInput
+              onChangeText={this.updatePassword}
+              value={this.state.value}
+              style={styles.input}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              placeholder="enter password"
+              placeholderTextColor={Colors.darkGrey}
+              secureTextEntry={passVisible == "eye-off-outline" ? true : false}
+            />
+            <TouchableOpacity
+              style={{
+                alignSelf: "center",
+                justifyContent: "center",
+                marginLeft: 5,
+              }}
+              onPress={() => {
+                if (passVisible == "eye-off-outline") {
+                  setPassVisible("eye-outline");
+                } else {
+                  setPassVisible("eye-off-outline");
+                }
+              }}
+            >
+              <Ionicons name={passVisible} size={20} />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity
             style={{
               ...styles.closedButton,
@@ -388,80 +406,85 @@ const ProfileScreen = (props) => {
   async function getFavorites() {
     var myArr = [];
     var index = 0;
-    const snapshot = await firebase
-      .firestore()
-      .collection("users")
-      .doc(`${firebase.auth().currentUser.email}`)
-      .collection("reviews")
-      .get();
-    let docs = snapshot.docs.map((doc) => doc.data());
-    let docNames = snapshot.docs.map((doc) => doc.id);
-    docs.forEach((element) => {
-      for (var key in element) {
-        if (key == "favorite") {
-          if (element[key] == "heart") {
-            myArr.push(docNames[index]);
+    if (
+      firebase.auth().currentUser != null &&
+      firebase.auth().currentUser != undefined
+    ) {
+      const snapshot = await firebase
+        .firestore()
+        .collection("users")
+        .doc(`${firebase.auth().currentUser.email}`)
+        .collection("reviews")
+        .get();
+      let docs = snapshot.docs.map((doc) => doc.data());
+      let docNames = snapshot.docs.map((doc) => doc.id);
+      docs.forEach((element) => {
+        for (var key in element) {
+          if (key == "favorite") {
+            if (element[key] == "heart") {
+              myArr.push(docNames[index]);
+            }
           }
         }
-      }
-      index += 1;
-    });
-    setFavorites(myArr);
+        index += 1;
+      });
+      setFavorites(myArr);
 
-    var names = await getNames();
-    var cover = await getCover();
-    var price = await getPrice();
-    var phoneNum = await getPhoneNumbers();
-    var photos = await getPhotos();
-    var restCoords = await getRestaurantCoords();
-    var restLoc = await getRestaurantLoc();
-    var reviewCount = await getReviewCount();
-    var rating = await getRating();
-    var tags = await getTags();
-    var transactions = await getTransactions();
-    var url = await getYelpUrl();
-    var userLoc = await getUserLocation();
+      var names = await getNames();
+      var cover = await getCover();
+      var price = await getPrice();
+      var phoneNum = await getPhoneNumbers();
+      var photos = await getPhotos();
+      var restCoords = await getRestaurantCoords();
+      var restLoc = await getRestaurantLoc();
+      var reviewCount = await getReviewCount();
+      var rating = await getRating();
+      var tags = await getTags();
+      var transactions = await getTransactions();
+      var url = await getYelpUrl();
+      var userLoc = await getUserLocation();
 
-    var coverArr = [];
-    var priceArr = [];
-    var phoneArr = [];
-    var photoArr = [];
-    var coordsArr = [];
-    var locArr = [];
-    var countArr = [];
-    var ratingArr = [];
-    var tagArr = [];
-    var transactionsArr = [];
-    var urlArr = [];
+      var coverArr = [];
+      var priceArr = [];
+      var phoneArr = [];
+      var photoArr = [];
+      var coordsArr = [];
+      var locArr = [];
+      var countArr = [];
+      var ratingArr = [];
+      var tagArr = [];
+      var transactionsArr = [];
+      var urlArr = [];
 
-    setNameList(names);
-    myArr.forEach((element) => {
-      let index = names.indexOf(element);
-      coverArr.push(cover[index]);
-      priceArr.push(price[index]);
-      phoneArr.push(phoneNum[index]);
-      photoArr.push(photos[index]);
-      coordsArr.push(restCoords[index]);
-      locArr.push(restLoc[index]);
-      countArr.push(reviewCount[index]);
-      ratingArr.push(rating[index]);
-      tagArr.push(tags[index]);
-      transactionsArr.push(transactions[index]);
-      urlArr.push(url[index]);
-    });
+      setNameList(names);
+      myArr.forEach((element) => {
+        let index = names.indexOf(element);
+        coverArr.push(cover[index]);
+        priceArr.push(price[index]);
+        phoneArr.push(phoneNum[index]);
+        photoArr.push(photos[index]);
+        coordsArr.push(restCoords[index]);
+        locArr.push(restLoc[index]);
+        countArr.push(reviewCount[index]);
+        ratingArr.push(rating[index]);
+        tagArr.push(tags[index]);
+        transactionsArr.push(transactions[index]);
+        urlArr.push(url[index]);
+      });
 
-    setFavCover(coverArr);
-    setFavPrice(priceArr);
-    setFavPhoneNumber(phoneArr);
-    setFavPhotos(photoArr);
-    setFavRestCoords(coordsArr);
-    setFavRestLoc(locArr);
-    setFavReviewCount(countArr);
-    setFavRating(ratingArr);
-    setFavTags(tagArr);
-    setFavTransactions(transactionsArr);
-    setFavURl(urlArr);
-    setUserLocation(userLoc);
+      setFavCover(coverArr);
+      setFavPrice(priceArr);
+      setFavPhoneNumber(phoneArr);
+      setFavPhotos(photoArr);
+      setFavRestCoords(coordsArr);
+      setFavRestLoc(locArr);
+      setFavReviewCount(countArr);
+      setFavRating(ratingArr);
+      setFavTags(tagArr);
+      setFavTransactions(transactionsArr);
+      setFavURl(urlArr);
+      setUserLocation(userLoc);
+    }
   }
 
   firebase.auth().onAuthStateChanged((userAuth) => {
