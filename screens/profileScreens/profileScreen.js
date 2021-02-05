@@ -18,6 +18,7 @@ import RootNavigation from "../../config/RootNavigation";
 import Colors from "../../constants/Colors";
 import { firebaseConfig } from "../../constants/secret";
 import RestaurantCard from "../../components/restaurantCard";
+import { Ionicons } from "@expo/vector-icons";
 import { ScrollView, TapGestureHandler } from "react-native-gesture-handler";
 import {
   getCover,
@@ -66,7 +67,7 @@ const ProfileScreen = (props) => {
   const [favTags, setFavTags] = useState([]);
   const [favTransactions, setFavTransactions] = useState([]);
   const [userLocation, setUserLocation] = useState([]);
-
+  const [passVisible, setPassVisible] = useState("eye-off-outline");
   class LoginInput extends React.Component {
     constructor() {
       super();
@@ -135,16 +136,34 @@ const ProfileScreen = (props) => {
             placeholderTextColor={Colors.darkGrey}
             autoCapitalize="none"
           />
-          <TextInput
-            onChangeText={this.update}
-            value={this.state.value}
-            style={styles.input}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            placeholder="enter password"
-            secureTextEntry={true}
-            placeholderTextColor={Colors.darkGrey}
-          />
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              onChangeText={this.update}
+              value={this.state.value}
+              style={styles.input}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              placeholder="enter password"
+              secureTextEntry={passVisible == "eye-off-outline" ? true : false}
+              placeholderTextColor={Colors.darkGrey}
+            />
+            <TouchableOpacity
+              style={{
+                alignSelf: "center",
+                justifyContent: "center",
+                marginLeft: 5,
+              }}
+              onPress={() => {
+                if (passVisible == "eye-off-outline") {
+                  setPassVisible("eye-outline");
+                } else {
+                  setPassVisible("eye-off-outline");
+                }
+              }}
+            >
+              <Ionicons name={passVisible} size={20} />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity
             style={{
               ...styles.closedButton,
