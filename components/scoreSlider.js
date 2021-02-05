@@ -17,7 +17,7 @@ export const ScoreSlider = (props) => {
             thumbStyle={styles.sliderThumb}
             trackStyle={styles.sliderTrack}
             disabled={true}
-            minimumTrackTintColor={Colors.darkGrey}
+            minimumTrackTintColor={Colors.primaryColor}
             maximumTrackTintColor={Colors.grey}
             maximumValue={100}
           />

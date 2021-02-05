@@ -10,6 +10,7 @@ import {
   Linking,
   Dimensions,
   Alert,
+  Button,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { getDistance } from "geolib";
@@ -21,7 +22,7 @@ import "firebase/firestore";
 import CatIcon from "../../components/catIcon";
 import Colors from "../../constants/Colors";
 import Divider from "../../components/divider";
-import { ScoreSlider } from "../../components/slider";
+import { ScoreSlider } from "../../components/scoreSlider";
 import CircleButton from "../../components/circleButton";
 import DefaultButton from "../../components/defaultButton";
 import SafetyCard from "../../components/safetyCard";
@@ -34,6 +35,7 @@ import OpenHours from "../../components/openHours";
 // import PhotoSlider from '../../components/photoSlider/photoSlider';
 import SafetyScore from "../../components/handSanatizer";
 import { callNumber } from "../../config/Call";
+import CommentStack from '../../components/commentStack';
 
 const RestaurantDetailScreen = (props) => {
   const [masks, setMasks] = useState(0);
@@ -361,26 +363,21 @@ const RestaurantDetailScreen = (props) => {
           <Divider />
 
           {/* Comments */}
+          {/* Only show 2 comments */}
           <View style={styles.card}>
             <Title text="Comments" />
-            {/* <Text>{comments}</Text> */}
-            <View
-              style={{
-                width: "80%",
-                borderRadius: 10,
-                alignSelf: "center",
-                borderColor: "black",
-                borderWidth: 0.2,
-              }}
-            >
               <FlatList
                 data={comments}
                 renderItem={({ item, index }) => {
-                  return <Text style={{ paddingLeft: 10 }}>{item}</Text>;
+                  return <CommentStack text={item} date="10/10/10" username="username"/>;
                 }}
                 keyExtractor={(item) => item}
               />
-            </View>
+              <View style={{ backgroundColor: Colors.darkGrey, padding: 2, }} />
+              <View style={{alignSelf:"flex-end"}}>
+                 <Button color="#000" title="All comments..."/>
+              </View>
+             
           </View>
 
           <Divider />
