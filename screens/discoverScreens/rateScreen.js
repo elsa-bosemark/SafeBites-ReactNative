@@ -57,7 +57,8 @@ const RateScreen = (props) => {
     setShields(Math.round(score));
   }
   function safetyValChanged(score) {
-    setSafety(Math.round(score) * 10);
+    setSafety(Math.round(score));
+    console.error(score);
   }
   const setData = async () => {
     let currentRestaurant = getCurrentRestaurant();
@@ -257,8 +258,8 @@ const RateScreen = (props) => {
             value={safety}
             onValueChange={safetyValChanged}
             text="Did you feel safe in the restaurant?"
-            maxVal={10}
-            step={1}
+            maxVal={100}
+            step={10}
           />
         </View>
         <Divider />
