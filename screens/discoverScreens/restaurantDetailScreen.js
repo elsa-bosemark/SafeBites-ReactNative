@@ -35,7 +35,7 @@ import OpenHours from "../../components/openHours";
 // import PhotoSlider from '../../components/photoSlider/photoSlider';
 import SafetyScore from "../../components/handSanatizer";
 import { callNumber } from "../../config/Call";
-import CommentStack from '../../components/commentStack';
+import CommentStack from "../../components/commentStack";
 
 const RestaurantDetailScreen = (props) => {
   const [masks, setMasks] = useState(0);
@@ -46,6 +46,8 @@ const RestaurantDetailScreen = (props) => {
   const [signs, setSigns] = useState("");
   const [feelSafe, setFeelSafe] = useState(0);
   const [comments, setComments] = useState([]);
+  const [commentsUsernames, setCommentsUsernames] = useState([]);
+  const [dates, setDates] = useState([]);
   const [userRating, setUserRating] = useState(0);
   const [calledOnce, setCalledOnce] = useState(false);
   const [favorite, setFavorite] = useState("heart-outline");
@@ -139,6 +141,9 @@ const RestaurantDetailScreen = (props) => {
 
   async function getComments() {
     var myArr = [];
+    var myOtherArr = [];
+    var dateArr = [];
+    var name;
     const snapshot = await firebase
       .firestore()
       .collection("reviews")
@@ -146,14 +151,31 @@ const RestaurantDetailScreen = (props) => {
       .collection("comments")
       .get();
 
-    let docs = snapshot.docs.map((doc) => doc.data());
-    docs.forEach((element) => {
-      for (var key in element) {
-        myArr.push(element[key]);
+    //let docs = snapshot.docs.map((doc) => doc.data());
+    //let docNames = snapshot.docs.map((doc) => doc.id);
+    snapshot.docs.map(async (doc) => {
+      let data = doc.data();
+      for (var key in data) {
+        myArr.push(data[key]);
+        dateArr.push(key);
+        let myDoc = await firebase
+          .firestore()
+          .collection("users")
+          .doc(doc.id)
+          .get();
+        if (myDoc.exists) {
+          name = myDoc.data().firstName + " " + myDoc.data().lastName;
+        } else {
+          //shouldn't get here, but just in case
+          name = "anonymous";
+        }
+        myOtherArr.push(name);
+        console.error(myOtherArr);
       }
     });
-
     setComments(myArr);
+    setCommentsUsernames(myOtherArr);
+    setDates(dateArr);
   }
   if (!calledOnce) {
     getComments();
@@ -366,18 +388,23 @@ const RestaurantDetailScreen = (props) => {
           {/* Only show 2 comments */}
           <View style={styles.card}>
             <Title text="Comments" />
-              <FlatList
-                data={comments}
-                renderItem={({ item, index }) => {
-                  return <CommentStack text={item} date="10/10/10" username="username"/>;
-                }}
-                keyExtractor={(item) => item}
-              />
-              <View style={{ backgroundColor: Colors.darkGrey, padding: 2, }} />
-              <View style={{alignSelf:"flex-end"}}>
-                 <Button color="#000" title="All comments..."/>
-              </View>
-             
+            <FlatList
+              data={comments}
+              renderItem={({ item, index }) => {
+                return (
+                  <CommentStack
+                    text={item}
+                    date={dates[index]}
+                    username={commentsUsernames[index]}
+                  />
+                );
+              }}
+              keyExtractor={(item) => item}
+            />
+            <View style={{ backgroundColor: Colors.darkGrey, padding: 2 }} />
+            <View style={{ alignSelf: "flex-end" }}>
+              <Button color="#000" title="All comments..." />
+            </View>
           </View>
 
           <Divider />
