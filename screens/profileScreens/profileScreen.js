@@ -52,7 +52,7 @@ const ProfileScreen = (props) => {
   const [signupVisible, setSignupVisible] = useState(false);
   const [num, setNum] = useState(0);
   const [favorites, setFavorites] = useState([]);
-
+  const [dates, setDates] = useState([]);
   const [nameList, setNameList] = useState([]);
   const [favPrice, setFavPrice] = useState([]);
   const [favCover, setFavCover] = useState([]);
@@ -348,6 +348,7 @@ const ProfileScreen = (props) => {
 
   async function getComments() {
     var myArr = [];
+    var myOtherArr = [];
     const snapshot = await firebase
       .firestore()
       .collection("users")
@@ -358,10 +359,12 @@ const ProfileScreen = (props) => {
     docs.forEach((element) => {
       for (var key in element) {
         myArr.push(element[key]);
+        myOtherArr.push(key);
       }
     });
 
     setComments(myArr);
+    setDates(myOtherArr);
   }
   async function getFavorites() {
     var myArr = [];
@@ -499,7 +502,7 @@ const ProfileScreen = (props) => {
             </View>
 
             <Button
-            style={styles.logoutButton}
+              style={styles.logoutButton}
               title="Logout"
               onPress={() => {
                 firebase
@@ -518,15 +521,21 @@ const ProfileScreen = (props) => {
             />
             <ScrollView>
               <Text style={styles.title}>Comments</Text>
-            
-                <FlatList
-                  data={comments}
-                  renderItem={({ item, index }) => {
-                    return <CommentCard text={item} date="10/10/10" username={name}/>;
-                  }}
-                  keyExtractor={(item) => item}
-                />
-          
+
+              <FlatList
+                data={comments}
+                renderItem={({ item, index }) => {
+                  return (
+                    <CommentCard
+                      text={item}
+                      date={dates[index]}
+                      username={name}
+                    />
+                  );
+                }}
+                keyExtractor={(item) => item}
+              />
+
               <Text style={styles.title}>Favorites</Text>
               <FlatList
                 data={favorites}
@@ -707,9 +716,9 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 5,
   },
-  logoutButton:{
-    color:'#000',
-  }
+  logoutButton: {
+    color: "#000",
+  },
 });
 
 export default ProfileScreen;
