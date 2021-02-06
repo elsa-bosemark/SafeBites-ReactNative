@@ -650,8 +650,17 @@ const ProfileScreen = (props) => {
               />
               <View>
                 {/* username */}
-                <Text style={styles.title}>{`hello, ${name}`}</Text>
-
+                <View style={styles.row}>
+                  <Text style={styles.title}>{`hello, ${name}`}</Text>
+                  <TouchableOpacity
+                    style={{ justifyContent: "center" }}
+                    onPress={() => {
+                      props.navigation.navigate("Settings");
+                    }}
+                  >
+                    <Ionicons name="settings-outline" size={25} />
+                  </TouchableOpacity>
+                </View>
                 <View style={[styles.greyCard, styles.row]}>
                   <View>
                     <Text style={styles.infoText}>reviews</Text>
@@ -664,25 +673,6 @@ const ProfileScreen = (props) => {
                 </View>
               </View>
             </View>
-
-            <Button
-              style={styles.logoutButton}
-              title="Logout"
-              onPress={() => {
-                firebase
-                  .auth()
-                  .signOut()
-                  .then(() => {
-                    Alert.alert("Successfully logged out", "See you later!");
-                    RootNavigation.navigate("Home");
-                  })
-                  .catch((error) => {
-                    // An error happened.
-                    console.error(error);
-                    Alert.alert("ERROR SIGNING OUT", error);
-                  });
-              }}
-            />
 
             <ScrollView>
               <Text style={styles.title}>Comments</Text>

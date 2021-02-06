@@ -10,6 +10,7 @@ import RestaurantCategoryScreen from "../screens/discoverScreens/restaurantCateg
 import RetaurantDetailScreen from "../screens/discoverScreens/restaurantDetailScreen";
 import ProfileScreen from "../screens/profileScreens/profileScreen";
 import Rate from "../screens/discoverScreens/rateScreen";
+import SettingsScreen from "../screens/profileScreens/settingsScreen";
 
 import Colors from "../constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -17,7 +18,9 @@ import { withNavigation } from "@react-navigation/compat";
 import RootNavigation from "./RootNavigation";
 import * as firebase from "firebase";
 import { Alert } from "react-native";
+
 import "firebase/auth";
+import Settings from "../screens/profileScreens/settingsScreen";
 
 var user = false;
 //Createing a navigation stack for screens
@@ -111,6 +114,16 @@ const RestaurantNavigator = createStackNavigator(
     },
   }
 );
+firebase
+  .auth()
+  .onAuthStateChanged((userAuth) => {
+    if (userAuth != null || userAuth != undefined) {
+      user = true;
+    } else {
+      user = false;
+    }
+  })
+  .bind(this);
 
 const ProfileNavigator = createStackNavigator(
   {
@@ -125,6 +138,9 @@ const ProfileNavigator = createStackNavigator(
         headerTintColor: "white",
       },
     },
+    Settings: {
+      screen: SettingsScreen,
+    },
   },
   {
     defaultNavigationOptions: {
@@ -135,16 +151,7 @@ const ProfileNavigator = createStackNavigator(
     },
   }
 );
-firebase
-  .auth()
-  .onAuthStateChanged((userAuth) => {
-    if (userAuth != null || userAuth != undefined) {
-      user = true;
-    } else {
-      user = false;
-    }
-  })
-  .bind(this);
+
 const ProfileTabNavigator = createBottomTabNavigator(
   {
     Discover: {
