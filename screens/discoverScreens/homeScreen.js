@@ -47,6 +47,7 @@ import {
 import { CATEGORIES } from "../../data/categoryData";
 import CategoryGridTile from "../../components/categoryGridTile";
 import RestaurantCard from "../../components/restaurantCard";
+import { setCalledOnce } from "../../config/updateData";
 //global variables (access by this.state and set by this.setState)
 export var didSetApi = false;
 state = {
@@ -685,6 +686,7 @@ class HomeScreen extends React.Component {
                 // takeout={false}
                 // delivery={true}
                 onSelect={() => {
+                  setCalledOnce(false);
                   this.props.navigation.navigate({
                     routeName: "RetaurantDetail",
                     params: {

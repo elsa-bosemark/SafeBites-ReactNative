@@ -20,6 +20,7 @@ import { getCurrentRestaurant } from "../../config/data";
 import Colors from "../../constants/Colors";
 import Divider from "../../components/divider";
 import DefaultButton from "../../components/defaultButton";
+import { getCalledOnce, setCalledOnce } from "../../config/updateData";
 
 const screen = Dimensions.get("window");
 const RateScreen = (props) => {
@@ -58,7 +59,6 @@ const RateScreen = (props) => {
   }
   function safetyValChanged(score) {
     setSafety(Math.round(score));
-    console.error(score);
   }
   const setData = async () => {
     let currentRestaurant = getCurrentRestaurant();
@@ -248,7 +248,10 @@ const RateScreen = (props) => {
           });
       }
     }
+
+    setCalledOnce(false);
   };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -596,7 +599,10 @@ const RateScreen = (props) => {
           onSelect={() => {
             //store in firebase
             setData();
-            props.navigation.goBack(); //go back
+            props.navigation.navigate("RetaurantDetail", {});
+            setCalledOnce(false);
+
+            //go back
           }}
         />
       </View>

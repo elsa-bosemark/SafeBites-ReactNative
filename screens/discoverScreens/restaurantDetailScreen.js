@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -36,6 +36,8 @@ import OpenHours from "../../components/openHours";
 import SafetyScore from "../../components/handSanatizer";
 import { callNumber } from "../../config/Call";
 import CommentStack from "../../components/commentStack";
+import { getCalledOnce, setCalledOnce } from "../../config/updateData";
+import { call } from "react-native-reanimated";
 
 const RestaurantDetailScreen = (props) => {
   const [masks, setMasks] = useState(0);
@@ -49,9 +51,9 @@ const RestaurantDetailScreen = (props) => {
   const [commentsUsernames, setCommentsUsernames] = useState([]);
   const [dates, setDates] = useState([]);
   const [userRating, setUserRating] = useState(0);
-  const [calledOnce, setCalledOnce] = useState(false);
   const [favorite, setFavorite] = useState("heart-outline");
   ("fav");
+  const [callOnce, setCallOnce] = useState(0);
   //getting all params
   const restIndex = props.navigation.getParam("restIndex");
   const restTitles = props.navigation.getParam("title");
@@ -170,14 +172,16 @@ const RestaurantDetailScreen = (props) => {
           name = "anonymous";
         }
         myOtherArr.push(name);
-        console.error(myOtherArr);
       }
     });
     setComments(myArr);
     setCommentsUsernames(myOtherArr);
     setDates(dateArr);
   }
-  if (!calledOnce) {
+
+  let that = getCalledOnce();
+  console.warn(that);
+  if (!that) {
     getComments();
     setCalledOnce(true);
     getData();
@@ -251,7 +255,6 @@ const RestaurantDetailScreen = (props) => {
             buttonColor={Colors.primaryColor}
             textColor="#fff"
             onSelect={() => {
-              setCalledOnce(false);
               props.navigation.navigate("Rate");
             }}
           />
@@ -320,7 +323,6 @@ const RestaurantDetailScreen = (props) => {
                   title="Call"
                   onSelect={() => {
                     // Linking.openURL(`tel://+14156068631`);
-                    // console.error(phoneNumber[restIndex]);
                     callNumber(phoneNumber[restIndex]);
                   }}
                 />

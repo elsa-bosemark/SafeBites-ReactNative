@@ -27,7 +27,9 @@ export const ScoreSlider = (props) => {
         </Text>
         <View style={{ ...styles.row, ...styles.center, ...{ flex: 1 } }}>
           <Ionicons name="person" size={20} color="grey" />
-          <Text style={styles.title}>{`${props.reviewCount}`}</Text>
+          <Text
+            style={(styles.title, { marginRight: 10 })}
+          >{`${props.reviewCount}`}</Text>
         </View>
       </View>
     </View>
@@ -39,16 +41,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
   },
   scoreContainer: {
     paddingBottom: 20,
-    width: "100%",
   },
   center: {
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
   },
   sliderThumb: {
     height: 0,
@@ -57,12 +56,10 @@ const styles = StyleSheet.create({
   sliderTrack: {
     height: 20,
     borderRadius: 20,
-    width: "100%",
   },
   slider: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "100%",
   },
   scoreSlider: {
     width: "70%",
@@ -73,11 +70,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "rubik",
     height: 40,
-    width: "100%",
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "100%",
   },
 });
