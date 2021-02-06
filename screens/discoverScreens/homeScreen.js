@@ -716,7 +716,7 @@ class HomeScreen extends React.Component {
           // size="large"
           keyExtractor={(item) => item}
           refreshing={false}
-          // style={{ marginBottom: 350 }}
+          style={{ height: "40%" }}
         />
       </SafeAreaView>
     );
