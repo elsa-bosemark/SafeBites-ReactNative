@@ -51,6 +51,7 @@ const ProfileScreen = (props) => {
   const [user, setUser] = useState(false);
   const [loginVisible, setLoginVisible] = useState(false);
   const [signupVisible, setSignupVisible] = useState(false);
+  const [forgotPassVisible, setForgotPassVisible] = useState(false);
   const [num, setNum] = useState(0);
   const [favorites, setFavorites] = useState([]);
   const [dates, setDates] = useState([]);
@@ -68,6 +69,7 @@ const ProfileScreen = (props) => {
   const [favTransactions, setFavTransactions] = useState([]);
   const [userLocation, setUserLocation] = useState([]);
   const [passVisible, setPassVisible] = useState("eye-off-outline");
+
   class LoginInput extends React.Component {
     constructor() {
       super();
@@ -105,6 +107,7 @@ const ProfileScreen = (props) => {
           .then((user) => {
             setLoginVisible(false);
             setSignupVisible(false);
+            setForgotPassVisible(false);
 
             Alert.alert(
               "Successfully Signed Up!",
@@ -184,10 +187,23 @@ const ProfileScreen = (props) => {
             onPress={() => {
               setLoginVisible(false);
               setSignupVisible(true);
+              setForgotPassVisible(false);
             }}
           >
             <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
               Don't have an account? Sign up here!
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ marginTop: 10 }}
+            onPress={() => {
+              setLoginVisible(false);
+              setSignupVisible(false);
+              setForgotPassVisible(true);
+            }}
+          >
+            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+              Forgot password?
             </Text>
           </TouchableOpacity>
         </View>
@@ -246,6 +262,7 @@ const ProfileScreen = (props) => {
           .then(() => {
             setLoginVisible(false);
             setSignupVisible(false);
+            setForgotPassVisible(false);
 
             var myDB = firebase.firestore();
             var doc = myDB.collection("users").doc(`${email}`).get();
@@ -361,12 +378,14 @@ const ProfileScreen = (props) => {
             onPress={() => {
               setLoginVisible(true);
               setSignupVisible(false);
+              setForgotPassVisible(false);
             }}
           >
             <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
               Have an account already? Login here!
             </Text>
           </TouchableOpacity>
+          <View style={{ height: 10 }} />
         </View>
       );
     }
@@ -380,6 +399,109 @@ const ProfileScreen = (props) => {
       .get();
     if (doc.exists) {
       setName(doc.data().firstName + " " + doc.data().lastName);
+    }
+  }
+
+  class ForgotPassword extends React.Component {
+    constructor() {
+      super();
+      this.state = { email: "", error: "" };
+    }
+
+    updateEmail = (e) => {
+      this.setState({ email: e });
+    };
+
+    validate = (text) => {
+      console.log(text);
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (reg.test(text) === false) {
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    resetPassword = (email) => {
+      const validator = this.validate(email);
+      if (email == "") {
+        this.setState({ error: "please fill in all fields" });
+      } else if (!validator) {
+        this.setState({ error: "please enter a valid email address" });
+      } else {
+        var auth = firebase.auth();
+        var emailAddress = this.state.email;
+        this.setState({ error: "" });
+        auth
+          .sendPasswordResetEmail(emailAddress)
+          .then(function () {
+            Alert.alert(
+              "Success!",
+              "An email was sent to you. Please reset your password in the email and come back to login! Thanks"
+            );
+          })
+          .catch(function (error) {
+            this.setState({ error: error });
+            Alert.alert(
+              "Oops!",
+              "Sorry, there was an error. Please try again later."
+            );
+          });
+      }
+    };
+    render() {
+      return (
+        <View>
+          <TextInput
+            onChangeText={this.updateEmail}
+            value={this.state.email}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="enter email"
+            placeholderTextColor={Colors.darkGrey}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity
+            style={{
+              ...styles.closedButton,
+              backgroundColor: Colors.primaryColor,
+              width: 200,
+            }}
+            onPress={() => this.resetPassword(this.state.email)}
+          >
+            <Text style={styles.textStyle}>Submit</Text>
+          </TouchableOpacity>
+          <View style={{ height: 10 }} />
+          <Text style={(styles.textStyle, { color: "#c90404" })}>
+            {this.state.error}
+          </Text>
+
+          <View style={{ height: 20 }} />
+          <TouchableOpacity
+            onPress={() => {
+              setLoginVisible(false);
+              setSignupVisible(true);
+              setForgotPassVisible(false);
+            }}
+          >
+            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+              Don't have an account? Sign up here!
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ marginTop: 10 }}
+            onPress={() => {
+              setLoginVisible(true);
+              setSignupVisible(false);
+              setForgotPassVisible(false);
+            }}
+          >
+            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+              Did you remember your password? Login here!
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
     }
   }
 
@@ -561,6 +683,7 @@ const ProfileScreen = (props) => {
                   });
               }}
             />
+
             <ScrollView>
               <Text style={styles.title}>Comments</Text>
 
@@ -669,6 +792,18 @@ const ProfileScreen = (props) => {
             <Spacer />
             <View style={{ height: 10 }} />
             <SignupInput />
+          </View>
+        );
+      } else if (forgotPassVisible) {
+        return (
+          <View style={styles.centeredView}>
+            <Text style={styles.title}>
+              You must login to have a profile page
+            </Text>
+            <Text style={styles.title}>Forgot Password?</Text>
+            <Spacer />
+            <View style={{ height: 10 }} />
+            <ForgotPassword />
           </View>
         );
       } else {
