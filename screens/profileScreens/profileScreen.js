@@ -98,9 +98,9 @@ const ProfileScreen = (props) => {
     login = (email, password) => {
       const validator = this.validate(email);
       if (email == "" || password == "") {
-        this.setState({ error: "please fill in all fields" });
+        this.setState({ error: "Please fill in all fields" });
       } else if (!validator) {
-        this.setState({ error: "please enter a valid email address" });
+        this.setState({ error: "Please enter a valid email address" });
       } else {
         firebase
           .auth()
@@ -136,26 +136,26 @@ const ProfileScreen = (props) => {
             value={this.state.email}
             style={styles.input}
             underlineColorAndroid="transparent"
-            placeholder="enter email"
-            placeholderTextColor={Colors.darkGrey}
+            placeholder="Email"
+            placeholderTextColor={"grey"}
             autoCapitalize="none"
           />
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ ...{ flexDirection: "row", justifyContent: "space-between", }, ...styles.input }}>
+
             <TextInput
               onChangeText={this.update}
               value={this.state.value}
-              style={styles.input}
+
               underlineColorAndroid="transparent"
               autoCapitalize="none"
-              placeholder="enter password"
+              placeholder="Password"
               secureTextEntry={passVisible == "eye-off-outline" ? true : false}
-              placeholderTextColor={Colors.darkGrey}
+              placeholderTextColor={"grey"}
             />
             <TouchableOpacity
               style={{
                 alignSelf: "center",
-                justifyContent: "center",
-                marginLeft: 5,
+                marginRight: 20,
               }}
               onPress={() => {
                 if (passVisible == "eye-off-outline") {
@@ -191,7 +191,7 @@ const ProfileScreen = (props) => {
               setForgotPassVisible(false);
             }}
           >
-            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+            <Text style={(styles.textStyle, { color: "grey" })}>
               Don't have an account? Sign up here!
             </Text>
           </TouchableOpacity>
@@ -203,7 +203,7 @@ const ProfileScreen = (props) => {
               setForgotPassVisible(true);
             }}
           >
-            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+            <Text style={(styles.textStyle, { color: "grey" })}>
               Forgot password?
             </Text>
           </TouchableOpacity>
@@ -253,9 +253,9 @@ const ProfileScreen = (props) => {
     signup = (email, password, firstName, lastName) => {
       const validator = this.validate(email);
       if (email == "" || password == "") {
-        this.setState({ error: "please fill in all fields" });
+        this.setState({ error: "Please fill in all fields" });
       } else if (!validator) {
-        this.setState({ error: "please enter a valid email address" });
+        this.setState({ error: "Please enter a valid email address" });
       } else {
         firebase
           .auth()
@@ -304,8 +304,8 @@ const ProfileScreen = (props) => {
             style={styles.input}
             underlineColorAndroid="transparent"
             autoCapitalize="none"
-            placeholder="enter first name"
-            placeholderTextColor={Colors.darkGrey}
+            placeholder="First Name"
+            placeholderTextColor={"grey"}
           />
           <TextInput
             onChangeText={this.updateLastName}
@@ -313,34 +313,34 @@ const ProfileScreen = (props) => {
             style={styles.input}
             underlineColorAndroid="transparent"
             autoCapitalize="none"
-            placeholder="enter last name"
-            placeholderTextColor={Colors.darkGrey}
+            placeholder="Last Name"
+            placeholderTextColor={"grey"}
           />
           <TextInput
             onChangeText={this.updateEmail}
             value={this.state.email}
             style={styles.input}
             underlineColorAndroid="transparent"
-            placeholder="enter email"
-            placeholderTextColor={Colors.darkGrey}
+            placeholder="Email"
+            placeholderTextColor={"grey"}
             autoCapitalize="none"
           />
-          <View style={styles.row}>
+          <View style={{ ...{ flexDirection: "row", justifyContent: "space-between", }, ...styles.input }}>
             <TextInput
               onChangeText={this.updatePassword}
               value={this.state.value}
-              style={styles.input}
+             
               underlineColorAndroid="transparent"
               autoCapitalize="none"
-              placeholder="enter password"
-              placeholderTextColor={Colors.darkGrey}
+              placeholder="Password"
+              placeholderTextColor={"grey"}
               secureTextEntry={passVisible == "eye-off-outline" ? true : false}
             />
             <TouchableOpacity
               style={{
                 alignSelf: "center",
                 justifyContent: "center",
-                marginLeft: 5,
+                marginRight: 10,
               }}
               onPress={() => {
                 if (passVisible == "eye-off-outline") {
@@ -382,7 +382,7 @@ const ProfileScreen = (props) => {
               setForgotPassVisible(false);
             }}
           >
-            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+            <Text style={(styles.textStyle, { color: "grey" })}>
               Have an account already? Login here!
             </Text>
           </TouchableOpacity>
@@ -426,9 +426,9 @@ const ProfileScreen = (props) => {
     resetPassword = (email) => {
       const validator = this.validate(email);
       if (email == "") {
-        this.setState({ error: "please fill in all fields" });
+        this.setState({ error: "Please fill in all fields" });
       } else if (!validator) {
-        this.setState({ error: "please enter a valid email address" });
+        this.setState({ error: "Please enter a valid email address" });
       } else {
         var auth = firebase.auth();
         var emailAddress = this.state.email;
@@ -458,8 +458,8 @@ const ProfileScreen = (props) => {
             value={this.state.email}
             style={styles.input}
             underlineColorAndroid="transparent"
-            placeholder="enter email"
-            placeholderTextColor={Colors.darkGrey}
+            placeholder="Email"
+            placeholderTextColor={"grey"}
             autoCapitalize="none"
           />
           <TouchableOpacity
@@ -485,7 +485,7 @@ const ProfileScreen = (props) => {
               setForgotPassVisible(false);
             }}
           >
-            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+            <Text style={(styles.textStyle, { color: "grey" })}>
               Don't have an account? Sign up here!
             </Text>
           </TouchableOpacity>
@@ -497,7 +497,7 @@ const ProfileScreen = (props) => {
               setForgotPassVisible(false);
             }}
           >
-            <Text style={(styles.textStyle, { color: Colors.darkGrey })}>
+            <Text style={(styles.textStyle, { color: "grey" })}>
               Did you remember your password? Login here!
             </Text>
           </TouchableOpacity>
@@ -675,9 +675,9 @@ const ProfileScreen = (props) => {
               </View>
             </View>
 
-            <View style={{...styles.row,...styles.tabSlider}}>
-              <TabSlider icon="heart" activeIconColor="red" title="Favorites" active={true} onSelect={()=>{}} />
-              <TabSlider icon="person" activeIconColor={Colors.primaryColor} title="Comments" active={false} onSelect={()=>{}} />
+            <View style={{ ...styles.row, ...styles.tabSlider }}>
+              <TabSlider icon="heart" activeIconColor="red" title="Favorites" active={true} onSelect={() => { }} />
+              <TabSlider icon="person" activeIconColor={Colors.primaryColor} title="Comments" active={false} onSelect={() => { }} />
               {/* <Text style={styles.title}>Favorites</Text>
               <Text style={styles.title}>Comments</Text> */}
             </View>
@@ -769,10 +769,10 @@ const ProfileScreen = (props) => {
       if (loginVisible) {
         return (
           <View style={styles.centeredView}>
-            <Text style={styles.title}>
+            <Text style={styles.title}>Login</Text>
+            <Text style={{ fontSize: 15 }}>
               You must login to see your profile page
             </Text>
-            <Text style={styles.title}>Login</Text>
             <Spacer />
             <View style={{ height: 10 }} />
             <LoginInput />
@@ -781,10 +781,11 @@ const ProfileScreen = (props) => {
       } else if (signupVisible) {
         return (
           <View style={styles.centeredView}>
-            <Text style={styles.title}>
+            <Text style={styles.title}>Signup</Text>
+            <Text style={{ fontSize: 15 }}>
               You must login to see your profile page
             </Text>
-            <Text style={styles.title}>Signup</Text>
+
             <Spacer />
             <View style={{ height: 10 }} />
             <SignupInput />
@@ -793,10 +794,11 @@ const ProfileScreen = (props) => {
       } else if (forgotPassVisible) {
         return (
           <View style={styles.centeredView}>
-            <Text style={styles.title}>
+            <Text style={styles.title}>Forgot Password?</Text>
+            <Text style={{ fontSize: 15 }}>
               You must login to see your profile page
             </Text>
-            <Text style={styles.title}>Forgot Password?</Text>
+
             <Spacer />
             <View style={{ height: 10 }} />
             <ForgotPassword />
@@ -882,18 +884,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    height: 40,
-    borderColor: Colors.grey,
-    borderWidth: 1,
-    paddingLeft: 10,
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 40,
+    paddingLeft: 20,
     width: 300,
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom: 10,
   },
   logoutButton: {
     color: "#000",
   },
-  tabSlider:{
-    justifyContent:"space-around",
+  tabSlider: {
+    justifyContent: "space-around",
   }
 });
 
