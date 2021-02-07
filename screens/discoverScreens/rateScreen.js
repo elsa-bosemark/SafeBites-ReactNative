@@ -361,7 +361,7 @@ const RateScreen = (props) => {
 
         <Divider />
 
-        <View style={{ ...styles.card, flex: 1, flexShrink: 1 }}>
+        {/* <View style={{ ...styles.card, flex: 1, flexShrink: 1 }}>
           <Text style={styles.title}>Customer Experience</Text>
           <Text style={styles.rulesText}>How did you order?</Text>
           <View
@@ -565,7 +565,7 @@ const RateScreen = (props) => {
 
           <Spacer height={20} />
         </View>
-        <Divider />
+        <Divider /> */}
         <View style={styles.card}>
           <Text style={styles.title}>Comment</Text>
           <View

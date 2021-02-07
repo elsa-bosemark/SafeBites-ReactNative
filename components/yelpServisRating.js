@@ -40,7 +40,6 @@ const YelpServisRating = props => {
 
     }
 
-
     return (
         <TouchableOpacity onPress={props.onSelect}>
             <View style={styles.center} >
