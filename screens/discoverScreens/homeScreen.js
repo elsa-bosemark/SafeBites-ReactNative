@@ -798,7 +798,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     padding: 30,
-    backgroundColor: "green",
+    backgroundColor: Colors.accentColor,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -807,7 +807,7 @@ const styles = StyleSheet.create({
     width: "50%",
     padding: 10,
     backgroundColor: "white",
-    borderRadius: 5,
+    borderRadius: 20,
   }
 
 });

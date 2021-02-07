@@ -13,6 +13,7 @@ const SettingCard = props => {
                 <Ionicons name="heart" />
             </View>
         </TouchableOpacity>
+        
     );
 }
 

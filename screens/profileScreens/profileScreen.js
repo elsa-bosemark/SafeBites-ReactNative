@@ -340,7 +340,7 @@ const ProfileScreen = (props) => {
               style={{
                 alignSelf: "center",
                 justifyContent: "center",
-                marginRight: 10,
+                marginRight: 20,
               }}
               onPress={() => {
                 if (passVisible == "eye-off-outline") {

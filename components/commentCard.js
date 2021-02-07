@@ -19,10 +19,9 @@ const CommentCard = (props) => {
             })
           }
         >
-          test
-          {/* {" "} */}
+          {" "}
           {/* This seems to be causeing error but it did work once */}
-          {/* {props.date} */}
+          {props.date}
           {/* {props.date.slice(0,props.date.length-23)} */}
         </Text>
       </View>
