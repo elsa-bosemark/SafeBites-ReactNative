@@ -625,22 +625,33 @@ class HomeScreen extends React.Component {
           </View>
         </Modal>
 
-        <Text style={styles.title}>Categories</Text>
+
+        {/* SCREEN STARTS */}
+        {/* BANNER */}
+        <View style={styles.banner}>
+          <Text style={{color:"white", textAlign:"center", fontSize:18, paddingBottom:10}}>See how well restaurants are protecting YOU from COVID</Text>
+          <TouchableOpacity style={{ ...styles.row, ...styles.searchButton }} onPress={() => {
+            //New screen with all the rest in a flatlist
+          }}>
+            <Ionicons name="search" size={15} />
+            <Text>Search</Text>
+
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.title}>Safety Categories</Text>
 
         <FlatList
-          // horizontal
+          horizontal
           pagingEnabled={true}
           showsHorizontalScrollIndicator={false}
           data={CATEGORIES}
           renderItem={renderGridItem}
-          numColumns={2}
-          // scrollEnabled={false}
-          // nestedScrollEnabled={true}
           keyExtractor={(item) => item}
         />
 
-        <Text style={styles.title}>Find</Text>
-        <View style={styles.searchBar}>
+        <Text style={styles.title}>Near You</Text>
+        {/* <View style={styles.searchBar}>
           <SearchBar
             placeholder="Search..."
             onChangeText={this.updateSearch}
@@ -655,15 +666,15 @@ class HomeScreen extends React.Component {
               backgroundColor: "white",
             }}
           />
-        </View>
+        </View> */}
 
         <ActivityIndicator animating={this.state.loading} />
 
         <FlatList
-          // horizontal
+          horizontal
           data={
             this.state.filteredRestaurants &&
-            this.state.filteredRestaurants.length > 0
+              this.state.filteredRestaurants.length > 0
               ? this.state.filteredRestaurants
               : this.state.title
           }
@@ -682,9 +693,6 @@ class HomeScreen extends React.Component {
                   this.state.restaurantCoordinates[actualIndex(item)]
                 }
                 userCoordinates={this.state.location}
-                // curbsidePickup={true}
-                // takeout={false}
-                // delivery={true}
                 onSelect={() => {
                   setCalledOnce(false);
                   this.props.navigation.navigate({
@@ -713,7 +721,6 @@ class HomeScreen extends React.Component {
               />
             );
           }}
-          // size="large"
           keyExtractor={(item) => item}
           refreshing={false}
           style={{ height: "40%" }}
@@ -733,7 +740,8 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "rubik",
     fontSize: 20,
-    padding: 20,
+    paddingLeft:20,
+    paddingTop:10,
   },
   searchBar: {
     padding: Platform.OS === "android" ? 10 : 0,
@@ -785,5 +793,22 @@ const styles = StyleSheet.create({
     width: 200,
     marginTop: 5,
   },
+  row: {
+    flexDirection: "row"
+  },
+  banner: {
+    padding: 30,
+    backgroundColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  searchButton: {
+    justifyContent: "space-around",
+    width: "50%",
+    padding: 10,
+    backgroundColor: "white",
+    borderRadius: 5,
+  }
+
 });
 export default HomeScreen;

@@ -193,7 +193,7 @@ const RestaurantCard = (props) => {
 const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
-    margin: 10,
+    marginLeft: 10,
     borderRadius: 10,
     overflow: "hidden",
   },
@@ -207,15 +207,12 @@ const styles = StyleSheet.create({
     fontFamily: "rubik",
   },
   title: {
-    flex: 1,
     alignItems: "flex-start",
     paddingTop: 10,
     fontSize: 20,
   },
   image: {
-    flex: 1,
-    width: "40%",
-    // height: 150,
+    width: 150,
     marginRight: 10,
     borderRadius: 10,
     alignItems: "flex-start",

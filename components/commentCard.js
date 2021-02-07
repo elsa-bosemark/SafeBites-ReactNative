@@ -5,6 +5,7 @@ import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 const CommentCard = (props) => {
+  
   return (
     <View style={styles.container}>
       <View style={{ ...styles.row, ...styles.spacer }}>
@@ -14,23 +15,24 @@ const CommentCard = (props) => {
             (styles.smallText,
             {
               textAlign: "right",
-              marginLeft: 100,
+              marginLeft: 50,
             })
           }
         >
           {" "}
-          {props.date}
+          {/* This seems to be causeing error but it did work once */}
+          {props.date.slice(0,props.date.length-23)}
         </Text>
       </View>
       <Text style={styles.mediumText}>{props.text}</Text>
       <View style={{ ...styles.row, ...styles.rateContainer }}>
         <View style={styles.row}>
           <Ionicons style={{ color: "#fff" }} name="thumbs-up" size="18" />
-          <Text style={{ fontSize: 18, color: "#fff" }}> 10</Text>
+          <Text style={{ fontSize: 18, color: "#fff" }}>?</Text>
         </View>
         <View style={styles.row}>
           <Ionicons style={{ color: "#fff" }} name="thumbs-down" size="18" />
-          <Text style={{ fontSize: 18, color: "#fff" }}> 10</Text>
+          <Text style={{ fontSize: 18, color: "#fff" }}>?</Text>
         </View>
       </View>
     </View>

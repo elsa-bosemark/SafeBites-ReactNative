@@ -38,6 +38,7 @@ import {
 import Spacer from "../../components/spacer";
 import CommentCard from "../../components/commentCard";
 import DefaultButton from "../../components/defaultButton";
+import TabSlider from "../../components/tabSlider";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -652,19 +653,19 @@ const ProfileScreen = (props) => {
                 {/* username */}
                 <View style={styles.row}>
                   <Text style={styles.title}>{`hello, ${name}`}</Text>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     style={{ justifyContent: "center" }}
                     onPress={() => {
                       props.navigation.navigate("Settings");
                     }}
                   >
                     <Ionicons name="settings-outline" size={25} />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
                 <View style={[styles.greyCard, styles.row]}>
                   <View>
-                    <Text style={styles.infoText}>reviews</Text>
-                    <Text style={styles.num}>{comments.length - 1}</Text>
+                    <Text style={styles.infoText}>comments</Text>
+                    <Text style={styles.num}>{comments.length}</Text>
                   </View>
                   <View>
                     <Text style={styles.infoText}>photos</Text>
@@ -674,88 +675,93 @@ const ProfileScreen = (props) => {
               </View>
             </View>
 
-            <ScrollView>
-              <Text style={styles.title}>Comments</Text>
+            <View style={{...styles.row,...styles.tabSlider}}>
+              <TabSlider icon="heart" activeIconColor="red" title="Favorites" active={true} onSelect={()=>{}} />
+              <TabSlider icon="person" activeIconColor={Colors.primaryColor} title="Comments" active={false} onSelect={()=>{}} />
+              {/* <Text style={styles.title}>Favorites</Text>
+              <Text style={styles.title}>Comments</Text> */}
+            </View>
 
-              <FlatList
-                data={comments}
-                renderItem={({ item, index }) => {
+
+            <FlatList
+              data={comments}
+              renderItem={({ item, index }) => {
+                return (
+                  <CommentCard
+                    text={item}
+                    date={dates[index]}
+                    username={name}
+                  />
+                );
+              }}
+              keyExtractor={(item) => item}
+            />
+
+            {/* Favorites */}
+            <FlatList
+              data={favorites}
+              renderItem={({ item, index }) => {
+                var coordArray = [];
+                favRestCoords.forEach((element) => {
+                  coordArray.push(Object.values(element));
+                });
+
+                if (
+                  favRestCoords != null &&
+                  favRestCoords != undefined &&
+                  favRestCoords.length > 0
+                ) {
                   return (
-                    <CommentCard
-                      text={item}
-                      date={dates[index]}
-                      username={name}
+                    <RestaurantCard
+                      title={item}
+                      price={favPrice[index]}
+                      cover={favCover[index]}
+                      transactions={favTransactions[index]}
+                      restaurantCoordinates={coordArray[index]}
+                      userCoordinates={userLocation}
+                      onSelect={() => {
+                        props.navigation.navigate({
+                          routeName: "RetaurantDetail",
+                          params: {
+                            //pass restaurant DATA
+                            restIndex: index,
+                            title: favorites,
+                            price: favPrice,
+                            cover: favCover,
+                            transactions: favTransactions,
+                            restaurantCoordinates: coordArray,
+                            userCoordinates: userLocation,
+                            phoneNumber: favPhoneNumber,
+                            yelpUrl: favURL,
+                            yelpRating: favRating,
+                            yelpReviewCount: favReviewCount,
+                            photos: favPhotos,
+                            tags: [favTags[index]],
+                          },
+                        });
+                      }}
                     />
                   );
-                }}
-                keyExtractor={(item) => item}
-              />
+                } else {
+                  return (
+                    <RestaurantCard
+                      title={item}
+                      price={favPrice[index]}
+                      cover={favCover[index]}
+                      transactions={favTransactions[index]}
+                      restaurantCoordinates={[0, 0]}
+                      userCoordinates={userLocation}
+                      onSelect={() => {
+                        alert("todo!");
+                      }}
+                    />
+                  );
+                }
+              }}
+              keyExtractor={(item) => item}
+            />
+            <View style={{ height: 500 }}></View>
 
-              <Text style={styles.title}>Favorites</Text>
-              <FlatList
-                data={favorites}
-                renderItem={({ item, index }) => {
-                  var coordArray = [];
-                  favRestCoords.forEach((element) => {
-                    coordArray.push(Object.values(element));
-                  });
-
-                  if (
-                    favRestCoords != null &&
-                    favRestCoords != undefined &&
-                    favRestCoords.length > 0
-                  ) {
-                    return (
-                      <RestaurantCard
-                        title={item}
-                        price={favPrice[index]}
-                        cover={favCover[index]}
-                        transactions={favTransactions[index]}
-                        restaurantCoordinates={coordArray[index]}
-                        userCoordinates={userLocation}
-                        onSelect={() => {
-                          props.navigation.navigate({
-                            routeName: "RetaurantDetail",
-                            params: {
-                              //pass restaurant DATA
-                              restIndex: index,
-                              title: favorites,
-                              price: favPrice,
-                              cover: favCover,
-                              transactions: favTransactions,
-                              restaurantCoordinates: coordArray,
-                              userCoordinates: userLocation,
-                              phoneNumber: favPhoneNumber,
-                              yelpUrl: favURL,
-                              yelpRating: favRating,
-                              yelpReviewCount: favReviewCount,
-                              photos: favPhotos,
-                              tags: [favTags[index]],
-                            },
-                          });
-                        }}
-                      />
-                    );
-                  } else {
-                    return (
-                      <RestaurantCard
-                        title={item}
-                        price={favPrice[index]}
-                        cover={favCover[index]}
-                        transactions={favTransactions[index]}
-                        restaurantCoordinates={[0, 0]}
-                        userCoordinates={userLocation}
-                        onSelect={() => {
-                          alert("todo!");
-                        }}
-                      />
-                    );
-                  }
-                }}
-                keyExtractor={(item) => item}
-              />
-              <View style={{ height: 500 }}></View>
-            </ScrollView>
           </View>
         </SafeAreaView>
       );
@@ -764,7 +770,7 @@ const ProfileScreen = (props) => {
         return (
           <View style={styles.centeredView}>
             <Text style={styles.title}>
-              You must login to have a profile page
+              You must login to see your profile page
             </Text>
             <Text style={styles.title}>Login</Text>
             <Spacer />
@@ -776,7 +782,7 @@ const ProfileScreen = (props) => {
         return (
           <View style={styles.centeredView}>
             <Text style={styles.title}>
-              You must login to have a profile page
+              You must login to see your profile page
             </Text>
             <Text style={styles.title}>Signup</Text>
             <Spacer />
@@ -788,7 +794,7 @@ const ProfileScreen = (props) => {
         return (
           <View style={styles.centeredView}>
             <Text style={styles.title}>
-              You must login to have a profile page
+              You must login to see your profile page
             </Text>
             <Text style={styles.title}>Forgot Password?</Text>
             <Spacer />
@@ -886,6 +892,9 @@ const styles = StyleSheet.create({
   logoutButton: {
     color: "#000",
   },
+  tabSlider:{
+    justifyContent:"space-around",
+  }
 });
 
 export default ProfileScreen;

@@ -48,11 +48,6 @@ const RestaurantNavigator = createStackNavigator(
           backgroundColor: Colors.accentColor,
         },
         headerTintColor: "white",
-        // headerStyle: {
-        //     backgroundColor: Colors.lightPurple
-        // },
-        // headerTitle: '',
-        // headerTintColor: Colors.primaryColor
       },
     },
     RetaurantDetail: {
@@ -136,8 +131,35 @@ const ProfileNavigator = createStackNavigator(
           backgroundColor: Colors.primaryColor,
         },
         headerTintColor: "white",
+
+
+        headerRight: () => (
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={() => {
+              RootNavigation.navigate("Settings");
+              // props.navigation.navigate("Settings");
+            }}
+          >
+            <Ionicons
+              name="settings-outline"
+              size={25}
+              color="white"
+              style={{ marginRight: 10, marginBottom: 5 }}
+            />
+          </TouchableOpacity>
+        ),
       },
+
+
+
     },
+
     Settings: {
       screen: SettingsScreen,
     },
