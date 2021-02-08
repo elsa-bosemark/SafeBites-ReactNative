@@ -9,8 +9,8 @@ const SettingCard = props => {
     return (
         <TouchableOpacity style={styles.container} onPress={props.onSelect}>
             <View style={styles.row}>
-                <Text>{props.text}</Text>
-                <Ionicons name="heart" />
+                <Text style={{fontSize:18}}>{props.text}</Text>
+                <Ionicons name="ios-arrow-forward-outline" size={20}/>
             </View>
         </TouchableOpacity>
         
@@ -20,11 +20,13 @@ const SettingCard = props => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "white",
-        padding: 20,
+        padding: 25,
         borderRadius: 10,
+        margin:20,
     },
     row:{
         flexDirection:"row",
+        justifyContent:"space-between"
     }
 });
 
