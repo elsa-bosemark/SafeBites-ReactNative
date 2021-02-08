@@ -197,21 +197,23 @@ const RestaurantDetailScreen = (props) => {
             <Image style={styles.image} source={{ uri: cover[restIndex] }} />
             {/* Restaurant Title */}
             <Title text={restTitles[restIndex]} />
-            {/* Transactions */}
-
             <View style={styles.row}>
+              {/* Transactions */}
+              <View style={{ flex: 1 }}>
+                <CatIcon cat={transactions[restIndex]} />
 
-              {/* Price and Distance */}
-              <View>
+                {/* Price and Distance */}
                 <View
-                  style={styles.row}
+                  style={{
+                    ...styles.row,
+                    ...{ marginTop: 15, marginBottom: 15 },
+                  }}
                 >
-                  <View style={{ alignItems: "center", justifyContent: "center" }}>
+                  <View style={styles.tag}>
                     <Text
                       style={{
-                        ...styles.tag,
                         ...styles.text,
-                        ...{ fontSize: 15, color: "white" },
+                        ...{ fontSize: 19, color: "white" },
                       }}
                     >
                       {price[restIndex]}
@@ -221,56 +223,47 @@ const RestaurantDetailScreen = (props) => {
                     <Ionicons
                       style={styles.icon}
                       name="md-location-sharp"
-                      size={25}
+                      size={35}
                       color={Colors.primaryColor}
                     />
-                    <Text style={{ ...styles.text, ...{ fontSize: 17 } }}>
+                    <Text style={{ ...styles.text, ...{ fontSize: 20 } }}>
                       {Number((restaurantDistance / 1000).toFixed(1))} km
                     </Text>
                   </View>
-
-
                 </View>
+
                 {/* Extra Info*/}
                 {/* <OpenHours hours={openHours[restIndex]}/> */}
                 <Text style={styles.title}>Max capacity: ???</Text>
-
-
+                <Text style={styles.title}>Open hours: ???</Text>
               </View>
-
-              <View>
-                <CatIcon cat={transactions[restIndex]} />
+              {/* Rating Score*/}
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <SafetyScore score={feelSafe} size={1.5} />
               </View>
-
             </View>
             {/* Make tags into a diff comp being an array*/}
-            <Text style={styles.title}>Open hours: ???</Text>
             <Text style={styles.title}>Tags:</Text>
             <View style={{ flexDirection: "row" }}>
               <Tags restTags={tags[restIndex]} />
             </View>
-
-
           </View>
           <Credit logo={require("../../assets/yelpStars/yelpLogo.png")} />
           <Divider />
-          <View style={{ justifyContent: "center", alignItems: 'center', }}>
-            <DefaultButton
-              text="Rate"
-              buttonColor={Colors.primaryColor}
-              textColor="#fff"
-              onSelect={() => {
-                props.navigation.navigate("Rate");
-              }}
-            />
-          </View>
-
+          <DefaultButton
+            text="Rate"
+            buttonColor={Colors.primaryColor}
+            textColor="#fff"
+            onSelect={() => {
+              props.navigation.navigate("Rate");
+            }}
+          />
           <Divider />
           <View style={styles.card}>
             {/* Favorites, Call and Directions */}
 
             <View style={{ felx: 1 }}>
-              <View style={{ ...styles.row, ...{ alignItems: "center", justifyContent: "space-around" } }}>
+              <View style={{ ...styles.row, ...{ alignItems: "center" } }}>
                 <CircleButton
                   icon={favorite}
                   color={favorite === "heart" ? "#c90404" : Colors.grey}
@@ -326,7 +319,7 @@ const RestaurantDetailScreen = (props) => {
                 />
                 <CircleButton
                   icon="call"
-                  color={Colors.primaryColor}
+                  color={Colors.grey}
                   title="Call"
                   onSelect={() => {
                     // Linking.openURL(`tel://+14156068631`);
@@ -335,7 +328,7 @@ const RestaurantDetailScreen = (props) => {
                 />
                 <CircleButton
                   icon="map"
-                  color={Colors.primaryColor}
+                  color={Colors.grey}
                   title="Direction"
                   onSelect={() => {
                     Alert.alert("TODO");
@@ -343,7 +336,7 @@ const RestaurantDetailScreen = (props) => {
                 />
                 <CircleButton
                   icon="attach"
-                  color={Colors.primaryColor}
+                  color={Colors.grey}
                   title="Website"
                   onSelect={() => {
                     Alert.alert("TODO");
@@ -353,39 +346,9 @@ const RestaurantDetailScreen = (props) => {
             </View>
           </View>
           <Divider />
-
-
           {/* Slider Rating */}
           <View style={styles.card}>
             <Title text="Covid Prevention Rating" />
-
-            <View style={{...styles.row,...{justifyContent:"space-around"}}}>
-
-              <View>
-                {/* Yes or no Info  OPTIONS: yes, no, or idk*/}
-                <SafetyCard
-                  text="Surfaces are sanitized after each patron"
-                  result={sanitizeAfter}
-                  reviewCount={userRating}
-                />
-                <SafetyCard
-                  text="Staff give tempature checks to customers"
-                  result={tempChecks}
-                  reviewCount={userRating}
-                />
-                <SafetyCard
-                  text="Signage promoting safety is visible"
-                  result={signs}
-                  reviewCount={userRating}
-                />
-
-              </View>
-              {/* Rating Score*/}
-              <View style={{ alignItems: "center", justifyContent:'center' }}>
-                <SafetyScore score={feelSafe} size={1.4} />
-              </View>
-            </View>
-
             {/* Sliders */}
             <ScoreSlider
               safetyTitle="There is enforcement and use of masks "
@@ -402,8 +365,23 @@ const RestaurantDetailScreen = (props) => {
               score={shields}
               reviewCount={userRating}
             />
-
-
+            {/* Yes or no Info  OPTIONS: yes, no, or idk*/}
+            <SafetyCard
+              text="Surfaces are sanitized after each patron"
+              result={sanitizeAfter}
+              reviewCount={userRating}
+            />
+            <SafetyCard
+              text="Staff give tempature checks to customers"
+              result={tempChecks}
+              reviewCount={userRating}
+            />
+            <SafetyCard
+              text="Signage promoting safety is visible"
+              result={signs}
+              reviewCount={userRating}
+            />
+            {/* <SafetyCard text='' result=''/> */}
           </View>
 
           <Divider />
@@ -447,10 +425,10 @@ const RestaurantDetailScreen = (props) => {
             <ServisRating text="Google" rating={3} reviewCount={100} />
           </View>
 
-          {/* <Divider />
+          <Divider />
           <View style={styles.card}>
             <Title text="Order or Reserve Now" />
-          </View> */}
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -512,7 +490,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "flex-start",
     padding: 5,
-    fontSize: 18,
+    fontSize: 20,
   },
   row: {
     flexDirection: "row",
@@ -528,11 +506,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   tag: {
-    padding: 5,
+    padding: 10,
     backgroundColor: Colors.primaryColor,
     borderRadius: 5,
     margin: 5,
-    overflow: "hidden",
   },
 });
 export default RestaurantDetailScreen;

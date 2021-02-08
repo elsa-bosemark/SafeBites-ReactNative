@@ -46,10 +46,10 @@ const styles = StyleSheet.create({
         // width: screen.width * 0.4,
         aspectRatio: 1.4,
         alignSelf: 'center',
-        height: 120,
+        height: 100,
     },
     image: {
-        marginTop: 15,
+        marginTop: 5,
     },
     text: {
         fontFamily: 'rubik',

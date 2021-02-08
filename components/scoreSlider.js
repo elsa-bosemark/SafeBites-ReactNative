@@ -8,7 +8,7 @@ const screen = Dimensions.get("window");
 
 export const ScoreSlider = (props) => {
   return (
-    <View style={styles.scoreContainer}>
+    <View style={styles.container} >
       <Text style={styles.title}>{props.safetyTitle}</Text>
       <View style={{ ...styles.row, ...{ width: "100%" } }}>
         <View style={styles.scoreSlider}>
@@ -25,12 +25,13 @@ export const ScoreSlider = (props) => {
         <Text style={{ ...styles.title, ...{ paddingLeft: 10 } }}>
           {`${props.score}`}%
         </Text>
-        <View style={{ ...styles.row, ...styles.center, ...{ flex: 1 } }}>
-          <Ionicons name="person" size={20} color="grey" />
-          <Text
-            style={(styles.title, { marginRight: 10 })}
-          >{`${props.reviewCount}`}</Text>
-        </View>
+
+      </View>
+      <View style={{...styles.row,...{justifyContent:"flex-start",marginRight:10}}}>
+        {/* <Ionicons name="person" size={20} color="grey" /> */}
+        <Text>{`${props.reviewCount}`}</Text>
+        <Text style={{ fontSize: 12 }}>  reviews</Text>
+
       </View>
     </View>
   );
@@ -38,12 +39,8 @@ export const ScoreSlider = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  scoreContainer: {
-    paddingBottom: 20,
+   marginRight:10,
+   marginLeft:10
   },
   center: {
     alignItems: "center",
@@ -62,17 +59,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   scoreSlider: {
-    width: "70%",
+   width:'90%'
   },
   title: {
-    flex: 1,
-    padding: 5,
-    fontSize: 18,
+    fontSize: 15,
     fontFamily: "rubik",
-    height: 40,
+    paddingTop: 10,
+    paddingBottom: 0,
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-between",
   },
 });

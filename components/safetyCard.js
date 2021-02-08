@@ -32,24 +32,26 @@ const SafetyCard = props => {
     }
 
     return (
-        <View style={{ ...styles.container, ...{ borderColor: color } }}>
-            <View style={styles.row}>
-                <View>
-                    <Text style={styles.title}>{props.text}</Text>
-                    <View style={{ ...styles.row, ...{ paddingTop: 5 } }}>
-                        <Ionicons name='person' size={20} color='grey' />
-                        <Text style={styles.title}>{props.reviewCount}</Text>
+        <View>
+            <View style={{ ...styles.container, ...{ borderColor: color } }}>
+                <View style={{ ...styles.row, ...{ justifyContent: 'space-between', } }}>
+                    <View>
+                        <Text style={{ ...styles.title, ...{ fontSize: 13 } }}>{props.text}</Text>
                     </View>
-
+                    <View style={{ alignItems: 'flex-start', justifyContent: "flex-start", paddingRight: 5 }}>
+                        <Ionicons name={icon} size={30} color={color} style={style} />
+                    </View>
                 </View>
-                <View style={{ felx: 2, alignItems: 'center' }}>
-                    <Ionicons name={icon} size={35} color={color} style={style} />
+                <View style={{ ...styles.row, ...{ paddingTop: 2, alignItems: "flex-end", justifyContent: "flex-start" } }}>
+                    {/* <Ionicons name='person' size={20} color='grey' /> */}
+                    <Text style={{ fontSize: 12 }}>{props.reviewCount}</Text>
+                    <Text style={{ fontSize: 12 }}> reviews</Text>
                 </View>
-
-
 
             </View>
+
         </View>
+
     );
 }
 
@@ -57,23 +59,18 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 10,
         borderWidth: 2,
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingTop: 10,
+        paddingLeft: 10,
+        paddingTop: 5,
         paddingBottom: 10,
-        marginBottom: 10,
-        marginTop: 10,
+        marginBottom: 5,
+        width: 180,
+
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
     },
     title: {
-        flex: 1,
-        alignItems: 'flex-start',
-        paddingLeft: 5,
-        marginRight: 10,
-        fontSize: 18,
+        width: 140
     },
 
 });

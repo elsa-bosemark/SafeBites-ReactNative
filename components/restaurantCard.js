@@ -88,9 +88,14 @@ const RestaurantCard = (props) => {
 
             {/* Info */}
             <View style={{ flex: 1 }}>
+              <CatIcon
+                style={{ alignItem: "flex-end", margin: 20 }}
+                cat={props.transactions}
+              />
               <View
                 style={{ ...styles.row, ...{ flex: 1, alignItems: "center" } }}
               >
+
                 <View style={styles.tag}>
                   <Text
                     style={[styles.text, styles.mediumText, styles.whiteText]}
@@ -102,18 +107,15 @@ const RestaurantCard = (props) => {
                   <Ionicons
                     style={styles.icon}
                     name="md-location-sharp"
-                    size={35}
+                    size={25}
                     color={Colors.accentColor}
                   />
-                  <Text style={[styles.text, styles.largeText]}>
+                  <Text style={[styles.text, styles.mediumText]}>
                     {Number((restaurantDistance / 1000).toFixed(1))} km
                   </Text>
                 </View>
               </View>
-              <CatIcon
-                style={{ alignItem: "flex-end", margin: 20 }}
-                cat={props.transactions}
-              />
+
             </View>
 
             {/* Hand Sanatizer */}
@@ -224,10 +226,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   mediumText: {
-    fontSize: 19,
+    fontSize: 18,
   },
   largeText: {
-    fontSize: 20,
+    fontSize: 18,
   },
   tag: {
     padding: 10,

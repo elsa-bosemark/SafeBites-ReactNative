@@ -12,17 +12,17 @@ const DefaultButton = props => {
 
 const styles = StyleSheet.create({
   button: {
+    width:'70%',
     borderRadius: 40,
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingLeft: 40,
     paddingRight: 40,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonText: {
-    fontFamily: 'rubik-bold',
-    fontSize: 20,
+    fontSize: 18,
   },
 });
 
