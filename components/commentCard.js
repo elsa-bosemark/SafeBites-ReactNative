@@ -5,7 +5,6 @@ import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 const CommentCard = (props) => {
-  
   return (
     <View style={styles.container}>
       <View style={{ ...styles.row, ...styles.spacer }}>
@@ -15,7 +14,7 @@ const CommentCard = (props) => {
             (styles.smallText,
             {
               textAlign: "right",
-              marginLeft: 50,
+              marginLeft: 100,
             })
           }
         >

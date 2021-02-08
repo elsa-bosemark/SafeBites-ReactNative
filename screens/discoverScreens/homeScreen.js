@@ -625,17 +625,27 @@ class HomeScreen extends React.Component {
           </View>
         </Modal>
 
-
         {/* SCREEN STARTS */}
         {/* BANNER */}
         <View style={styles.banner}>
-          <Text style={{color:"white", textAlign:"center", fontSize:18, paddingBottom:10}}>See how well restaurants are protecting YOU from COVID</Text>
-          <TouchableOpacity style={{ ...styles.row, ...styles.searchButton }} onPress={() => {
-            //New screen with all the rest in a flatlist
-          }}>
+          <Text
+            style={{
+              color: "white",
+              textAlign: "center",
+              fontSize: 18,
+              paddingBottom: 10,
+            }}
+          >
+            See how well restaurants are protecting YOU from COVID
+          </Text>
+          <TouchableOpacity
+            style={{ ...styles.row, ...styles.searchButton }}
+            onPress={() => {
+              //New screen with all the rest in a flatlist
+            }}
+          >
             <Ionicons name="search" size={15} />
             <Text>Search</Text>
-
           </TouchableOpacity>
         </View>
 
@@ -674,7 +684,7 @@ class HomeScreen extends React.Component {
           horizontal
           data={
             this.state.filteredRestaurants &&
-              this.state.filteredRestaurants.length > 0
+            this.state.filteredRestaurants.length > 0
               ? this.state.filteredRestaurants
               : this.state.title
           }
@@ -740,8 +750,8 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "rubik",
     fontSize: 20,
-    paddingLeft:20,
-    paddingTop:10,
+    paddingLeft: 20,
+    paddingTop: 10,
   },
   searchBar: {
     padding: Platform.OS === "android" ? 10 : 0,
@@ -794,13 +804,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   row: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   banner: {
     padding: 30,
     backgroundColor: Colors.accentColor,
     justifyContent: "center",
     alignItems: "center",
+    height: 250,
   },
   searchButton: {
     justifyContent: "space-around",
@@ -808,7 +819,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "white",
     borderRadius: 20,
-  }
-
+  },
 });
 export default HomeScreen;

@@ -140,17 +140,32 @@ const ProfileScreen = (props) => {
             placeholderTextColor={"grey"}
             autoCapitalize="none"
           />
-          <View style={{ ...{ flexDirection: "row", justifyContent: "space-between", }, ...styles.input }}>
-
+          <View
+            style={{
+              height: 50,
+              backgroundColor: "white",
+              borderRadius: 40,
+              width: 300,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <TextInput
               onChangeText={this.update}
               value={this.state.value}
-
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               placeholder="Password"
               secureTextEntry={passVisible == "eye-off-outline" ? true : false}
               placeholderTextColor={"grey"}
+              style={{
+                height: 50,
+                paddingLeft: 20,
+                width: 250,
+                marginTop: 10,
+                marginBottom: 10,
+              }}
             />
             <TouchableOpacity
               style={{
@@ -325,11 +340,15 @@ const ProfileScreen = (props) => {
             placeholderTextColor={"grey"}
             autoCapitalize="none"
           />
-          <View style={{ ...{ flexDirection: "row", justifyContent: "space-between", }, ...styles.input }}>
+          <View
+            style={{
+              ...{ flexDirection: "row", justifyContent: "space-between" },
+              ...styles.input,
+            }}
+          >
             <TextInput
               onChangeText={this.updatePassword}
               value={this.state.value}
-             
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               placeholder="Password"
@@ -676,12 +695,23 @@ const ProfileScreen = (props) => {
             </View>
 
             <View style={{ ...styles.row, ...styles.tabSlider }}>
-              <TabSlider icon="heart" activeIconColor="red" title="Favorites" active={true} onSelect={() => { }} />
-              <TabSlider icon="person" activeIconColor={Colors.primaryColor} title="Comments" active={false} onSelect={() => { }} />
+              <TabSlider
+                icon="heart"
+                activeIconColor="red"
+                title="Favorites"
+                active={true}
+                onSelect={() => {}}
+              />
+              <TabSlider
+                icon="person"
+                activeIconColor={Colors.primaryColor}
+                title="Comments"
+                active={false}
+                onSelect={() => {}}
+              />
               {/* <Text style={styles.title}>Favorites</Text>
               <Text style={styles.title}>Comments</Text> */}
             </View>
-
 
             <FlatList
               data={comments}
@@ -761,7 +791,6 @@ const ProfileScreen = (props) => {
               keyExtractor={(item) => item}
             />
             <View style={{ height: 500 }}></View>
-
           </View>
         </SafeAreaView>
       );
@@ -897,7 +926,7 @@ const styles = StyleSheet.create({
   },
   tabSlider: {
     justifyContent: "space-around",
-  }
+  },
 });
 
 export default ProfileScreen;
