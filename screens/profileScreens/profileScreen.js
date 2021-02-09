@@ -733,7 +733,10 @@ const ProfileScreen = (props) => {
               renderItem={({ item, index }) => {
                 var coordArray = [];
                 favRestCoords.forEach((element) => {
+                  if(element != null && element != undefined)
+                  {
                   coordArray.push(Object.values(element));
+                  }
                 });
 
                 if (

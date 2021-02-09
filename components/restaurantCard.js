@@ -119,7 +119,7 @@ const RestaurantCard = (props) => {
             </View>
 
             {/* Hand Sanatizer */}
-            <SafetyScore style={{ flex: 1 }} score={8} size={1} />
+            <SafetyScore style={{ flex: 1 }} score={props.safetyScore ? props.safetyScore : "?"} size={1} />
           </View>
 
           <View style={styles.row}>

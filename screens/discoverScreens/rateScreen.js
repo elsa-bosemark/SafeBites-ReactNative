@@ -605,6 +605,7 @@ const RateScreen = (props) => {
             //go back
           }}
         />
+          <Spacer height={325} />
       </View>
     </ScrollView>
   );

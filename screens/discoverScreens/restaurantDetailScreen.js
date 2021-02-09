@@ -260,7 +260,13 @@ const RestaurantDetailScreen = (props) => {
               buttonColor={Colors.primaryColor}
               textColor="#fff"
               onSelect={() => {
-                props.navigation.navigate("Rate");
+                if(firebase.auth().currentUser != null && firebase.auth().currentUser != undefined)
+                {
+                  props.navigation.navigate("Rate");
+                }
+                else {
+                  Alert.alert("Login", "Sorry! To use features like rating restaurants, you have to login!")
+                }
               }}
             />
           </View>
@@ -413,8 +419,11 @@ const RestaurantDetailScreen = (props) => {
           <View style={styles.card}>
             <Title text="Comments" />
             <FlatList
-              data={comments}
+              data={comments.length > 0 ? comments: "no comments yet"}
               renderItem={({ item, index }) => {
+                if(comments.length >= 1)
+                {
+                  console.error("we cgo ocmmet")
                 return (
                   <CommentStack
                     text={item}
@@ -422,6 +431,16 @@ const RestaurantDetailScreen = (props) => {
                     username={commentsUsernames[index]}
                   />
                 );
+                }else {
+                  if(index == 0)
+                  {
+                    return (
+                      <Text>No comments yet!</Text> 
+                    )
+                  }else {
+                    return null
+                  }
+                }
               }}
               keyExtractor={(item) => item}
             />

@@ -97,6 +97,9 @@ class HomeScreen extends React.Component {
     firstName: "",
     lastName: "",
     passwordVisible: "eye-off-outline",
+    usersRated: null,
+    feelSafe:null,
+    callDataOnce: false,
   };
   handleFirstName = (text) => {
     this.setState({ firstName: text });
@@ -109,6 +112,20 @@ class HomeScreen extends React.Component {
   };
   handlePassword = (text) => {
     this.setState({ password: text });
+  };
+
+   getFirebaseData = async () => {
+    let myDB = firebase.firestore();
+    let doc = await myDB.collection("reviews").doc(restTitles[restIndex]).get();
+    // let _comments = await myDB.collection('reviews').doc(restTitles[restIndex]).collection('comments').doc()
+    if (doc.exists) {
+      let usersRated = doc.data().usersRated;
+      this.setState({usersRated: usersRated});
+      this.setState({feelSafe: Math.round(doc.data().safety/usersRated)})
+     
+    } else {
+      this.setState({usersRated: "?", feelSafe:"?"})
+    }
   };
 
   login = (email, password) => {
@@ -189,6 +206,7 @@ class HomeScreen extends React.Component {
   //screen did load
   componentDidMount() {
     this.getLocationAsync();
+    this.getFirebaseData();
     //this takes longer and since we don't display it, we can do it later
     if (
       this.state.restaurantLocations != null ||
