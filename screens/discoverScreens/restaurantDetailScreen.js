@@ -81,7 +81,6 @@ const RestaurantDetailScreen = (props) => {
     if (doc.exists) {
       let usersRated = doc.data().usersRated;
       setUserRating(usersRated);
-
       setMasks(Math.round(doc.data().masks / usersRated));
       setHandSanitizer(Math.round(doc.data().handSanitizer / usersRated));
       setShields(Math.round(doc.data().shields / usersRated));
@@ -423,7 +422,6 @@ const RestaurantDetailScreen = (props) => {
               renderItem={({ item, index }) => {
                 if(comments.length >= 1)
                 {
-                  console.error("we cgo ocmmet")
                 return (
                   <CommentStack
                     text={item}
