@@ -672,6 +672,7 @@ const ProfileScreen = (props) => {
               favRestCoords.length > 0
             ) {
               return (
+                <View style={{marginBottom:20}}>
                 <RestaurantCard
                   title={item}
                   price={favPrice[index]}
@@ -701,6 +702,7 @@ const ProfileScreen = (props) => {
                     });
                   }}
                 />
+                </View>
               );
             } else {
               return (

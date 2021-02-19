@@ -9,7 +9,7 @@ export default (props) => {
   const commentsUsernames = props.navigation.getParam("username");
 
   return (
-    <View>
+    <View style={{backgroundColor:'#FFF'}}>
       <Title>COMMENTS!</Title>
       <View style={{alignItems: "center"}}>
         <FlatList

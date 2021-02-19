@@ -19,8 +19,8 @@ const CommentCard = (props) => {
           }
         >
           {" "}
-          {props.date}
-          {/* {props.date.slice(0,props.date.length-23)} */}
+          {/* {props.date} */}
+          {props.date.slice(0,props.date.length-23)}
         </Text>
       </View>
       <Text style={styles.mediumText}>{props.text}</Text>
