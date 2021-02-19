@@ -854,7 +854,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.accentColor,
     justifyContent: "center",
     alignItems: "center",
-    height: 150,
+    height: 250,
   },
   searchButton: {
     justifyContent: "space-around",

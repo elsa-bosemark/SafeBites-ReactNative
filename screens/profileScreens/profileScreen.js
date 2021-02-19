@@ -655,7 +655,6 @@ const ProfileScreen = (props) => {
   }
   const Displayed = () => {
     if (favShown) {
-      console.error(favShown + " FAV SHOWNNN");
       return (
         <FlatList
           data={favorites}
