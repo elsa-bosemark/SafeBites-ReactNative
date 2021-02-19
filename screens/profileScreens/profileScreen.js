@@ -70,7 +70,7 @@ const ProfileScreen = (props) => {
   const [favTransactions, setFavTransactions] = useState([]);
   const [userLocation, setUserLocation] = useState([]);
   const [passVisible, setPassVisible] = useState("eye-off-outline");
-
+  const [favShown, setFavShown] = useState(true);
   class LoginInput extends React.Component {
     constructor() {
       super();
@@ -653,7 +653,92 @@ const ProfileScreen = (props) => {
       getFavorites();
     }
   }
+  const Displayed = () => {
+    if (favShown) {
+      console.error(favShown + " FAV SHOWNNN");
+      return (
+        <FlatList
+          data={favorites}
+          renderItem={({ item, index }) => {
+            var coordArray = [];
+            favRestCoords.forEach((element) => {
+              if (element != null && element != undefined) {
+                coordArray.push(Object.values(element));
+              }
+            });
 
+            if (
+              favRestCoords != null &&
+              favRestCoords != undefined &&
+              favRestCoords.length > 0
+            ) {
+              return (
+                <RestaurantCard
+                  title={item}
+                  price={favPrice[index]}
+                  cover={favCover[index]}
+                  transactions={favTransactions[index]}
+                  restaurantCoordinates={coordArray[index]}
+                  userCoordinates={userLocation}
+                  onSelect={() => {
+                    props.navigation.navigate({
+                      routeName: "RetaurantDetail",
+                      params: {
+                        //pass restaurant DATA
+                        restIndex: index,
+                        title: favorites,
+                        price: favPrice,
+                        cover: favCover,
+                        transactions: favTransactions,
+                        restaurantCoordinates: coordArray,
+                        userCoordinates: userLocation,
+                        phoneNumber: favPhoneNumber,
+                        yelpUrl: favURL,
+                        yelpRating: favRating,
+                        yelpReviewCount: favReviewCount,
+                        photos: favPhotos,
+                        tags: [favTags[index]],
+                      },
+                    });
+                  }}
+                />
+              );
+            } else {
+              return (
+                <RestaurantCard
+                  title={item}
+                  price={favPrice[index]}
+                  cover={favCover[index]}
+                  transactions={favTransactions[index]}
+                  restaurantCoordinates={[0, 0]}
+                  userCoordinates={userLocation}
+                  onSelect={() => {
+                    alert("todo!");
+                  }}
+                />
+              );
+            }
+          }}
+          keyExtractor={(item) => item}
+        />
+      );
+    } else {
+      return (
+        <ScrollView>
+          <FlatList
+            data={comments}
+            renderItem={({ item, index }) => {
+              return (
+                <CommentCard text={item} date={dates[index]} username={name} />
+              );
+            }}
+            keyExtractor={(item) => item}
+          />
+          <View style={{height: 1000}}/>
+        </ScrollView>
+      );
+    }
+  };
   const Profile = () => {
     if (user) {
       return (
@@ -699,100 +784,25 @@ const ProfileScreen = (props) => {
                 icon="heart"
                 activeIconColor="red"
                 title="Favorites"
-                active={true}
-                onSelect={() => {}}
+                active={favShown}
+                onSelect={() => {
+                  setFavShown(true);
+                }}
               />
               <TabSlider
                 icon="person"
                 activeIconColor={Colors.primaryColor}
                 title="Comments"
-                active={false}
-                onSelect={() => {}}
+                active={!favShown}
+                onSelect={() => {
+                  setFavShown(false);
+                }}
               />
               {/* <Text style={styles.title}>Favorites</Text>
               <Text style={styles.title}>Comments</Text> */}
             </View>
+            <Displayed />
 
-            <FlatList
-              data={comments}
-              renderItem={({ item, index }) => {
-                return (
-                  <CommentCard
-                    text={item}
-                    date={dates[index]}
-                    username={name}
-                  />
-                );
-              }}
-              keyExtractor={(item) => item}
-            />
-
-            {/* Favorites */}
-            <FlatList
-              data={favorites}
-              renderItem={({ item, index }) => {
-                var coordArray = [];
-                favRestCoords.forEach((element) => {
-                  if(element != null && element != undefined)
-                  {
-                  coordArray.push(Object.values(element));
-                  }
-                });
-
-                if (
-                  favRestCoords != null &&
-                  favRestCoords != undefined &&
-                  favRestCoords.length > 0
-                ) {
-                  return (
-                    <RestaurantCard
-                      title={item}
-                      price={favPrice[index]}
-                      cover={favCover[index]}
-                      transactions={favTransactions[index]}
-                      restaurantCoordinates={coordArray[index]}
-                      userCoordinates={userLocation}
-                      onSelect={() => {
-                        props.navigation.navigate({
-                          routeName: "RetaurantDetail",
-                          params: {
-                            //pass restaurant DATA
-                            restIndex: index,
-                            title: favorites,
-                            price: favPrice,
-                            cover: favCover,
-                            transactions: favTransactions,
-                            restaurantCoordinates: coordArray,
-                            userCoordinates: userLocation,
-                            phoneNumber: favPhoneNumber,
-                            yelpUrl: favURL,
-                            yelpRating: favRating,
-                            yelpReviewCount: favReviewCount,
-                            photos: favPhotos,
-                            tags: [favTags[index]],
-                          },
-                        });
-                      }}
-                    />
-                  );
-                } else {
-                  return (
-                    <RestaurantCard
-                      title={item}
-                      price={favPrice[index]}
-                      cover={favCover[index]}
-                      transactions={favTransactions[index]}
-                      restaurantCoordinates={[0, 0]}
-                      userCoordinates={userLocation}
-                      onSelect={() => {
-                        alert("todo!");
-                      }}
-                    />
-                  );
-                }
-              }}
-              keyExtractor={(item) => item}
-            />
             <View style={{ height: 500 }}></View>
           </View>
         </SafeAreaView>
