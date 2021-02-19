@@ -97,8 +97,8 @@ class HomeScreen extends React.Component {
     firstName: "",
     lastName: "",
     passwordVisible: "eye-off-outline",
-    usersRated: null,
-    feelSafe:null,
+    usersRated: [],
+    feelSafe:[],
     callDataOnce: false,
   };
   handleFirstName = (text) => {
@@ -114,18 +114,38 @@ class HomeScreen extends React.Component {
     this.setState({ password: text });
   };
 
-   getFirebaseData = async () => {
-    let myDB = firebase.firestore();
-    let doc = await myDB.collection("reviews").doc(restTitles[restIndex]).get();
-    // let _comments = await myDB.collection('reviews').doc(restTitles[restIndex]).collection('comments').doc()
-    if (doc.exists) {
-      let usersRated = doc.data().usersRated;
-      this.setState({usersRated: usersRated});
-      this.setState({feelSafe: Math.round(doc.data().safety/usersRated)})
-     
-    } else {
-      this.setState({usersRated: "?", feelSafe:"?"})
+   getFirebaseData = async (names) => {
+    names.forEach(async element  =>{
+      const doc = await firebase
+      .firestore()
+      .collection("reviews")
+      .doc(element)
+      .get();
+
+      if(doc.exists)
+      {
+        var _feelSafe = this.state.feelSafe ? this.state.feelSafe : []
+        _feelSafe.push(Math.round(doc.data().safety / doc.data().usersRated))
+        this.setState({feelSafe: _feelSafe})
+      }else {
+        var _feelSafe = this.state.feelSafe ? this.state.feelSafe : []
+        _feelSafe.push("?")
+        this.setState({feelSafe: _feelSafe})
+      }
     }
+      )
+
+
+    // let doc = await myDB.collection("reviews").doc(restTitles[restIndex]).get();
+    // // let _comments = await myDB.collection('reviews').doc(restTitles[restIndex]).collection('comments').doc()
+    // if (doc.exists) {
+    //   let usersRated = doc.data().usersRated;
+    //   this.setState({usersRated: usersRated});
+    //   this.setState({feelSafe: Math.round(doc.data().safety/usersRated)})
+     
+    // } else {
+    //   this.setState({usersRated: "?", feelSafe:"?"})
+    // }
   };
 
   login = (email, password) => {
@@ -206,7 +226,6 @@ class HomeScreen extends React.Component {
   //screen did load
   componentDidMount() {
     this.getLocationAsync();
-    this.getFirebaseData();
     //this takes longer and since we don't display it, we can do it later
     if (
       this.state.restaurantLocations != null ||
@@ -308,7 +327,7 @@ class HomeScreen extends React.Component {
             storePhotos(_photos);
             storeTags(_tags);
             storeReviewCount(_yelpReviewCount);
-          })
+          })   
           .catch((error) => {
             if (error.response) {
               console.error(error.response);
@@ -319,6 +338,11 @@ class HomeScreen extends React.Component {
             }
           });
       });
+setTimeout(() => {
+  
+  this.getFirebaseData(names)
+}, 3000);
+
   };
   //get location of user's phone
   getLocationAsync = async () => {
@@ -716,6 +740,7 @@ class HomeScreen extends React.Component {
                     ? this.state.cover[actualIndex(item)]
                     : null
                 }
+                safetyScore={this.state.feelSafe[index]}
                 transactions={this.state.transactions[actualIndex(item)]}
                 restaurantCoordinates={
                   this.state.restaurantCoordinates[actualIndex(item)]
