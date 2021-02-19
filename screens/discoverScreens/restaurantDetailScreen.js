@@ -199,13 +199,12 @@ const RestaurantDetailScreen = (props) => {
             {/* Transactions */}
 
             <View style={styles.row}>
-
               {/* Price and Distance */}
               <View>
-                <View
-                  style={styles.row}
-                >
-                  <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <View style={styles.row}>
+                  <View
+                    style={{ alignItems: "center", justifyContent: "center" }}
+                  >
                     <Text
                       style={{
                         ...styles.tag,
@@ -227,20 +226,15 @@ const RestaurantDetailScreen = (props) => {
                       {Number((restaurantDistance / 1000).toFixed(1))} km
                     </Text>
                   </View>
-
-
                 </View>
                 {/* Extra Info*/}
                 {/* <OpenHours hours={openHours[restIndex]}/> */}
                 <Text style={styles.title}>Max capacity: ???</Text>
-
-
               </View>
 
               <View>
                 <CatIcon cat={transactions[restIndex]} />
               </View>
-
             </View>
             {/* Make tags into a diff comp being an array*/}
             <Text style={styles.title}>Open hours: ???</Text>
@@ -248,23 +242,25 @@ const RestaurantDetailScreen = (props) => {
             <View style={{ flexDirection: "row" }}>
               <Tags restTags={tags[restIndex]} />
             </View>
-
-
           </View>
           <Credit logo={require("../../assets/yelpStars/yelpLogo.png")} />
           <Divider />
-          <View style={{ justifyContent: "center", alignItems: 'center', }}>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
             <DefaultButton
               text="Rate"
               buttonColor={Colors.primaryColor}
               textColor="#fff"
               onSelect={() => {
-                if(firebase.auth().currentUser != null && firebase.auth().currentUser != undefined)
-                {
+                if (
+                  firebase.auth().currentUser != null &&
+                  firebase.auth().currentUser != undefined
+                ) {
                   props.navigation.navigate("Rate");
-                }
-                else {
-                  Alert.alert("Login", "Sorry! To use features like rating restaurants, you have to login!")
+                } else {
+                  Alert.alert(
+                    "Login",
+                    "Sorry! To use features like rating restaurants, you have to login!"
+                  );
                 }
               }}
             />
@@ -275,7 +271,12 @@ const RestaurantDetailScreen = (props) => {
             {/* Favorites, Call and Directions */}
 
             <View style={{ felx: 1 }}>
-              <View style={{ ...styles.row, ...{ alignItems: "center", justifyContent: "space-around" } }}>
+              <View
+                style={{
+                  ...styles.row,
+                  ...{ alignItems: "center", justifyContent: "space-around" },
+                }}
+              >
                 <CircleButton
                   icon={favorite}
                   color={favorite === "heart" ? "#c90404" : Colors.grey}
@@ -359,13 +360,13 @@ const RestaurantDetailScreen = (props) => {
           </View>
           <Divider />
 
-
           {/* Slider Rating */}
           <View style={styles.card}>
             <Title text="Covid Prevention Rating" />
 
-            <View style={{...styles.row,...{justifyContent:"space-around"}}}>
-
+            <View
+              style={{ ...styles.row, ...{ justifyContent: "space-around" } }}
+            >
               <View>
                 {/* Yes or no Info  OPTIONS: yes, no, or idk*/}
                 <SafetyCard
@@ -383,10 +384,9 @@ const RestaurantDetailScreen = (props) => {
                   result={signs}
                   reviewCount={userRating}
                 />
-
               </View>
               {/* Rating Score*/}
-              <View style={{ alignItems: "center", justifyContent:'center' }}>
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <SafetyScore score={feelSafe} size={1.4} />
               </View>
             </View>
@@ -407,8 +407,6 @@ const RestaurantDetailScreen = (props) => {
               score={shields}
               reviewCount={userRating}
             />
-
-
           </View>
 
           <Divider />
@@ -418,25 +416,23 @@ const RestaurantDetailScreen = (props) => {
           <View style={styles.card}>
             <Title text="Comments" />
             <FlatList
-              data={comments.length > 0 ? comments: "no comments yet"}
+              data={comments.length > 0 ? comments : "no way"}
               renderItem={({ item, index }) => {
-                if(comments.length >= 1)
-                {
-                return (
-                  <CommentStack
-                    text={item}
-                    date={dates[index]}
-                    username={commentsUsernames[index]}
-                  />
-                );
-                }else {
-                  if(index == 0)
-                  {
+                if (comments.length > 1) {
+                  if (index <= 2) {
                     return (
-                      <Text>No comments yet!</Text> 
-                    )
-                  }else {
-                    return null
+                      <CommentStack
+                        text={item}
+                        date={dates[index]}
+                        username={commentsUsernames[index]}
+                      />
+                    );
+                  }
+                } else {
+                  if (index == 0) {
+                    return <Text>No comments yet!</Text>;
+                  } else {
+                    return null;
                   }
                 }
               }}
@@ -444,7 +440,14 @@ const RestaurantDetailScreen = (props) => {
             />
             <View style={{ backgroundColor: Colors.darkGrey, padding: 2 }} />
             <View style={{ alignSelf: "flex-end" }}>
-              <Button color="#000" title="All comments..." />
+              <Button
+                color="#000"
+                title="All comments..."
+                onPress={() => {
+                  console.warn(comments)
+                  props.navigation.navigate("Comments",{ text: comments, date: dates, username: commentsUsernames });
+                }}
+              />
             </View>
           </View>
 

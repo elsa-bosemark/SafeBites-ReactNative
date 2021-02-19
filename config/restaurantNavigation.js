@@ -21,6 +21,7 @@ import { Alert } from "react-native";
 
 import "firebase/auth";
 import Settings from "../screens/profileScreens/settingsScreen";
+import Comments from "../screens/discoverScreens/commentsScreen";
 
 var user = false;
 //Createing a navigation stack for screens
@@ -98,8 +99,12 @@ const RestaurantNavigator = createStackNavigator(
       navigationOptions: {
         headerBackTitle: "Cancel",
       },
-    },
+    }, 
+     Comments: {
+      screen: Comments
+    }
   },
+
   {
     defaultNavigationOptions: {
       headerStyle: {
