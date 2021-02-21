@@ -39,6 +39,7 @@ import Spacer from "../../components/spacer";
 import CommentCard from "../../components/commentCard";
 import DefaultButton from "../../components/defaultButton";
 import TabSlider from "../../components/tabSlider";
+import ProfileImage from "../../components/profileImage"
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -745,38 +746,32 @@ const ProfileScreen = (props) => {
       return (
         <SafeAreaView>
           <View style={styles.container}>
-            <View style={[styles.card, styles.row]}>
-              {/* image placeholder */}
-              <Image
-                style={styles.profileImage}
-                source={{
-                  url:
-                    "https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg",
-                }}
+            <View style={{...styles.card, ...styles.row, ...{justifyContent:'space-around', alignItems:'center'}}}>
+             {/* image placeholder  */}
+             <ProfileImage size={3.3} imageUrl={{uri:'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg'}}
               />
               <View>
                 {/* username */}
                 <View style={styles.row}>
                   <Text style={styles.title}>{`hello, ${name}`}</Text>
-                  {/* <TouchableOpacity
-                    style={{ justifyContent: "center" }}
-                    onPress={() => {
-                      props.navigation.navigate("Settings");
-                    }}
-                  >
-                    <Ionicons name="settings-outline" size={25} />
-                  </TouchableOpacity> */}
                 </View>
-                <View style={[styles.greyCard, styles.row]}>
+                
+                  <View style={[styles.greyCard, styles.row]}>
+                  <View>
+                    <Text style={styles.infoText}>favorites</Text>
+                    <Text style={{textAlign:'center'}}>{favorites.length}</Text>
+                  </View>
                   <View>
                     <Text style={styles.infoText}>comments</Text>
-                    <Text style={styles.num}>{comments.length}</Text>
+                    <Text style={{textAlign:'center'}}>{comments.length}</Text>
                   </View>
-                  <View>
+                  {/* <View>
                     <Text style={styles.infoText}>photos</Text>
-                    <Text style={styles.num}>1</Text>
-                  </View>
+                    <Text style={{textAlign:'center'}}>1</Text>
+                  </View> */}
+               
                 </View>
+                
               </View>
             </View>
 
@@ -864,7 +859,8 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "rubik",
     fontSize: 20,
-    padding: 20,
+    paddingTop: 20,
+    paddingBottom:20
   },
   card: {
     backgroundColor: "white",
@@ -881,7 +877,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   greyCard: {
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     backgroundColor: "#E0E0E0",
     padding: 15,
     borderRadius: 10,

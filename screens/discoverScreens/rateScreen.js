@@ -592,7 +592,8 @@ const RateScreen = (props) => {
           </View>
         </View>
         <Spacer height={20} />
-        <DefaultButton
+        <View style={{justifyContent:"center",alignItems:"center"}}>
+          <DefaultButton
           text="Submit"
           buttonColor={Colors.primaryColor}
           textColor="#fff"
@@ -605,6 +606,8 @@ const RateScreen = (props) => {
             //go back
           }}
         />
+        </View>
+        
           <Spacer height={325} />
       </View>
     </ScrollView>

@@ -98,7 +98,7 @@ class HomeScreen extends React.Component {
     lastName: "",
     passwordVisible: "eye-off-outline",
     usersRated: [],
-    feelSafe:[],
+    feelSafe: [],
     callDataOnce: false,
   };
   handleFirstName = (text) => {
@@ -114,26 +114,25 @@ class HomeScreen extends React.Component {
     this.setState({ password: text });
   };
 
-   getFirebaseData = async (names) => {
-    names.forEach(async element  =>{
+  getFirebaseData = async (names) => {
+    names.forEach(async element => {
       const doc = await firebase
-      .firestore()
-      .collection("reviews")
-      .doc(element)
-      .get();
+        .firestore()
+        .collection("reviews")
+        .doc(element)
+        .get();
 
-      if(doc.exists)
-      {
+      if (doc.exists) {
         var _feelSafe = this.state.feelSafe ? this.state.feelSafe : []
         _feelSafe.push(Math.round(doc.data().safety / doc.data().usersRated))
-        this.setState({feelSafe: _feelSafe})
-      }else {
+        this.setState({ feelSafe: _feelSafe })
+      } else {
         var _feelSafe = this.state.feelSafe ? this.state.feelSafe : []
         _feelSafe.push("?")
-        this.setState({feelSafe: _feelSafe})
+        this.setState({ feelSafe: _feelSafe })
       }
     }
-      )
+    )
 
 
     // let doc = await myDB.collection("reviews").doc(restTitles[restIndex]).get();
@@ -142,7 +141,7 @@ class HomeScreen extends React.Component {
     //   let usersRated = doc.data().usersRated;
     //   this.setState({usersRated: usersRated});
     //   this.setState({feelSafe: Math.round(doc.data().safety/usersRated)})
-     
+
     // } else {
     //   this.setState({usersRated: "?", feelSafe:"?"})
     // }
@@ -327,7 +326,7 @@ class HomeScreen extends React.Component {
             storePhotos(_photos);
             storeTags(_tags);
             storeReviewCount(_yelpReviewCount);
-          })   
+          })
           .catch((error) => {
             if (error.response) {
               console.error(error.response);
@@ -338,10 +337,10 @@ class HomeScreen extends React.Component {
             }
           });
       });
-setTimeout(() => {
-  
-  this.getFirebaseData(names)
-}, 3000);
+    setTimeout(() => {
+
+      this.getFirebaseData(names)
+    }, 3000);
 
   };
   //get location of user's phone
@@ -669,6 +668,7 @@ setTimeout(() => {
 
         {/* SCREEN STARTS */}
         {/* BANNER */}
+        
         <View style={styles.banner}>
           <Text
             style={{
@@ -690,6 +690,7 @@ setTimeout(() => {
             <Text>Search</Text>
           </TouchableOpacity>
         </View>
+
 
         <Text style={styles.title}>Safety Categories</Text>
 
@@ -723,61 +724,64 @@ setTimeout(() => {
         <ActivityIndicator animating={this.state.loading} />
 
         <FlatList
-          horizontal
+ 
           data={
             this.state.filteredRestaurants &&
-            this.state.filteredRestaurants.length > 0
+              this.state.filteredRestaurants.length > 0
               ? this.state.filteredRestaurants
               : this.state.title
           }
           renderItem={({ item, index }) => {
             return (
-              <RestaurantCard
-                title={item}
-                price={this.state.price[index]}
-                cover={
-                  this.state.cover[actualIndex(item)]
-                    ? this.state.cover[actualIndex(item)]
-                    : null
-                }
-                safetyScore={this.state.feelSafe[index]}
-                transactions={this.state.transactions[actualIndex(item)]}
-                restaurantCoordinates={
-                  this.state.restaurantCoordinates[actualIndex(item)]
-                }
-                userCoordinates={this.state.location}
-                onSelect={() => {
-                  setCalledOnce(false);
-                  this.props.navigation.navigate({
-                    routeName: "RetaurantDetail",
-                    params: {
-                      //pass restaurant DATA
-                      restIndex: index,
-                      title: this.state.title,
-                      price: this.state.price,
-                      cover: this.state.cover,
-                      transactions: this.state.transactions,
-                      restaurantCoordinates: this.state.restaurantCoordinates,
-                      userCoordinates: this.state.location,
-                      phoneNumber: this.state.phoneNumber,
-                      address: this.state.address,
-                      yelpUrl: this.state.yelpUrl,
+              <View style={{ marginBottom: 20 }}>
+                <RestaurantCard
+                  title={item}
+                  price={this.state.price[index]}
+                  cover={
+                    this.state.cover[actualIndex(item)]
+                      ? this.state.cover[actualIndex(item)]
+                      : null
+                  }
+                  safetyScore={this.state.feelSafe[index]}
+                  transactions={this.state.transactions[actualIndex(item)]}
+                  restaurantCoordinates={
+                    this.state.restaurantCoordinates[actualIndex(item)]
+                  }
+                  userCoordinates={this.state.location}
+                  onSelect={() => {
+                    setCalledOnce(false);
+                    this.props.navigation.navigate({
+                      routeName: "RetaurantDetail",
+                      params: {
+                        //pass restaurant DATA
+                        restIndex: index,
+                        title: this.state.title,
+                        price: this.state.price,
+                        cover: this.state.cover,
+                        transactions: this.state.transactions,
+                        restaurantCoordinates: this.state.restaurantCoordinates,
+                        userCoordinates: this.state.location,
+                        phoneNumber: this.state.phoneNumber,
+                        address: this.state.address,
+                        yelpUrl: this.state.yelpUrl,
 
-                      yelpRating: this.state.yelpRating,
-                      yelpReviewCount: this.state.yelpReviewCount,
-                      photos: this.state.photos,
-                      openHours: this.state.openHours,
-                      tags: this.state.tags,
-                    },
-                  });
-                }}
-              />
+                        yelpRating: this.state.yelpRating,
+                        yelpReviewCount: this.state.yelpReviewCount,
+                        photos: this.state.photos,
+                        openHours: this.state.openHours,
+                        tags: this.state.tags,
+                      },
+                    });
+                  }}
+                />
+              </View>
             );
           }}
           keyExtractor={(item) => item}
           refreshing={false}
           style={{ height: "40%" }}
         />
+       
       </SafeAreaView>
     );
   }
@@ -854,7 +858,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.accentColor,
     justifyContent: "center",
     alignItems: "center",
-    height: 250,
+    height: 150,
   },
   searchButton: {
     justifyContent: "space-around",

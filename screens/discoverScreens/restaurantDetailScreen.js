@@ -32,12 +32,12 @@ import YelpServisRating from "../../components/yelpServisRating";
 import Credit from "../../components/credit";
 import { Tags } from "../../components/tags";
 import OpenHours from "../../components/openHours";
-// import PhotoSlider from '../../components/photoSlider/photoSlider';
 import SafetyScore from "../../components/handSanatizer";
 import { callNumber } from "../../config/Call";
 import CommentStack from "../../components/commentStack";
 import { getCalledOnce, setCalledOnce } from "../../config/updateData";
 import { call } from "react-native-reanimated";
+import PriceTag from '../../components/priceTag';
 
 const RestaurantDetailScreen = (props) => {
   const [masks, setMasks] = useState(0);
@@ -205,15 +205,7 @@ const RestaurantDetailScreen = (props) => {
                   <View
                     style={{ alignItems: "center", justifyContent: "center" }}
                   >
-                    <Text
-                      style={{
-                        ...styles.tag,
-                        ...styles.text,
-                        ...{ fontSize: 15, color: "white" },
-                      }}
-                    >
-                      {price[restIndex]}
-                    </Text>
+                    <PriceTag price={price[restIndex]}/>
                   </View>
                   <View style={{ ...styles.row, ...{ alignItems: "center" } }}>
                     <Ionicons
@@ -464,7 +456,7 @@ const RestaurantDetailScreen = (props) => {
                 openLink(yelpUrl[restIndex]);
               }}
             />
-            <ServisRating text="Google" rating={3} reviewCount={100} />
+            {/* <ServisRating text="Google" rating={3} reviewCount={100} /> */}
           </View>
 
           {/* <Divider />
@@ -547,12 +539,6 @@ const styles = StyleSheet.create({
   bottomSpace: {
     marginBottom: 20,
   },
-  tag: {
-    padding: 5,
-    backgroundColor: Colors.primaryColor,
-    borderRadius: 5,
-    margin: 5,
-    overflow: "hidden",
-  },
+
 });
 export default RestaurantDetailScreen;
