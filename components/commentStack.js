@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Image } from "react-native";
 
 import Colors from "../constants/Colors";
+import ProfileImage from "../components/profileImage"
 import { Ionicons } from "@expo/vector-icons";
 
 const CommentStack = (props) => {
@@ -9,21 +10,21 @@ const CommentStack = (props) => {
     <View>
       <View style={{ backgroundColor: Colors.darkGrey, padding: 2 }} />
       <View style={styles.container}>
-        <View style={{ ...styles.row, ...styles.spacer }}>
+      <View style={{ ...styles.row, ...styles.spacer,...{justifyContent:"space-between", alignItems:"center"} }}>
+        <View style={{...styles.row,...{alignItems:"center"}}}>
+          <ProfileImage size={1} imageUrl={{uri:'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg'}}
+              />
           <Text style={styles.smallText}>{props.username}</Text>
-          <Text
-            style={
-              (styles.smallText,
-              { textAlign: "right", marginLeft: 60, marginRight: 15 })
-            }
-          >
+        </View>
+          <Text>
             {" "}
-            {props.date}
+            {/* {props.date} */}
+            {props.date.slice(0,props.date.length-23)}
           </Text>
         </View>
         <Text style={styles.mediumText}>{props.text}</Text>
 
-        <View style={{ ...styles.row, ...styles.rateContainer }}>
+        {/* <View style={{ ...styles.row, ...styles.rateContainer }}>
           <View style={styles.row}>
             <Ionicons style={{ color: "#fff" }} name="thumbs-up" size="18" />
             <Text style={{ fontSize: 18, color: "#fff" }}> 10</Text>
@@ -32,7 +33,7 @@ const CommentStack = (props) => {
             <Ionicons style={{ color: "#fff" }} name="thumbs-down" size="18" />
             <Text style={{ fontSize: 18, color: "#fff" }}> 10</Text>
           </View>
-        </View>
+        </View> */}
       </View>
     </View>
   );
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 15,
+    paddingLeft:10,
   },
   mediumText: {
     fontSize: 18,

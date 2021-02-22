@@ -17,6 +17,7 @@ import Colors from "../constants/Colors";
 import SafetyScore from "../components/handSanatizer";
 import * as firebase from "firebase";
 import "firebase/firestore";
+import PriceTag from '../components/priceTag';
 
 const RestaurantCard = (props) => {
   const [favorite, setFavorite] = useState("heart-outline");
@@ -88,21 +89,18 @@ const RestaurantCard = (props) => {
 
             {/* Info */}
             <View style={{ flex: 1 }}>
-              <CatIcon
-                style={{ alignItem: "flex-end", margin: 20 }}
-                cat={props.transactions}
-              />
-              <View
+            <View
                 style={{ ...styles.row, ...{ flex: 1, alignItems: "center" } }}
-              >
 
-                <View style={styles.tag}>
+              >
+                <PriceTag price={props.price}/>
+                {/* <View style={styles.tag}>
                   <Text
                     style={[styles.text, styles.mediumText, styles.whiteText]}
                   >
                     {props.price}
                   </Text>
-                </View>
+                </View> */}
                 <View style={{ ...styles.row, ...{ alignItems: "center" } }}>
                   <Ionicons
                     style={styles.icon}
@@ -116,10 +114,16 @@ const RestaurantCard = (props) => {
                 </View>
               </View>
 
+
+              <CatIcon
+                style={{ alignItem: "flex-end"}}
+                cat={props.transactions}
+              />
+              
             </View>
 
             {/* Hand Sanatizer */}
-            <SafetyScore style={{ flex: 1 }} score={props.safetyScore ? props.safetyScore : "?"} size={1} />
+            <SafetyScore score={props.safetyScore ? props.safetyScore : "?"} size={1} />
           </View>
 
           <View style={styles.row}>
@@ -195,14 +199,13 @@ const RestaurantCard = (props) => {
 const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
-    marginLeft: 10,
     borderRadius: 10,
     overflow: "hidden",
   },
   container: {
     width: "100%",
     backgroundColor: "white",
-    padding: 15,
+    padding: 10,
     borderRadius: 10,
   },
   text: {

@@ -4,26 +4,6 @@ import { Ionicons } from "@expo/vector-icons";
 
 const iconSize = 20;
 
-// const CatIcon = props => {
-//     let transactionArray = [];
-//     const transactionReturn = props.cat.forEach((item) => {
-//         let text;
-//         if (item == 'restaurant_reservation'){
-//             text='reservation'
-//         }else{
-//             text = item;
-//         }
-//         transactionArray.push(
-//             <View style={styles.row}>
-//                 <Ionicons style={styles.icon} name="checkmark" size={iconSize} color={'green'} />
-//                 <Text style={[styles.text, styles.text]}>{text}</Text>
-//             </View>
-//         )
-//     });
-
-//     return transactionArray;
-// }
-
 const CatIcon = (props) => {
   let transactionArray = [];
   if (props.cat) {

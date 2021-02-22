@@ -12,16 +12,10 @@ const SafetyCard = props => {
         case 'yes':
             color = Colors.primaryColor;
             icon = 'checkmark';
-            style = {
-                marginTop: 10
-            }
             break;
         case 'no':
             color = 'red';
             icon = 'close';
-            style = {
-                marginTop: 10
-            }
             break;
         case 'idk':
             color = 'grey';
@@ -34,15 +28,15 @@ const SafetyCard = props => {
     return (
         <View>
             <View style={{ ...styles.container, ...{ borderColor: color } }}>
-                <View style={{ ...styles.row, ...{ justifyContent: 'space-between', } }}>
+                <View style={{ ...styles.row, ...{ justifyContent: 'space-between', paddingRight:10, } }}>
                     <View>
                         <Text style={{ ...styles.title, ...{ fontSize: 13 } }}>{props.text}</Text>
                     </View>
-                    <View style={{ alignItems: 'flex-start', justifyContent: "flex-start", paddingRight: 5 }}>
-                        <Ionicons name={icon} size={30} color={color} style={style} />
+                    <View>
+                        <Ionicons name={icon} size={30} color={color} />
                     </View>
                 </View>
-                <View style={{ ...styles.row, ...{ paddingTop: 2, alignItems: "flex-end", justifyContent: "flex-start" } }}>
+                <View style={{ ...styles.row, ...{ paddingTop: 2, alignItems: "flex-end", justifyContent: "flex-start"} }}>
                     {/* <Ionicons name='person' size={20} color='grey' /> */}
                     <Text style={{ fontSize: 12 }}>{props.reviewCount}</Text>
                     <Text style={{ fontSize: 12 }}> reviews</Text>
@@ -62,8 +56,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingTop: 5,
         paddingBottom: 10,
-        marginBottom: 5,
-        width: 180,
+        marginBottom: 10,
+        width: 190,
 
     },
     row: {
