@@ -22,7 +22,7 @@ import { Alert } from "react-native";
 import "firebase/auth";
 import Settings from "../screens/profileScreens/settingsScreen";
 import Comments from "../screens/discoverScreens/commentsScreen";
-
+import Directions from '../screens/discoverScreens/directions'
 var user = false;
 //Createing a navigation stack for screens
 const RestaurantNavigator = createStackNavigator(
@@ -102,6 +102,9 @@ const RestaurantNavigator = createStackNavigator(
     }, 
      Comments: {
       screen: Comments
+    },
+    Directions: {
+      screen: Directions
     }
   },
 

@@ -344,7 +344,7 @@ const RestaurantDetailScreen = (props) => {
                   color={Colors.primaryColor}
                   title="Direction"
                   onSelect={() => {
-                    Alert.alert("TODO");
+                    props.navigation.navigate("Directions");
                   }}
                 />
                 <CircleButton
