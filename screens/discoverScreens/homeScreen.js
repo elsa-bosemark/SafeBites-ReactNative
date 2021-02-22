@@ -115,11 +115,7 @@ class HomeScreen extends React.Component {
   };
 
   getFirebaseData = async (names) => {
-<<<<<<< HEAD
     names.forEach(async (element) => {
-=======
-    names.forEach(async element => {
->>>>>>> 4eb3b2c80f3fbf34e9f11710c49ca55593022042
       const doc = await firebase
         .firestore()
         .collection("reviews")
@@ -127,7 +123,6 @@ class HomeScreen extends React.Component {
         .get();
 
       if (doc.exists) {
-<<<<<<< HEAD
         var _feelSafe = this.state.feelSafe ? this.state.feelSafe : [];
         _feelSafe.push(Math.round(doc.data().safety / doc.data().usersRated));
         this.setState({ feelSafe: _feelSafe });
@@ -137,19 +132,6 @@ class HomeScreen extends React.Component {
         this.setState({ feelSafe: _feelSafe });
       }
     });
-=======
-        var _feelSafe = this.state.feelSafe ? this.state.feelSafe : []
-        _feelSafe.push(Math.round(doc.data().safety / doc.data().usersRated))
-        this.setState({ feelSafe: _feelSafe })
-      } else {
-        var _feelSafe = this.state.feelSafe ? this.state.feelSafe : []
-        _feelSafe.push("?")
-        this.setState({ feelSafe: _feelSafe })
-      }
-    }
-    )
-
->>>>>>> 4eb3b2c80f3fbf34e9f11710c49ca55593022042
 
     // let doc = await myDB.collection("reviews").doc(restTitles[restIndex]).get();
     // // let _comments = await myDB.collection('reviews').doc(restTitles[restIndex]).collection('comments').doc()
@@ -354,15 +336,8 @@ class HomeScreen extends React.Component {
           });
       });
     setTimeout(() => {
-<<<<<<< HEAD
       this.getFirebaseData(names);
     }, 3000);
-=======
-
-      this.getFirebaseData(names)
-    }, 3000);
-
->>>>>>> 4eb3b2c80f3fbf34e9f11710c49ca55593022042
   };
   //get location of user's phone
   getLocationAsync = async () => {
