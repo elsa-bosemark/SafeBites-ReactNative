@@ -98,7 +98,7 @@ class HomeScreen extends React.Component {
     lastName: "",
     passwordVisible: "eye-off-outline",
     usersRated: [],
-    feelSafe:[],
+    feelSafe: [],
     callDataOnce: false,
   };
   handleFirstName = (text) => {
@@ -114,27 +114,24 @@ class HomeScreen extends React.Component {
     this.setState({ password: text });
   };
 
-   getFirebaseData = async (names) => {
-    names.forEach(async element  =>{
+  getFirebaseData = async (names) => {
+    names.forEach(async (element) => {
       const doc = await firebase
-      .firestore()
-      .collection("reviews")
-      .doc(element)
-      .get();
+        .firestore()
+        .collection("reviews")
+        .doc(element)
+        .get();
 
-      if(doc.exists)
-      {
-        var _feelSafe = this.state.feelSafe ? this.state.feelSafe : []
-        _feelSafe.push(Math.round(doc.data().safety / doc.data().usersRated))
-        this.setState({feelSafe: _feelSafe})
-      }else {
-        var _feelSafe = this.state.feelSafe ? this.state.feelSafe : []
-        _feelSafe.push("?")
-        this.setState({feelSafe: _feelSafe})
+      if (doc.exists) {
+        var _feelSafe = this.state.feelSafe ? this.state.feelSafe : [];
+        _feelSafe.push(Math.round(doc.data().safety / doc.data().usersRated));
+        this.setState({ feelSafe: _feelSafe });
+      } else {
+        var _feelSafe = this.state.feelSafe ? this.state.feelSafe : [];
+        _feelSafe.push("?");
+        this.setState({ feelSafe: _feelSafe });
       }
-    }
-      )
-
+    });
 
     // let doc = await myDB.collection("reviews").doc(restTitles[restIndex]).get();
     // // let _comments = await myDB.collection('reviews').doc(restTitles[restIndex]).collection('comments').doc()
@@ -142,7 +139,7 @@ class HomeScreen extends React.Component {
     //   let usersRated = doc.data().usersRated;
     //   this.setState({usersRated: usersRated});
     //   this.setState({feelSafe: Math.round(doc.data().safety/usersRated)})
-     
+
     // } else {
     //   this.setState({usersRated: "?", feelSafe:"?"})
     // }
@@ -327,7 +324,7 @@ class HomeScreen extends React.Component {
             storePhotos(_photos);
             storeTags(_tags);
             storeReviewCount(_yelpReviewCount);
-          })   
+          })
           .catch((error) => {
             if (error.response) {
               console.error(error.response);
@@ -338,11 +335,9 @@ class HomeScreen extends React.Component {
             }
           });
       });
-setTimeout(() => {
-  
-  this.getFirebaseData(names)
-}, 3000);
-
+    setTimeout(() => {
+      this.getFirebaseData(names);
+    }, 3000);
   };
   //get location of user's phone
   getLocationAsync = async () => {
@@ -680,15 +675,30 @@ setTimeout(() => {
           >
             See how well restaurants are protecting YOU from COVID
           </Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ ...styles.row, ...styles.searchButton }}
             onPress={() => {
-              //New screen with all the rest in a flatlist
             }}
           >
             <Ionicons name="search" size={15} />
             <Text>Search</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <View style={styles.searchBar}>
+            <SearchBar
+              placeholder="Search..."
+              onChangeText={this.updateSearch}
+              value={search}
+              color="black"
+              platform={Platform.OS === "android" ? "android" : "ios"}
+              containerStyle={{
+                backgroundColor: "",
+              }}
+              inputContainerStyle={{
+                borderRadius: 10,
+                backgroundColor: "white",
+              }}
+            />
+          </View>
         </View>
 
         <Text style={styles.title}>Safety Categories</Text>

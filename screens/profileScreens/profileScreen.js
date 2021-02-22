@@ -124,7 +124,7 @@ const ProfileScreen = (props) => {
             );
           })
           .catch((error) => {
-            this.setState({ error: error });
+            this.setState({ error: error.message });
           });
       }
     };
@@ -304,7 +304,7 @@ const ProfileScreen = (props) => {
             );
           })
           .catch((error) => {
-            this.setState({ error: error });
+            this.setState({ error: error.message });
             console.error(error);
           });
       }
@@ -461,7 +461,7 @@ const ProfileScreen = (props) => {
             );
           })
           .catch(function (error) {
-            this.setState({ error: error });
+            this.setState({ error: error.message });
             Alert.alert(
               "Oops!",
               "Sorry, there was an error. Please try again later."
