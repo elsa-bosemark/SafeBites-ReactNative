@@ -293,6 +293,7 @@ class HomeScreen extends React.Component {
             _photos.push(element.photos);
             _openHours.push(element.hours);
             _tags.push(element.categories);
+            console.warn(element.hours + " OPEN HORUS");
             this.setState({
               title: names,
               error: response.error || null,
@@ -664,7 +665,7 @@ class HomeScreen extends React.Component {
 
         {/* SCREEN STARTS */}
         {/* BANNER */}
-        
+
         <View style={styles.banner}>
           <Text
             style={{
@@ -702,7 +703,6 @@ class HomeScreen extends React.Component {
           </View>
         </View>
 
-
         <Text style={styles.title}>Safety Categories</Text>
 
         <FlatList
@@ -735,10 +735,9 @@ class HomeScreen extends React.Component {
         <ActivityIndicator animating={this.state.loading} />
 
         <FlatList
- 
           data={
             this.state.filteredRestaurants &&
-              this.state.filteredRestaurants.length > 0
+            this.state.filteredRestaurants.length > 0
               ? this.state.filteredRestaurants
               : this.state.title
           }
@@ -792,7 +791,6 @@ class HomeScreen extends React.Component {
           refreshing={false}
           style={{ height: "40%" }}
         />
-       
       </SafeAreaView>
     );
   }
