@@ -1,5 +1,4 @@
 # Safe Bites
 
-[https://safebites.weebly.com](website)
 
- [link to Google!](http://google.com)
+ [safebites website](http://google.com)
