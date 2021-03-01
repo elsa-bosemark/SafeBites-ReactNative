@@ -1,3 +1,3 @@
 # Safe Bites
 
-[https://safebites.weebly.com](website)
+(https://safebites.weebly.com)[website]
