@@ -70,12 +70,16 @@ const ProfileScreen = (props) => {
   const [favTags, setFavTags] = useState([]);
   const [favTransactions, setFavTransactions] = useState([]);
   const [userLocation, setUserLocation] = useState([]);
-  const [passVisible, setPassVisible] = useState("eye-off-outline");
   const [favShown, setFavShown] = useState(true);
   class LoginInput extends React.Component {
     constructor() {
       super();
-      this.state = { value: "", email: "", error: "" };
+      this.state = {
+        value: "",
+        email: "",
+        error: "",
+        passwordVisible: "eye-off-outline",
+      };
     }
 
     update = (e) => {
@@ -158,7 +162,9 @@ const ProfileScreen = (props) => {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               placeholder="Password"
-              secureTextEntry={passVisible == "eye-off-outline" ? true : false}
+              secureTextEntry={
+                this.state.passwordVisible == "eye-off-outline" ? true : false
+              }
               placeholderTextColor={"grey"}
               style={{
                 height: 50,
@@ -174,14 +180,14 @@ const ProfileScreen = (props) => {
                 marginRight: 20,
               }}
               onPress={() => {
-                if (passVisible == "eye-off-outline") {
-                  setPassVisible("eye-outline");
+                if (this.state.passwordVisible == "eye-off-outline") {
+                  this.setState({ passwordVisible: "eye-outline" });
                 } else {
-                  setPassVisible("eye-off-outline");
+                  this.setState({ passwordVisible: "eye-off-outline" });
                 }
               }}
             >
-              <Ionicons name={passVisible} size={20} />
+              <Ionicons name={this.state.passwordVisible} size={20} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
@@ -237,6 +243,7 @@ const ProfileScreen = (props) => {
         error: "",
         firstName: "",
         lastName: "",
+        passwordVisible: "eye-off-outline",
       };
     }
 
@@ -354,7 +361,9 @@ const ProfileScreen = (props) => {
               autoCapitalize="none"
               placeholder="Password"
               placeholderTextColor={"grey"}
-              secureTextEntry={passVisible == "eye-off-outline" ? true : false}
+              secureTextEntry={
+                this.state.passwordVisible == "eye-off-outline" ? true : false
+              }
             />
             <TouchableOpacity
               style={{
@@ -363,14 +372,14 @@ const ProfileScreen = (props) => {
                 marginRight: 20,
               }}
               onPress={() => {
-                if (passVisible == "eye-off-outline") {
-                  setPassVisible("eye-outline");
+                if (this.state.passwordVisible == "eye-off-outline") {
+                  this.setState({ passwordVisible: "eye-outline" });
                 } else {
-                  setPassVisible("eye-off-outline");
+                  this.setState({ passwordVisible: "eye-off-outline" });
                 }
               }}
             >
-              <Ionicons name={passVisible} size={20} />
+              <Ionicons name={this.state.passwordVisible} size={20} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
