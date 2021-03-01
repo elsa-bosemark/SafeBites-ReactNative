@@ -1,6 +1,14 @@
 import React, { Component } from "react";
-import { AppRegistry, StyleSheet, Text, View, Dimensions } from "react-native";
-
+import {
+  AppRegistry,
+  StyleSheet,
+  Linking,
+  View,
+  Dimensions,
+  Button,
+  Alert,
+} from "react-native";
+import DefaultButton from "../../components/defaultButton";
 import MapView from "react-native-maps";
 import Polyline from "@mapbox/polyline";
 import {
@@ -9,6 +17,11 @@ import {
   getNames,
 } from "../../config/data";
 
+const openLink = (url) =>
+  Linking.openURL(url).catch((error) => {
+    Alert.alert("Sorry, something went wrong.", "Please try again later.");
+    console.error(error);
+  });
 export default class RnDirectionsApp extends Component {
   index = this.props.navigation.getParam("index");
 
@@ -67,8 +80,29 @@ export default class RnDirectionsApp extends Component {
 
   render() {
     console.warn(this.state.userLoc + " user lo");
+
     return (
       <View>
+        <Button
+          title="open in google maps"
+          onPress={() => {
+            console.error(
+              `${this.state.restauarntLoc.latitude},${this.state.restauarntLoc.longitude}` +
+                " rest lo"
+            );
+            openLink(
+              `https://www.google.com/maps/dir/?api=1&origin=${
+                this.state.userLoc != undefined
+                  ? `${this.state.userLoc[0]},${this.state.userLoc[1]}`
+                  : `33.5,22`
+              }&destination=${
+                this.state.restauarntLoc != undefined
+                  ? `${this.state.restauarntLoc.latitude},${this.state.restauarntLoc.longitude}`
+                  : `33.5,22`
+              }`
+            );
+          }}
+        ></Button>
         <MapView
           style={styles.map}
           loadingEnabled={this.state.userLoc == undefined}
@@ -122,13 +156,8 @@ export default class RnDirectionsApp extends Component {
 
 const styles = StyleSheet.create({
   map: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    height: Dimensions.get("window").height * 0.9,
   },
 });
 
