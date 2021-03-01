@@ -221,7 +221,6 @@ const RestaurantDetailScreen = (props) => {
                   </View>
                 </View>
                 {/* Extra Info*/}
-                {/* <OpenHours hours={openHours[restIndex]}/> */}
                 <Text style={styles.title}>Max capacity: ???</Text>
               </View>
 
@@ -230,7 +229,9 @@ const RestaurantDetailScreen = (props) => {
               </View>
             </View>
             {/* Make tags into a diff comp being an array*/}
-            <Text style={styles.title}>Open hours: ???</Text>
+            <Text style={styles.title}>
+              {openHours[restIndex] ? "open right now" : "closed right now"}
+            </Text>
             <Text style={styles.title}>Tags:</Text>
             <View style={{ flexDirection: "row" }}>
               <Tags restTags={tags[restIndex]} />

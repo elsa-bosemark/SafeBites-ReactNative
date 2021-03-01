@@ -291,9 +291,8 @@ class HomeScreen extends React.Component {
             _yelpRating.push(element.rating);
             _yelpReviewCount.push(element.review_count);
             _photos.push(element.photos);
-            _openHours.push(element.hours);
+            _openHours.push(element.is_closed);
             _tags.push(element.categories);
-            console.warn(element.hours + " OPEN HORUS");
             this.setState({
               title: names,
               error: response.error || null,
