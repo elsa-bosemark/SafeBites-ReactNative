@@ -13,7 +13,7 @@ import {
   Button,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { getDistance } from "geolib";
+import { getDistance, convertDistance } from "geolib";
 import { Ionicons } from "@expo/vector-icons";
 import { getData, storeCurrentRestaurant } from "../../config/data";
 import * as firebase from "firebase";
@@ -37,7 +37,7 @@ import { callNumber } from "../../config/Call";
 import CommentStack from "../../components/commentStack";
 import { getCalledOnce, setCalledOnce } from "../../config/updateData";
 import { call } from "react-native-reanimated";
-import PriceTag from '../../components/priceTag';
+import PriceTag from "../../components/priceTag";
 
 const RestaurantDetailScreen = (props) => {
   const [masks, setMasks] = useState(0);
@@ -130,10 +130,11 @@ const RestaurantDetailScreen = (props) => {
     }
   };
   //Calculate the distance of rest
-  const restaurantDistance = getDistance(
+  const distance = getDistance(
     userCoordinates,
     restaurantCoordinates[restIndex]
   );
+  const restaurantDistance = convertDistance(distance, "mi");
   //open link function
   const openLink = (url) =>
     Linking.openURL(url).catch(() => {
@@ -205,7 +206,7 @@ const RestaurantDetailScreen = (props) => {
                   <View
                     style={{ alignItems: "center", justifyContent: "center" }}
                   >
-                    <PriceTag price={price[restIndex]}/>
+                    <PriceTag price={price[restIndex]} />
                   </View>
                   <View style={{ ...styles.row, ...{ alignItems: "center" } }}>
                     <Ionicons
@@ -215,7 +216,7 @@ const RestaurantDetailScreen = (props) => {
                       color={Colors.primaryColor}
                     />
                     <Text style={{ ...styles.text, ...{ fontSize: 17 } }}>
-                      {Number((restaurantDistance / 1000).toFixed(1))} km
+                      {Number(restaurantDistance.toFixed(2))} mi
                     </Text>
                   </View>
                 </View>
@@ -336,7 +337,9 @@ const RestaurantDetailScreen = (props) => {
                   color={Colors.primaryColor}
                   title="Direction"
                   onSelect={() => {
-                    props.navigation.navigate("Directions");
+                    props.navigation.navigate("Directions", {
+                      index: restIndex,
+                    });
                   }}
                 />
                 <CircleButton
@@ -436,8 +439,12 @@ const RestaurantDetailScreen = (props) => {
                 color="#000"
                 title="All comments..."
                 onPress={() => {
-                  console.warn(comments)
-                  props.navigation.navigate("Comments",{ text: comments, date: dates, username: commentsUsernames });
+                  console.warn(comments);
+                  props.navigation.navigate("Comments", {
+                    text: comments,
+                    date: dates,
+                    username: commentsUsernames,
+                  });
                 }}
               />
             </View>
@@ -539,6 +546,5 @@ const styles = StyleSheet.create({
   bottomSpace: {
     marginBottom: 20,
   },
-
 });
 export default RestaurantDetailScreen;

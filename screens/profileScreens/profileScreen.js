@@ -39,7 +39,7 @@ import Spacer from "../../components/spacer";
 import CommentCard from "../../components/commentCard";
 import DefaultButton from "../../components/defaultButton";
 import TabSlider from "../../components/tabSlider";
-import ProfileImage from "../../components/profileImage"
+import ProfileImage from "../../components/profileImage";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -673,36 +673,36 @@ const ProfileScreen = (props) => {
               favRestCoords.length > 0
             ) {
               return (
-                <View style={{marginBottom:20}}>
-                <RestaurantCard
-                  title={item}
-                  price={favPrice[index]}
-                  cover={favCover[index]}
-                  transactions={favTransactions[index]}
-                  restaurantCoordinates={coordArray[index]}
-                  userCoordinates={userLocation}
-                  onSelect={() => {
-                    props.navigation.navigate({
-                      routeName: "RetaurantDetail",
-                      params: {
-                        //pass restaurant DATA
-                        restIndex: index,
-                        title: favorites,
-                        price: favPrice,
-                        cover: favCover,
-                        transactions: favTransactions,
-                        restaurantCoordinates: coordArray,
-                        userCoordinates: userLocation,
-                        phoneNumber: favPhoneNumber,
-                        yelpUrl: favURL,
-                        yelpRating: favRating,
-                        yelpReviewCount: favReviewCount,
-                        photos: favPhotos,
-                        tags: [favTags[index]],
-                      },
-                    });
-                  }}
-                />
+                <View style={{ marginBottom: 20 }}>
+                  <RestaurantCard
+                    title={item}
+                    price={favPrice[index]}
+                    cover={favCover[index]}
+                    transactions={favTransactions[index]}
+                    restaurantCoordinates={coordArray[index]}
+                    userCoordinates={userLocation}
+                    onSelect={() => {
+                      props.navigation.navigate({
+                        routeName: "RetaurantDetail",
+                        params: {
+                          //pass restaurant DATA
+                          restIndex: index,
+                          title: favorites,
+                          price: favPrice,
+                          cover: favCover,
+                          transactions: favTransactions,
+                          restaurantCoordinates: coordArray,
+                          userCoordinates: userLocation,
+                          phoneNumber: favPhoneNumber,
+                          yelpUrl: favURL,
+                          yelpRating: favRating,
+                          yelpReviewCount: favReviewCount,
+                          photos: favPhotos,
+                          tags: [favTags[index]],
+                        },
+                      });
+                    }}
+                  />
                 </View>
               );
             } else {
@@ -736,7 +736,7 @@ const ProfileScreen = (props) => {
             }}
             keyExtractor={(item) => item}
           />
-          <View style={{height: 1000}}/>
+          <View style={{ height: 1000 }} />
         </ScrollView>
       );
     }
@@ -746,32 +746,42 @@ const ProfileScreen = (props) => {
       return (
         <SafeAreaView>
           <View style={styles.container}>
-            <View style={{...styles.card, ...styles.row, ...{justifyContent:'space-around', alignItems:'center'}}}>
-             {/* image placeholder  */}
-             <ProfileImage size={3.3} imageUrl={{uri:'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg'}}
-              />
+            <View
+              style={{
+                ...styles.card,
+                ...styles.row,
+                ...{ justifyContent: "space-around", alignItems: "center" },
+              }}
+            >
+              {/* image placeholder  */}
+              {/* <ProfileImage size={3.3} imageUrl={{uri:'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg'}}
+              /> */}
               <View>
                 {/* username */}
                 <View style={styles.row}>
                   <Text style={styles.title}>{`hello, ${name}`}</Text>
                 </View>
-                
-                  <View style={[styles.greyCard, styles.row]}>
+
+                <View style={[styles.greyCard, styles.row]}>
                   <View>
-                    <Text style={styles.infoText}>favorites</Text>
-                    <Text style={{textAlign:'center'}}>{favorites.length}</Text>
+                    <Text style={(styles.infoText, { marginRight: 20 })}>
+                      favorites
+                    </Text>
+                    <Text style={{ textAlign: "center" }}>
+                      {favorites.length}
+                    </Text>
                   </View>
                   <View>
                     <Text style={styles.infoText}>comments</Text>
-                    <Text style={{textAlign:'center'}}>{comments.length}</Text>
+                    <Text style={{ textAlign: "center" }}>
+                      {comments.length}
+                    </Text>
                   </View>
                   {/* <View>
                     <Text style={styles.infoText}>photos</Text>
                     <Text style={{textAlign:'center'}}>1</Text>
                   </View> */}
-               
                 </View>
-                
               </View>
             </View>
 
@@ -860,7 +870,7 @@ const styles = StyleSheet.create({
     fontFamily: "rubik",
     fontSize: 20,
     paddingTop: 20,
-    paddingBottom:20
+    paddingBottom: 20,
   },
   card: {
     backgroundColor: "white",

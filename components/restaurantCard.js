@@ -10,14 +10,14 @@ import {
   TouchableNativeFeedback,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { getDistance } from "geolib";
+import { getDistance, convertDistance } from "geolib";
 
 import CatIcon from "./catIcon";
 import Colors from "../constants/Colors";
 import SafetyScore from "../components/handSanatizer";
 import * as firebase from "firebase";
 import "firebase/firestore";
-import PriceTag from '../components/priceTag';
+import PriceTag from "../components/priceTag";
 
 const RestaurantCard = (props) => {
   const [favorite, setFavorite] = useState("heart-outline");
@@ -70,10 +70,11 @@ const RestaurantCard = (props) => {
     props.restaurantCoordinates != null &&
     props.restaurantCoordinates != undefined
   ) {
-    restaurantDistance = getDistance(
+    let distance = getDistance(
       props.userCoordinates,
       props.restaurantCoordinates
     );
+    restaurantDistance = convertDistance(distance, "mi");
   }
   if (!calledOnce) {
     getFavorites();
@@ -89,11 +90,10 @@ const RestaurantCard = (props) => {
 
             {/* Info */}
             <View style={{ flex: 1 }}>
-            <View
+              <View
                 style={{ ...styles.row, ...{ flex: 1, alignItems: "center" } }}
-
               >
-                <PriceTag price={props.price}/>
+                <PriceTag price={props.price} />
                 {/* <View style={styles.tag}>
                   <Text
                     style={[styles.text, styles.mediumText, styles.whiteText]}
@@ -109,21 +109,25 @@ const RestaurantCard = (props) => {
                     color={Colors.accentColor}
                   />
                   <Text style={[styles.text, styles.mediumText]}>
-                    {Number((restaurantDistance / 1000).toFixed(1))} km
+                    {restaurantDistance
+                      ? Number(restaurantDistance.toFixed(2))
+                      : "?"}{" "}
+                    mi
                   </Text>
                 </View>
               </View>
 
-
               <CatIcon
-                style={{ alignItem: "flex-end"}}
+                style={{ alignItem: "flex-end" }}
                 cat={props.transactions}
               />
-              
             </View>
 
             {/* Hand Sanatizer */}
-            <SafetyScore score={props.safetyScore ? props.safetyScore : "?"} size={1} />
+            <SafetyScore
+              score={props.safetyScore ? props.safetyScore : "?"}
+              size={1}
+            />
           </View>
 
           <View style={styles.row}>
