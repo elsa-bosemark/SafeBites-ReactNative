@@ -18,13 +18,12 @@ import { withNavigation } from "@react-navigation/compat";
 import RootNavigation from "./RootNavigation";
 import * as firebase from "firebase";
 import { Alert } from "react-native";
-
 import "firebase/auth";
 import Settings from "../screens/profileScreens/settingsScreen";
 import Comments from "../screens/discoverScreens/commentsScreen";
-import Directions from '../screens/discoverScreens/directions'
+import Directions from "../screens/discoverScreens/directions";
 var user = false;
-//Createing a navigation stack for screens
+//Creating a navigation stack for screens
 const RestaurantNavigator = createStackNavigator(
   {
     Home: {
@@ -41,15 +40,15 @@ const RestaurantNavigator = createStackNavigator(
     },
     RestaurantCategory: {
       screen: RestaurantCategoryScreen,
-      navigationOptions: {
-        //style header
+      navigationOptions: ({ navigation }) => ({
+        title: `${navigation.state.params.name}`,
         headerShown: true,
-        // headerTitle: "",
+
         headerStyle: {
           backgroundColor: Colors.accentColor,
         },
         headerTintColor: "white",
-      },
+      }),
     },
     RetaurantDetail: {
       screen: RetaurantDetailScreen,
@@ -99,13 +98,13 @@ const RestaurantNavigator = createStackNavigator(
       navigationOptions: {
         headerBackTitle: "Cancel",
       },
-    }, 
-     Comments: {
-      screen: Comments
+    },
+    Comments: {
+      screen: Comments,
     },
     Directions: {
-      screen: Directions
-    }
+      screen: Directions,
+    },
   },
 
   {

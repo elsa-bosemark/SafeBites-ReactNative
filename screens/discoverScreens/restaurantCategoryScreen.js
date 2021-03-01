@@ -18,7 +18,6 @@ import Colors from "../../constants/Colors";
 
 export default ({ props, navigation }) => {
   //search states
-
   const [search, updateSearch] = useState("");
   const [filteredRestaurants, updateFilteredRestaurants] = useState([]);
 
@@ -61,6 +60,8 @@ export default ({ props, navigation }) => {
 
   //get params sent by home screen (the catid) will give title and the resurants that fit into the
   const catId = navigation.getParam("categoryId");
+  const categoryTitle = navigation.getParam("categoryTitle");
+  navigation.state.params.name = categoryTitle;
 
   //I go through the names of the restuarants and make a new array based on if they have the transaction/cat
   let displayedRestaurantsArray = [];

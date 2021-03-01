@@ -398,6 +398,7 @@ class HomeScreen extends React.Component {
                 routeName: "RestaurantCategory",
                 params: {
                   categoryId: itemData.item.id,
+                  categoryTitle: itemData.item.title,
                   //pass restaurant DATA so it is accessible to detailScreen when on catScreen
                   title: this.state.title,
                   price: this.state.price,
