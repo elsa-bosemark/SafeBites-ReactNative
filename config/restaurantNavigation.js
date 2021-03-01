@@ -4,6 +4,12 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { Text } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { withNavigation } from "@react-navigation/compat";
+import RootNavigation from "./RootNavigation";
+import * as firebase from "firebase";
+import { Alert } from "react-native";
+import "firebase/auth";
 
 import HomeScreen from "../screens/discoverScreens/homeScreen";
 import RestaurantCategoryScreen from "../screens/discoverScreens/restaurantCategoryScreen";
@@ -11,17 +17,14 @@ import RetaurantDetailScreen from "../screens/discoverScreens/restaurantDetailSc
 import ProfileScreen from "../screens/profileScreens/profileScreen";
 import Rate from "../screens/discoverScreens/rateScreen";
 import SettingsScreen from "../screens/profileScreens/settingsScreen";
-
-import Colors from "../constants/Colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { withNavigation } from "@react-navigation/compat";
-import RootNavigation from "./RootNavigation";
-import * as firebase from "firebase";
-import { Alert } from "react-native";
-import "firebase/auth";
+import ExploreScreen from "../screens/exploreScreen";
 import Settings from "../screens/profileScreens/settingsScreen";
 import Comments from "../screens/discoverScreens/commentsScreen";
 import Directions from "../screens/discoverScreens/directions";
+
+import Colors from "../constants/Colors";
+import SearchTab from "../components/searchTab";
+` `
 var user = false;
 //Creating a navigation stack for screens
 const RestaurantNavigator = createStackNavigator(
@@ -194,6 +197,16 @@ const ProfileTabNavigator = createBottomTabNavigator(
               size={25}
               color={tabInfo.tintColor}
             />
+          );
+        },
+      },
+    },
+    Explore: {
+      screen: ExploreScreen,
+      navigationOptions: {
+        tabBarIcon: (tabInfo) => {
+          return (
+            <SearchTab/>
           );
         },
       },

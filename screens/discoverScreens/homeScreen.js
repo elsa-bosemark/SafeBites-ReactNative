@@ -666,18 +666,18 @@ class HomeScreen extends React.Component {
         {/* SCREEN STARTS */}
         {/* BANNER */}
 
-        <View style={styles.banner}>
-          <Text
-            style={{
-              color: "white",
-              textAlign: "center",
-              fontSize: 18,
-              paddingBottom: 10,
-            }}
-          >
-            See how well restaurants are protecting YOU from COVID
+          <View style={styles.banner}>
+            <Text
+              style={{
+                color: "white",
+                textAlign: "center",
+                fontSize: 18,
+                paddingBottom: 10,
+              }}
+            >
+              See how well restaurants are protecting YOU from COVID
           </Text>
-          {/* <TouchableOpacity
+            {/* <TouchableOpacity
             style={{ ...styles.row, ...styles.searchButton }}
             onPress={() => {
             }}
@@ -685,37 +685,37 @@ class HomeScreen extends React.Component {
             <Ionicons name="search" size={15} />
             <Text>Search</Text>
           </TouchableOpacity> */}
-          <View style={styles.searchBar}>
-            <SearchBar
-              placeholder="Search..."
-              onChangeText={this.updateSearch}
-              value={search}
-              color="black"
-              platform={Platform.OS === "android" ? "android" : "ios"}
-              containerStyle={{
-                backgroundColor: "",
-              }}
-              inputContainerStyle={{
-                borderRadius: 10,
-                backgroundColor: "white",
-              }}
-            />
+            <View style={styles.searchBar}>
+              <SearchBar
+                placeholder="Search..."
+                onChangeText={this.updateSearch}
+                value={search}
+                color="black"
+                platform={Platform.OS === "android" ? "android" : "ios"}
+                containerStyle={{
+                  backgroundColor: "",
+                }}
+                inputContainerStyle={{
+                  borderRadius: 10,
+                  backgroundColor: "white",
+                }}
+              />
+            </View>
           </View>
-        </View>
 
-        <Text style={styles.title}>Safety Categories</Text>
+          <Text style={styles.title}>Safety Categories</Text>
 
-        <FlatList
-          horizontal
-          pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          data={CATEGORIES}
-          renderItem={renderGridItem}
-          keyExtractor={(item) => item}
-        />
+          <FlatList
+            horizontal
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            data={CATEGORIES}
+            renderItem={renderGridItem}
+            keyExtractor={(item) => item}
+          />
 
-        <Text style={styles.title}>Near You</Text>
-        {/* <View style={styles.searchBar}>
+          <Text style={styles.title}>Near You</Text>
+          {/* <View style={styles.searchBar}>
           <SearchBar
             placeholder="Search..."
             onChangeText={this.updateSearch}
@@ -732,65 +732,65 @@ class HomeScreen extends React.Component {
           />
         </View> */}
 
-        <ActivityIndicator animating={this.state.loading} />
+          <ActivityIndicator animating={this.state.loading} />
 
-        <FlatList
-          data={
-            this.state.filteredRestaurants &&
-            this.state.filteredRestaurants.length > 0
-              ? this.state.filteredRestaurants
-              : this.state.title
-          }
-          renderItem={({ item, index }) => {
-            return (
-              <View style={{ marginBottom: 20 }}>
-                <RestaurantCard
-                  title={item}
-                  price={this.state.price[index]}
-                  cover={
-                    this.state.cover[actualIndex(item)]
-                      ? this.state.cover[actualIndex(item)]
-                      : null
-                  }
-                  safetyScore={this.state.feelSafe[index]}
-                  transactions={this.state.transactions[actualIndex(item)]}
-                  restaurantCoordinates={
-                    this.state.restaurantCoordinates[actualIndex(item)]
-                  }
-                  userCoordinates={this.state.location}
-                  onSelect={() => {
-                    setCalledOnce(false);
-                    this.props.navigation.navigate({
-                      routeName: "RetaurantDetail",
-                      params: {
-                        //pass restaurant DATA
-                        restIndex: index,
-                        title: this.state.title,
-                        price: this.state.price,
-                        cover: this.state.cover,
-                        transactions: this.state.transactions,
-                        restaurantCoordinates: this.state.restaurantCoordinates,
-                        userCoordinates: this.state.location,
-                        phoneNumber: this.state.phoneNumber,
-                        address: this.state.address,
-                        yelpUrl: this.state.yelpUrl,
+          <FlatList
+            data={
+              this.state.filteredRestaurants &&
+                this.state.filteredRestaurants.length > 0
+                ? this.state.filteredRestaurants
+                : this.state.title
+            }
+            renderItem={({ item, index }) => {
+              return (
+                <View style={{ marginBottom: 20 }}>
+                  <RestaurantCard
+                    title={item}
+                    price={this.state.price[index]}
+                    cover={
+                      this.state.cover[actualIndex(item)]
+                        ? this.state.cover[actualIndex(item)]
+                        : null
+                    }
+                    safetyScore={this.state.feelSafe[index]}
+                    transactions={this.state.transactions[actualIndex(item)]}
+                    restaurantCoordinates={
+                      this.state.restaurantCoordinates[actualIndex(item)]
+                    }
+                    userCoordinates={this.state.location}
+                    onSelect={() => {
+                      setCalledOnce(false);
+                      this.props.navigation.navigate({
+                        routeName: "RetaurantDetail",
+                        params: {
+                          //pass restaurant DATA
+                          restIndex: index,
+                          title: this.state.title,
+                          price: this.state.price,
+                          cover: this.state.cover,
+                          transactions: this.state.transactions,
+                          restaurantCoordinates: this.state.restaurantCoordinates,
+                          userCoordinates: this.state.location,
+                          phoneNumber: this.state.phoneNumber,
+                          address: this.state.address,
+                          yelpUrl: this.state.yelpUrl,
 
-                        yelpRating: this.state.yelpRating,
-                        yelpReviewCount: this.state.yelpReviewCount,
-                        photos: this.state.photos,
-                        openHours: this.state.openHours,
-                        tags: this.state.tags,
-                      },
-                    });
-                  }}
-                />
-              </View>
-            );
-          }}
-          keyExtractor={(item) => item}
-          refreshing={false}
-          style={{ height: "40%" }}
-        />
+                          yelpRating: this.state.yelpRating,
+                          yelpReviewCount: this.state.yelpReviewCount,
+                          photos: this.state.photos,
+                          openHours: this.state.openHours,
+                          tags: this.state.tags,
+                        },
+                      });
+                    }}
+                  />
+                </View>
+              );
+            }}
+            keyExtractor={(item) => item}
+            refreshing={false}
+            style={{ height: 500 }}
+          />
       </SafeAreaView>
     );
   }
