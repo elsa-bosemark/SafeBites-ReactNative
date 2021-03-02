@@ -97,24 +97,26 @@ const ExploreScreen = () => {
         categories: [
             {
                 name: 'Pickup',
-                icon: <MaterialCommunityIcons style={styles.chipsIcon} name="coffee" size={18} color={Color.accent} />,
+                icon: <MaterialCommunityIcons style={styles.chipsIcon} name="food-fork-drink" size={18} color={Color.accentColor} />,
             },
             {
                 name: 'Delivery',
-                icon: <MaterialCommunityIcons style={styles.chipsIcon} name="box" size={18} color={Color.accent} />,
+                icon: <MaterialCommunityIcons style={styles.chipsIcon} name="motorbike" size={18} color={Color.accentColor} />,
             },
             {
                 name: 'Reserve',
-                icon: <MaterialCommunityIcons name="book-open-variant" style={styles.chipsIcon} size={18} color={Color.accent} />,
+                icon: <MaterialCommunityIcons name="table-chair" style={styles.chipsIcon} size={18} color={Color.accentColor} />,
             },
             {
                 name: 'Outdoor Seating',
-                icon: <MaterialCommunityIcons name="tree" style={styles.chipsIcon} size={15} color={Color.accent} />,
+                icon: <MaterialCommunityIcons name="weather-sunny" style={styles.chipsIcon} size={15} color={Color.accentColor} />,
             },
         ],
         region: {
+            //This should be based on location of user
             latitude: 37.7673519306,
             longitude: -122.42410497,
+            //this makes the map 2-d instead of 3-d
             latitudeDelta: 0.04864195044303443,
             longitudeDelta: 0.040142817690068,
         },
