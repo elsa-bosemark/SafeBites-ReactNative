@@ -74,9 +74,6 @@ state = {
   photos: null,
   openHours: null,
   tags: null,
-  authVisible: true,
-  signupVisible: false,
-  loginVisible: false,
 
   //website = null // need google
   // googlePhoneNumber = null, // need google
@@ -145,81 +142,6 @@ class HomeScreen extends React.Component {
     // }
   };
 
-  login = (email, password) => {
-    if (email == "" || password == "") {
-      this.setState({ error: "please fill in all fields" });
-    } else {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((user) => {
-          // this.setState({ authVisible: false })
-          this.setState({
-            authVisible: false,
-            loginVisible: false,
-            signupVisible: false,
-          });
-          Alert.alert(
-            "Successfully Signed Up!",
-            "Thanks for signing up!",
-            [
-              {
-                text: "Ok",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel",
-              },
-            ],
-            { cancelable: true }
-          );
-        })
-        .catch((error) => {
-          this.setState({ error: error });
-        });
-    }
-  };
-
-  signup = (email, password, firstName, lastName) => {
-    if (email == "" || password == "") {
-      this.setState({ error: "please fill in all fields" });
-    } else {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          this.setState({
-            authVisible: false,
-            loginVisible: false,
-            signupVisible: false,
-          });
-          var myDB = firebase.firestore();
-          var doc = myDB.collection("users").doc(`${email}`).get();
-          if (!doc.exists) {
-            console.log("No document");
-            myDB.collection("users").doc(`${email}`).set({
-              firstName: firstName,
-              lastName: lastName,
-            });
-          }
-
-          Alert.alert(
-            "Successfully Signed Up!",
-            "Thanks for signing up!",
-            [
-              {
-                text: "Ok",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel",
-              },
-            ],
-            { cancelable: false }
-          ); // this.props.navigation.navigate('Home')
-        })
-        .catch((error) => {
-          this.setState({ error: error });
-          console.error(error);
-        });
-    }
-  };
   //screen did load
   componentDidMount() {
     this.getLocationAsync();
@@ -235,15 +157,6 @@ class HomeScreen extends React.Component {
         });
       });
     }
-    firebase.auth().onAuthStateChanged((userAuth) => {
-      if (userAuth) {
-        this.setState({
-          authVisible: false,
-          loginVisible: false,
-          signupVisible: false,
-        });
-      }
-    });
   }
 
   constructor(props) {
@@ -430,254 +343,21 @@ class HomeScreen extends React.Component {
 
     return (
       <SafeAreaView>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.authVisible}
-          onRequestClose={() => {
-            // Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                You haven't logged in yet! You can't rate anything yet.
-              </Text>
-              <TouchableOpacity
-                style={{
-                  ...styles.closedButton,
-                  backgroundColor: Colors.accentColor,
-                }}
-                onPress={() => {
-                  this.setState({
-                    authVisible: false,
-                    loginVisible: true,
-                  });
-                }}
-              >
-                <Text style={styles.textStyle}>Login</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ ...styles.closedButton }}
-                onPress={() => {
-                  this.setState({
-                    signupVisible: true,
-                    authVisible: false,
-                  });
-                }}
-              >
-                <Text
-                  style={{ ...styles.textStyle, color: Colors.primaryColor }}
-                >
-                  Signup
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ ...styles.closedButton }}
-                onPress={() => {
-                  this.setState({ authVisible: !this.state.authVisible });
-                }}
-              >
-                <Text
-                  style={{ ...styles.textStyle, color: Colors.primaryColor }}
-                >
-                  Continue as Guest
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.loginVisible ? this.state.loginVisible : false}
-          onRequestClose={() => {
-            // Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>LOGIN</Text>
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                placeholder="enter email"
-                placeholderTextColor={Colors.grey}
-                autoCapitalize="none"
-                onChangeText={this.handleEmail}
-              />
-              <View style={{ flexDirection: "row" }}>
-                <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  placeholder="enter password"
-                  placeholderTextColor={Colors.grey}
-                  autoCapitalize="none"
-                  secureTextEntry={
-                    this.state.passwordVisible == "eye-off-outline"
-                      ? true
-                      : false
-                  }
-                  onChangeText={this.handlePassword}
-                />
-                <TouchableOpacity
-                  style={{ justifyContent: "center" }}
-                  onPress={() => {
-                    if (this.state.passwordVisible == "eye-off-outline") {
-                      this.setState({ passwordVisible: "eye-outline" });
-                    } else {
-                      this.setState({ passwordVisible: "eye-off-outline" });
-                    }
-                  }}
-                >
-                  <Ionicons name={this.state.passwordVisible} size={20} />
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                style={{
-                  ...styles.closedButton,
-                  backgroundColor: Colors.primaryColor,
-                  width: 100,
-                }}
-                onPress={() =>
-                  this.login(this.state.email, this.state.password)
-                }
-              >
-                <Text style={styles.textStyle}> Submit </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ ...styles.closedButton, width: 100 }}
-                onPress={() => {
-                  this.setState({
-                    loginVisible: false,
-                    authVisible: true,
-                  });
-                }}
-              >
-                <Text
-                  style={{ ...styles.textStyle, color: Colors.primaryColor }}
-                >
-                  Close
-                </Text>
-              </TouchableOpacity>
-              <Text>{this.state.error}</Text>
-            </View>
-          </View>
-        </Modal>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.signupVisible ? this.state.signupVisible : false}
-          onRequestClose={() => {
-            // Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>SIGNUP</Text>
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                placeholder="enter first name"
-                placeholderTextColor={Colors.grey}
-                autoCapitalize="none"
-                onChangeText={this.handleFirstName}
-              />
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                placeholder="enter last name"
-                placeholderTextColor={Colors.grey}
-                autoCapitalize="none"
-                onChangeText={this.handleLastName}
-              />
-              <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                placeholder="enter email"
-                placeholderTextColor={Colors.grey}
-                autoCapitalize="none"
-                onChangeText={this.handleEmail}
-              />
-              <View style={{ flexDirection: "row" }}>
-                <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  placeholder="enter password"
-                  placeholderTextColor={Colors.grey}
-                  autoCapitalize="none"
-                  secureTextEntry={
-                    this.state.passwordVisible == "eye-off-outline"
-                      ? true
-                      : false
-                  }
-                  onChangeText={this.handlePassword}
-                />
-                <TouchableOpacity
-                  style={{ justifyContent: "center" }}
-                  onPress={() => {
-                    if (this.state.passwordVisible == "eye-off-outline") {
-                      this.setState({ passwordVisible: "eye-outline" });
-                    } else {
-                      this.setState({ passwordVisible: "eye-off-outline" });
-                    }
-                  }}
-                >
-                  <Ionicons name={this.state.passwordVisible} size={20} />
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                style={{
-                  ...styles.closedButton,
-                  backgroundColor: Colors.primaryColor,
-                  width: 100,
-                }}
-                onPress={() => {
-                  this.signup(
-                    this.state.email,
-                    this.state.password,
-                    this.state.firstName,
-                    this.state.lastName
-                  );
-                }}
-              >
-                <Text style={styles.textStyle}> Submit </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ ...styles.closedButton, width: 100 }}
-                onPress={() => {
-                  this.setState({
-                    signupVisible: !this.state.signupVisible,
-                    authVisible: true,
-                  });
-                }}
-              >
-                <Text
-                  style={{ ...styles.textStyle, color: Colors.primaryColor }}
-                >
-                  Close
-                </Text>
-              </TouchableOpacity>
-              <Text>{this.state.error}</Text>
-            </View>
-          </View>
-        </Modal>
-
         {/* SCREEN STARTS */}
         {/* BANNER */}
 
-          <View style={styles.banner}>
-            <Text
-              style={{
-                color: "white",
-                textAlign: "center",
-                fontSize: 18,
-                paddingBottom: 10,
-              }}
-            >
-              See how well restaurants are protecting YOU from COVID
+        <View style={styles.banner}>
+          <Text
+            style={{
+              color: "white",
+              textAlign: "center",
+              fontSize: 18,
+              paddingBottom: 10,
+            }}
+          >
+            See how well restaurants are protecting YOU from COVID
           </Text>
-            {/* <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ ...styles.row, ...styles.searchButton }}
             onPress={() => {
             }}
@@ -685,37 +365,37 @@ class HomeScreen extends React.Component {
             <Ionicons name="search" size={15} />
             <Text>Search</Text>
           </TouchableOpacity> */}
-            <View style={styles.searchBar}>
-              <SearchBar
-                placeholder="Search..."
-                onChangeText={this.updateSearch}
-                value={search}
-                color="black"
-                platform={Platform.OS === "android" ? "android" : "ios"}
-                containerStyle={{
-                  backgroundColor: "",
-                }}
-                inputContainerStyle={{
-                  borderRadius: 10,
-                  backgroundColor: "white",
-                }}
-              />
-            </View>
+          <View style={styles.searchBar}>
+            <SearchBar
+              placeholder="Search..."
+              onChangeText={this.updateSearch}
+              value={search}
+              color="black"
+              platform={Platform.OS === "android" ? "android" : "ios"}
+              containerStyle={{
+                backgroundColor: "",
+              }}
+              inputContainerStyle={{
+                borderRadius: 10,
+                backgroundColor: "white",
+              }}
+            />
           </View>
+        </View>
 
-          <Text style={styles.title}>Safety Categories</Text>
+        <Text style={styles.title}>Safety Categories</Text>
 
-          <FlatList
-            horizontal
-            pagingEnabled={true}
-            showsHorizontalScrollIndicator={false}
-            data={CATEGORIES}
-            renderItem={renderGridItem}
-            keyExtractor={(item) => item}
-          />
+        <FlatList
+          horizontal
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          data={CATEGORIES}
+          renderItem={renderGridItem}
+          keyExtractor={(item) => item}
+        />
 
-          <Text style={styles.title}>Near You</Text>
-          {/* <View style={styles.searchBar}>
+        <Text style={styles.title}>Near You</Text>
+        {/* <View style={styles.searchBar}>
           <SearchBar
             placeholder="Search..."
             onChangeText={this.updateSearch}
@@ -732,65 +412,65 @@ class HomeScreen extends React.Component {
           />
         </View> */}
 
-          <ActivityIndicator animating={this.state.loading} />
+        <ActivityIndicator animating={this.state.loading} />
 
-          <FlatList
-            data={
-              this.state.filteredRestaurants &&
-                this.state.filteredRestaurants.length > 0
-                ? this.state.filteredRestaurants
-                : this.state.title
-            }
-            renderItem={({ item, index }) => {
-              return (
-                <View style={{ marginBottom: 20 }}>
-                  <RestaurantCard
-                    title={item}
-                    price={this.state.price[index]}
-                    cover={
-                      this.state.cover[actualIndex(item)]
-                        ? this.state.cover[actualIndex(item)]
-                        : null
-                    }
-                    safetyScore={this.state.feelSafe[index]}
-                    transactions={this.state.transactions[actualIndex(item)]}
-                    restaurantCoordinates={
-                      this.state.restaurantCoordinates[actualIndex(item)]
-                    }
-                    userCoordinates={this.state.location}
-                    onSelect={() => {
-                      setCalledOnce(false);
-                      this.props.navigation.navigate({
-                        routeName: "RetaurantDetail",
-                        params: {
-                          //pass restaurant DATA
-                          restIndex: index,
-                          title: this.state.title,
-                          price: this.state.price,
-                          cover: this.state.cover,
-                          transactions: this.state.transactions,
-                          restaurantCoordinates: this.state.restaurantCoordinates,
-                          userCoordinates: this.state.location,
-                          phoneNumber: this.state.phoneNumber,
-                          address: this.state.address,
-                          yelpUrl: this.state.yelpUrl,
+        <FlatList
+          data={
+            this.state.filteredRestaurants &&
+            this.state.filteredRestaurants.length > 0
+              ? this.state.filteredRestaurants
+              : this.state.title
+          }
+          renderItem={({ item, index }) => {
+            return (
+              <View style={{ marginBottom: 20 }}>
+                <RestaurantCard
+                  title={item}
+                  price={this.state.price[index]}
+                  cover={
+                    this.state.cover[actualIndex(item)]
+                      ? this.state.cover[actualIndex(item)]
+                      : null
+                  }
+                  safetyScore={this.state.feelSafe[index]}
+                  transactions={this.state.transactions[actualIndex(item)]}
+                  restaurantCoordinates={
+                    this.state.restaurantCoordinates[actualIndex(item)]
+                  }
+                  userCoordinates={this.state.location}
+                  onSelect={() => {
+                    setCalledOnce(false);
+                    this.props.navigation.navigate({
+                      routeName: "RetaurantDetail",
+                      params: {
+                        //pass restaurant DATA
+                        restIndex: index,
+                        title: this.state.title,
+                        price: this.state.price,
+                        cover: this.state.cover,
+                        transactions: this.state.transactions,
+                        restaurantCoordinates: this.state.restaurantCoordinates,
+                        userCoordinates: this.state.location,
+                        phoneNumber: this.state.phoneNumber,
+                        address: this.state.address,
+                        yelpUrl: this.state.yelpUrl,
 
-                          yelpRating: this.state.yelpRating,
-                          yelpReviewCount: this.state.yelpReviewCount,
-                          photos: this.state.photos,
-                          openHours: this.state.openHours,
-                          tags: this.state.tags,
-                        },
-                      });
-                    }}
-                  />
-                </View>
-              );
-            }}
-            keyExtractor={(item) => item}
-            refreshing={false}
-            style={{ height: 500 }}
-          />
+                        yelpRating: this.state.yelpRating,
+                        yelpReviewCount: this.state.yelpReviewCount,
+                        photos: this.state.photos,
+                        openHours: this.state.openHours,
+                        tags: this.state.tags,
+                      },
+                    });
+                  }}
+                />
+              </View>
+            );
+          }}
+          keyExtractor={(item) => item}
+          refreshing={false}
+          style={{ height: 500 }}
+        />
       </SafeAreaView>
     );
   }
