@@ -9,24 +9,24 @@ export default (props) => {
   const commentsUsernames = props.navigation.getParam("username");
 
   return (
-    <View style={{backgroundColor:'#FFF'}}>
+    <View style={{ backgroundColor: '#FFF' , padding: 20}}>
       <Title>COMMENTS!</Title>
-      <View style={{alignItems: "center"}}>
+      <View style={{ alignItems: "center" }}>
         <FlatList
           data={comments.length > 0 ? comments : "no way"}
           renderItem={({ item, index }) => {
             if (comments.length > 1) {
-                return (
-                  <CommentStack
-                    text={item}
-                    date={dates[index]}
-                    username={commentsUsernames[index]}
-                  />
-                );
-              
+              return (
+                <CommentStack
+                  text={item}
+                  date={dates[index]}
+                  username={commentsUsernames[index]}
+                />
+              );
+
             } else {
               if (index == 0) {
-                return <Text>No comments yet!</Text>;
+                return  <Text style={styles.nocomments}>No comments yet!</Text>;
               } else {
                 return null;
               }
@@ -39,3 +39,10 @@ export default (props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  nocomments: {
+    fontSize: 20,
+    textAlign:"center",
+  }
+})

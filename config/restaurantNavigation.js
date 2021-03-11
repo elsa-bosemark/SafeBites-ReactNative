@@ -206,7 +206,8 @@ const ProfileTabNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: (tabInfo) => {
           return (
-            <SearchTab/>
+            // <SearchTab/>
+            <Ionicons name="search" size={25} color={tabInfo.tintColor} />
           );
         },
       },

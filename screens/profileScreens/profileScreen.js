@@ -682,37 +682,37 @@ const ProfileScreen = (props) => {
               favRestCoords.length > 0
             ) {
               return (
-                <View style={{ marginBottom: 20 }}>
-                  <RestaurantCard
-                    title={item}
-                    price={favPrice[index]}
-                    cover={favCover[index]}
-                    transactions={favTransactions[index]}
-                    restaurantCoordinates={coordArray[index]}
-                    userCoordinates={userLocation}
-                    onSelect={() => {
-                      props.navigation.navigate({
-                        routeName: "RetaurantDetail",
-                        params: {
-                          //pass restaurant DATA
-                          restIndex: index,
-                          title: favorites,
-                          price: favPrice,
-                          cover: favCover,
-                          transactions: favTransactions,
-                          restaurantCoordinates: coordArray,
-                          userCoordinates: userLocation,
-                          phoneNumber: favPhoneNumber,
-                          yelpUrl: favURL,
-                          yelpRating: favRating,
-                          yelpReviewCount: favReviewCount,
-                          photos: favPhotos,
-                          tags: [favTags[index]],
-                        },
-                      });
-                    }}
-                  />
-                </View>
+
+                <RestaurantCard
+                  title={item}
+                  price={favPrice[index]}
+                  cover={favCover[index]}
+                  transactions={favTransactions[index]}
+                  restaurantCoordinates={coordArray[index]}
+                  userCoordinates={userLocation}
+                  onSelect={() => {
+                    props.navigation.navigate({
+                      routeName: "RetaurantDetail",
+                      params: {
+                        //pass restaurant DATA
+                        restIndex: index,
+                        title: favorites,
+                        price: favPrice,
+                        cover: favCover,
+                        transactions: favTransactions,
+                        restaurantCoordinates: coordArray,
+                        userCoordinates: userLocation,
+                        phoneNumber: favPhoneNumber,
+                        yelpUrl: favURL,
+                        yelpRating: favRating,
+                        yelpReviewCount: favReviewCount,
+                        photos: favPhotos,
+                        tags: [favTags[index]],
+                      },
+                    });
+                  }}
+                />
+
               );
             } else {
               return (
@@ -724,7 +724,7 @@ const ProfileScreen = (props) => {
                   restaurantCoordinates={[0, 0]}
                   userCoordinates={userLocation}
                   onSelect={() => {
-                    alert("todo!");
+                    alert("Sorry we can't find the data needed.");
                   }}
                 />
               );
@@ -754,72 +754,64 @@ const ProfileScreen = (props) => {
     if (user) {
       return (
         <SafeAreaView>
-          <View style={styles.container}>
-            <View
-              style={{
-                ...styles.card,
-                ...styles.row,
-                ...{ justifyContent: "space-around", alignItems: "center" },
-              }}
-            >
-              {/* image placeholder  */}
-              {/* <ProfileImage size={3.3} imageUrl={{uri:'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg'}}
-              /> */}
-              <View>
-                {/* username */}
-                <View style={styles.row}>
-                  <Text style={styles.title}>{`hello, ${name}`}</Text>
+
+          <View
+            style={{
+            
+              ...styles.card,
+              ...styles.row,
+              ...{ justifyContent: "space-around", alignItems: "center" },
+            }}
+          >
+            <View>
+              {/* username */}
+              <View style={styles.row}>
+                <Text style={styles.title}>{`Hello, ${name}`}</Text>
+              </View>
+
+              <View style={[styles.greyCard, styles.row]}>
+                <View>
+                  <Text style={(styles.infoText, { marginRight: 20 })}>
+                    favorites
+                    </Text>
+                  <Text style={{ textAlign: "center" }}>
+                    {favorites.length}
+                  </Text>
+                </View>
+                <View>
+                  <Text style={styles.infoText}>comments</Text>
+                  <Text style={{ textAlign: "center" }}>
+                    {comments.length}
+                  </Text>
                 </View>
 
-                <View style={[styles.greyCard, styles.row]}>
-                  <View>
-                    <Text style={(styles.infoText, { marginRight: 20 })}>
-                      favorites
-                    </Text>
-                    <Text style={{ textAlign: "center" }}>
-                      {favorites.length}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={styles.infoText}>comments</Text>
-                    <Text style={{ textAlign: "center" }}>
-                      {comments.length}
-                    </Text>
-                  </View>
-                  {/* <View>
-                    <Text style={styles.infoText}>photos</Text>
-                    <Text style={{textAlign:'center'}}>1</Text>
-                  </View> */}
-                </View>
               </View>
             </View>
-
-            <View style={{ ...styles.row, ...styles.tabSlider }}>
-              <TabSlider
-                icon="heart"
-                activeIconColor="red"
-                title="Favorites"
-                active={favShown}
-                onSelect={() => {
-                  setFavShown(true);
-                }}
-              />
-              <TabSlider
-                icon="person"
-                activeIconColor={Colors.primaryColor}
-                title="Comments"
-                active={!favShown}
-                onSelect={() => {
-                  setFavShown(false);
-                }}
-              />
-              {/* <Text style={styles.title}>Favorites</Text>
-              <Text style={styles.title}>Comments</Text> */}
-            </View>
-            <Displayed />
-
-            <View style={{ height: 500 }}></View>
           </View>
+
+          <View style={{ ...styles.row, ...styles.tabSlider,...{borderRadius:10}}}>
+            <TabSlider
+              icon="heart"
+              activeIconColor="red"
+              title="Favorites"
+              active={favShown}
+              onSelect={() => {
+                setFavShown(true);
+              }}
+            />
+            <TabSlider
+              icon="person"
+              activeIconColor={Colors.primaryColor}
+              title="Comments"
+              active={!favShown}
+              onSelect={() => {
+                setFavShown(false);
+              }}
+            />
+          </View>
+          <Displayed />
+          <View style={{ height: 500 }}></View>
+
         </SafeAreaView>
       );
     } else {
@@ -872,9 +864,7 @@ const ProfileScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    margin: 20,
-  },
+
   title: {
     fontFamily: "rubik",
     fontSize: 20,
@@ -884,11 +874,9 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "white",
     padding: 15,
-    borderRadius: 10,
   },
   row: {
     flexDirection: "row",
-    //justifyContent: 'space-between',
   },
   profileImage: {
     height: 100,
@@ -903,7 +891,6 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    //justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
   },

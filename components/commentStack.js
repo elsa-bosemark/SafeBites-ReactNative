@@ -8,17 +8,17 @@ import { Ionicons } from "@expo/vector-icons";
 const CommentStack = (props) => {
   return (
     <View>
-      <View style={{ backgroundColor: Colors.darkGrey, padding: 2 }} />
+      <View style={{backgroundColor: "#E1E1E1", padding: 1, borderRadius:5}} />
       <View style={styles.container}>
       <View style={{ ...styles.row, ...styles.spacer,...{justifyContent:"space-between", alignItems:"center"} }}>
-        <View style={{...styles.row,...{alignItems:"center"}}}>
+        <View>
+        {/* <View style={{...styles.row,...{alignItems:"center"}}}>
           <ProfileImage size={1} imageUrl={{uri:'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg'}}
-              />
+              /> */}
           <Text style={styles.smallText}>{props.username}</Text>
         </View>
           <Text>
             {" "}
-            {/* {props.date} */}
             {props.date.slice(0,props.date.length-23)}
           </Text>
         </View>

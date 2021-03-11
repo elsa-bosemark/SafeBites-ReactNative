@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     overflow: "hidden",
+    margin: 5,
   },
   container: {
     width: "100%",

@@ -55,6 +55,7 @@ import {
 } from "../config/data";
 import { SearchBar } from "react-native-elements";
 import { SafeAreaView } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 150;
@@ -290,14 +291,14 @@ const ExploreScreen = () => {
           latitudeDelta: 0.00922,
           longitudeDelta: 0.00421,
         }}
-        style={{ height: "75%" }}
+        style={{ height: "70%" }}
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStandardStyle}
         showsUserLocation={true}
       >
         <Markers></Markers>
       </MapView>
-      <View style={styles.searchBox}>
+      {/* <View style={styles.searchBox}>
         <TextInput
           placeholder="Search here"
           placeholderTextColor="#000"
@@ -305,8 +306,8 @@ const ExploreScreen = () => {
           style={{ flex: 1, padding: 0 }}
         />
         <Ionicons name="ios-search" size={20} />
-      </View>
-      <ScrollView
+      </View> */}
+      {/* <ScrollView
         horizontal
         scrollEventThrottle={1}
         showsHorizontalScrollIndicator={false}
@@ -329,7 +330,7 @@ const ExploreScreen = () => {
             <Text>{category.name}</Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </ScrollView> */}
 
       <FlatList
         horizontal={true}
@@ -337,7 +338,7 @@ const ExploreScreen = () => {
         ref={_scrollView}
         renderItem={({ item, index }) => {
           return (
-            <View>
+            <View style={styles.restcard}>
               <RestaurantCard
                 title={item}
                 price={PRICE ? PRICE[index] : "??"}
@@ -429,6 +430,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingVertical: 10,
+
   },
   endPadding: {
     paddingRight: width - CARD_WIDTH,
@@ -436,7 +438,6 @@ const styles = StyleSheet.create({
   card: {
     padding: 20,
     elevation: 2,
-    backgroundColor: "#FFF",
     borderRadius: 10,
     marginHorizontal: 10,
     shadowColor: "#000",
@@ -446,6 +447,8 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
     overflow: "hidden",
+    backgroundColor: "transparent",
+    
   },
   cardImage: {
     flex: 3,
@@ -494,6 +497,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  restcard:{
+      backgroundColor: Color.primaryColor,
+  }
 });
 
 export default ExploreScreen;

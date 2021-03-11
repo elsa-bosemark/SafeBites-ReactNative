@@ -434,7 +434,7 @@ const RestaurantDetailScreen = (props) => {
               }}
               keyExtractor={(item) => item}
             />
-            <View style={{ backgroundColor: Colors.darkGrey, padding: 2 }} />
+            <View style={{ backgroundColor: "#E1E1E1", padding: 1, borderRadius:5, marginTop: 10}} />
             <View style={{ alignSelf: "flex-end" }}>
               <Button
                 color="#000"

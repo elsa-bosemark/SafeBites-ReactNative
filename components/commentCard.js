@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 15,
-    paddingLeft: 10,
   },
   mediumText: {
     fontSize: 18,
