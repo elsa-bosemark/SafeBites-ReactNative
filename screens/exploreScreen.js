@@ -115,14 +115,10 @@ const ExploreScreen = () => {
     setUserLocation(userLoc);
     setThisPrice(price);
     setrestCOORDS(restCoord);
-    setrestCOORDS(restCoord);
-    setrestCOORDS(restCoord);
-    setrestCOORDS(restCoord);
-    console.error(restCOORDS, restCoord);
   };
   _getData();
   const initialMapState = {
-    restCOORDS,
+    markers,
     categories: [
       {
         name: "Pickup",
@@ -173,21 +169,19 @@ const ExploreScreen = () => {
       //This should be based on location of user
       latitude: userLocation == undefined ? 37.1 : userLocation[0],
       longitude: userLocation == undefined ? -122.1 : userLocation[1],
-      //this makes the map 2-d instead of 3-d
-      latitudeDelta: 0.04864195044303443,
-      longitudeDelta: 0.040142817690068,
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00421,
     },
   };
 
   const [state, setState] = React.useState(initialMapState);
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
-  console.error(state.markers);
   useEffect(() => {
     mapAnimation.addListener(({ value }) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= state.markers.length) {
-        index = state.markers.length - 1;
+      if (index >= restCOORDS.length) {
+        index = restCOORDS.length - 1;
       }
       if (index <= 0) {
         index = 0;
@@ -198,12 +192,13 @@ const ExploreScreen = () => {
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
-          const { coordinate } = state.markers[index];
+          const coordinate = restCOORDS[index];
+          console.warn(index);
           _map.current.animateToRegion(
             {
               ...coordinate,
-              latitudeDelta: state.region.latitudeDelta,
-              longitudeDelta: state.region.longitudeDelta,
+              latitudeDelta: 0.00922,
+              longitudeDelta: 0.00421,
             },
             350
           );
@@ -211,36 +206,78 @@ const ExploreScreen = () => {
       }, 10);
     });
   });
+  var interpolations;
+  if (restCOORDS) {
+    interpolations = restCOORDS.map((marker, index) => {
+      const inputRange = [
+        (index - 1) * CARD_WIDTH,
+        index * CARD_WIDTH,
+        (index + 1) * CARD_WIDTH,
+      ];
 
-  const interpolations = state.markers.map((marker, index) => {
-    const inputRange = [
-      (index - 1) * CARD_WIDTH,
-      index * CARD_WIDTH,
-      (index + 1) * CARD_WIDTH,
-    ];
+      const scale = mapAnimation.interpolate({
+        inputRange,
+        outputRange: [1, 1.5, 1],
+        extrapolate: "clamp",
+      });
 
-    const scale = mapAnimation.interpolate({
-      inputRange,
-      outputRange: [1, 1.5, 1],
-      extrapolate: "clamp",
+      return { scale };
     });
+  } else {
+    interpolations = state.markers.map((marker, index) => {
+      const inputRange = [
+        (index - 1) * CARD_WIDTH,
+        index * CARD_WIDTH,
+        (index + 1) * CARD_WIDTH,
+      ];
 
-    return { scale };
-  });
+      const scale = mapAnimation.interpolate({
+        inputRange,
+        outputRange: [1, 1.5, 1],
+        extrapolate: "clamp",
+      });
 
+      return { scale };
+    });
+  }
+  const Markers = () => {
+    if (restCOORDS != undefined) {
+      var markerArray = [];
+      //only 20 for now bc rendering ALL 50 of them is too much
+      for (var i = 0; i < 20; i++) {
+        markerArray.push(
+          <MapView.Marker
+            key={i}
+            coordinate={restCOORDS[i]}
+            onPress={(e) => onMarkerPress(e)}
+          >
+            <Animated.View style={[styles.markerWrap]}>
+              <Animated.Image
+                source={require("../assets/map_marker.png")}
+                style={[styles.marker]}
+                resizeMode="cover"
+              />
+            </Animated.View>
+          </MapView.Marker>
+        );
+      }
+      return markerArray;
+    } else {
+      return null;
+    }
+  };
+  const _scrollView = React.useRef(null);
   const onMarkerPress = (mapEventData) => {
     const markerID = mapEventData._targetInst.return.key;
-
+    console.error(markerID + " marker id ");
     let x = markerID * CARD_WIDTH + markerID * 20;
     if (Platform.OS === "ios") {
       x = x - SPACING_FOR_CARD_INSET;
     }
-
-    _scrollView.current.scrollTo({ x: x, y: 0, animated: true });
+    _scrollView.current.scrollToIndex({ animated: true, index: markerID });
   };
 
   const _map = React.useRef(null);
-  const _scrollView = React.useRef(null);
 
   return (
     <View style={styles.container}>
@@ -250,39 +287,15 @@ const ExploreScreen = () => {
           //This should be based on location of user
           latitude: userLocation == undefined ? 37.1 : userLocation[0],
           longitude: userLocation == undefined ? -122.1 : userLocation[1],
-          //this makes the map 2-d instead of 3-d
-          latitudeDelta: 0.04864195044303443,
-          longitudeDelta: 0.040142817690068,
+          latitudeDelta: 0.00922,
+          longitudeDelta: 0.00421,
         }}
         style={{ height: "75%" }}
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStandardStyle}
         showsUserLocation={true}
       >
-        {state.markers.map((marker, index) => {
-          const scaleStyle = {
-            transform: [
-              {
-                scale: interpolations[index].scale,
-              },
-            ],
-          };
-          return (
-            <MapView.Marker
-              key={index}
-              coordinate={marker.coordinate}
-              onPress={(e) => onMarkerPress(e)}
-            >
-              <Animated.View style={[styles.markerWrap]}>
-                <Animated.Image
-                  source={require("../assets/map_marker.png")}
-                  style={[styles.marker, scaleStyle]}
-                  resizeMode="cover"
-                />
-              </Animated.View>
-            </MapView.Marker>
-          );
-        })}
+        <Markers></Markers>
       </MapView>
       <View style={styles.searchBox}>
         <TextInput
@@ -317,9 +330,11 @@ const ExploreScreen = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+
       <FlatList
         horizontal={true}
         data={names}
+        ref={_scrollView}
         renderItem={({ item, index }) => {
           return (
             <View>
@@ -329,10 +344,11 @@ const ExploreScreen = () => {
                 cover={covers ? covers[index] : null}
                 safetyScore={9}
                 transactions={transactions ? transactions[index] : ""}
-                restaurantCoordinates={[
-                  restCOORDS[index].latitude,
-                  restCOORDS[index].longitude,
-                ]}
+                restaurantCoordinates={
+                  restCOORDS
+                    ? [restCOORDS[index].latitude, restCOORDS[index].longitude]
+                    : [28, 123]
+                }
                 userCoordinates={userLocation}
                 onSelect={() => {
                   setCalledOnce(false);
