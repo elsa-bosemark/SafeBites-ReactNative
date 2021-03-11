@@ -73,7 +73,6 @@ export default class RnDirectionsApp extends Component {
       this.setState({ coords: coords });
       return coords;
     } catch (error) {
-      alert(error);
       return error;
     }
   }

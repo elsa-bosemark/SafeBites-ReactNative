@@ -2,23 +2,29 @@ import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 
 import Colors from "../constants/Colors";
-import ProfileImage from "../components/profileImage"
+import ProfileImage from "../components/profileImage";
 import { Ionicons } from "@expo/vector-icons";
 
 const CommentCard = (props) => {
   return (
     <View style={styles.container}>
-      <View style={{ ...styles.row, ...styles.spacer,...{justifyContent:"space-between", alignItems:"center"} }}>
-        <View style={{...styles.row,...{alignItems:"center"}}}>
-        <ProfileImage size={1} imageUrl={{uri:'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg'}}
-              />
+      <View
+        style={{
+          ...styles.row,
+          ...styles.spacer,
+          ...{ justifyContent: "space-between", alignItems: "center" },
+        }}
+      >
+        <View style={{ ...styles.row, ...{ alignItems: "center" } }}>
+          {/* <ProfileImage size={1} imageUrl={{uri:'https://pitshanger-ltd.co.uk/images/colours/563-Clementine%201495.jpg'}}
+              /> */}
           <Text style={styles.smallText}>{props.username}</Text>
         </View>
-      
-          <Text>
-            {" "}
+
+        <Text>
+          {" "}
           {/* {props.date} */}
-          {props.date.slice(0,props.date.length-23)}
+          {props.date.slice(0, props.date.length - 23)}
         </Text>
       </View>
       <Text style={styles.mediumText}>{props.text}</Text>
@@ -49,8 +55,7 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 15,
-    paddingLeft:10,
-    
+    paddingLeft: 10,
   },
   mediumText: {
     fontSize: 18,

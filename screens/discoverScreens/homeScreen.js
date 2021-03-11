@@ -340,7 +340,26 @@ class HomeScreen extends React.Component {
     const run = () => {
       console.log("home screen   " + this.state.openHours[0].open[0].day);
     };
+    const SafetyCategories = () => {
+      if (this.state.search.length > 0) {
+        return null;
+      } else {
+        return (
+          <View>
+            <Text style={styles.title}>Safety Categories</Text>
 
+            <FlatList
+              horizontal
+              pagingEnabled={true}
+              showsHorizontalScrollIndicator={false}
+              data={CATEGORIES}
+              renderItem={renderGridItem}
+              keyExtractor={(item) => item}
+            />
+          </View>
+        );
+      }
+    };
     return (
       <SafeAreaView>
         {/* SCREEN STARTS */}
@@ -382,18 +401,7 @@ class HomeScreen extends React.Component {
             />
           </View>
         </View>
-
-        <Text style={styles.title}>Safety Categories</Text>
-
-        <FlatList
-          horizontal
-          pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          data={CATEGORIES}
-          renderItem={renderGridItem}
-          keyExtractor={(item) => item}
-        />
-
+        <SafetyCategories></SafetyCategories>
         <Text style={styles.title}>Near You</Text>
         {/* <View style={styles.searchBar}>
           <SearchBar
