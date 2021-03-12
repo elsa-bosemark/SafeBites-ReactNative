@@ -376,6 +376,7 @@ class HomeScreen extends React.Component {
           >
             See how well restaurants are protecting YOU from COVID
           </Text>
+
           <View style={styles.searchBar}>
             <SearchBar
               placeholder="Search..."
@@ -383,13 +384,15 @@ class HomeScreen extends React.Component {
               value={search}
               color="black"
               platform={Platform.OS === "android" ? "android" : "ios"}
-              disabled={true}
               containerStyle={{
                 backgroundColor: "",
               }}
               inputContainerStyle={{
                 borderRadius: 10,
                 backgroundColor: "white",
+              }}
+              cancelButtonProps={{
+                color: "white",
               }}
             />
           </View>
@@ -402,54 +405,54 @@ class HomeScreen extends React.Component {
         <FlatList
           data={
             this.state.filteredRestaurants &&
-              this.state.filteredRestaurants.length > 0
+            this.state.filteredRestaurants.length > 0
               ? this.state.filteredRestaurants
               : this.state.title
           }
           renderItem={({ item, index }) => {
             return (
+              <View style={{ marginBottom: 20 }}>
+                <RestaurantCard
+                  title={item}
+                  price={this.state.price[index]}
+                  cover={
+                    this.state.cover[actualIndex(item)]
+                      ? this.state.cover[actualIndex(item)]
+                      : null
+                  }
+                  safetyScore={this.state.feelSafe[index]}
+                  transactions={this.state.transactions[actualIndex(item)]}
+                  restaurantCoordinates={
+                    this.state.restaurantCoordinates[actualIndex(item)]
+                  }
+                  userCoordinates={this.state.location}
+                  onSelect={() => {
+                    setCalledOnce(false);
+                    this.props.navigation.navigate({
+                      routeName: "RetaurantDetail",
+                      params: {
+                        //pass restaurant DATA
+                        restIndex: index,
+                        title: this.state.title,
+                        price: this.state.price,
+                        cover: this.state.cover,
+                        transactions: this.state.transactions,
+                        restaurantCoordinates: this.state.restaurantCoordinates,
+                        userCoordinates: this.state.location,
+                        phoneNumber: this.state.phoneNumber,
+                        address: this.state.address,
+                        yelpUrl: this.state.yelpUrl,
 
-              <RestaurantCard
-                title={item}
-                price={this.state.price[index]}
-                cover={
-                  this.state.cover[actualIndex(item)]
-                    ? this.state.cover[actualIndex(item)]
-                    : null
-                }
-                safetyScore={this.state.feelSafe[index]}
-                transactions={this.state.transactions[actualIndex(item)]}
-                restaurantCoordinates={
-                  this.state.restaurantCoordinates[actualIndex(item)]
-                }
-                userCoordinates={this.state.location}
-                onSelect={() => {
-                  setCalledOnce(false);
-                  this.props.navigation.navigate({
-                    routeName: "RetaurantDetail",
-                    params: {
-                      //pass restaurant DATA
-                      restIndex: index,
-                      title: this.state.title,
-                      price: this.state.price,
-                      cover: this.state.cover,
-                      transactions: this.state.transactions,
-                      restaurantCoordinates: this.state.restaurantCoordinates,
-                      userCoordinates: this.state.location,
-                      phoneNumber: this.state.phoneNumber,
-                      address: this.state.address,
-                      yelpUrl: this.state.yelpUrl,
-
-                      yelpRating: this.state.yelpRating,
-                      yelpReviewCount: this.state.yelpReviewCount,
-                      photos: this.state.photos,
-                      openHours: this.state.openHours,
-                      tags: this.state.tags,
-                    },
-                  });
-                }}
-              />
-
+                        yelpRating: this.state.yelpRating,
+                        yelpReviewCount: this.state.yelpReviewCount,
+                        photos: this.state.photos,
+                        openHours: this.state.openHours,
+                        tags: this.state.tags,
+                      },
+                    });
+                  }}
+                />
+              </View>
             );
           }}
           keyExtractor={(item) => item}

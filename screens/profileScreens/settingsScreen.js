@@ -7,9 +7,9 @@ import { Text } from "react-native";
 import SettingCard from "../../components/settingCard";
 
 export default class Settings extends React.Component {
-  state={
-    error: ""
-  }
+  state = {
+    error: "",
+  };
   constructor(props) {
     super(props);
   }
@@ -65,8 +65,8 @@ export default class Settings extends React.Component {
                           this.props.navigation.goBack();
                           RootNavigation.navigate("Home");
                         })
-                        .catch(error => {
-                          this.setState({error: error.message})
+                        .catch((error) => {
+                          this.setState({ error: error.message });
                         });
                     },
                   },
@@ -75,7 +75,7 @@ export default class Settings extends React.Component {
               );
             }}
           />
-          <Text style={{padding: 20, color: "red"}}>{this.state.error}</Text>
+          <Text style={{ padding: 20, color: "red" }}>{this.state.error}</Text>
         </View>
       );
     } else {

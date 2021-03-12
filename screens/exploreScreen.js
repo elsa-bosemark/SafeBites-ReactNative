@@ -72,7 +72,7 @@ updateSearch = (search) => {
   this.setState({ filteredRestaurants: filteredRestaurants });
 };
 
-const ExploreScreen = () => {
+const ExploreScreen = (props) => {
   const [userLocation, setUserLocation] = useState(undefined);
   const [names, setNames] = useState(undefined);
   const [covers, setCovers] = useState(undefined);
@@ -193,8 +193,7 @@ const ExploreScreen = () => {
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
-          const coordinate = restCOORDS[index];
-          console.warn(index);
+          const coordinate = restCOORDS ? restCOORDS[index] : [31.7, -122.1];
           _map.current.animateToRegion(
             {
               ...coordinate,
@@ -270,7 +269,6 @@ const ExploreScreen = () => {
   const _scrollView = React.useRef(null);
   const onMarkerPress = (mapEventData) => {
     const markerID = mapEventData._targetInst.return.key;
-    console.error(markerID + " marker id ");
     let x = markerID * CARD_WIDTH + markerID * 20;
     if (Platform.OS === "ios") {
       x = x - SPACING_FOR_CARD_INSET;
@@ -348,10 +346,19 @@ const ExploreScreen = () => {
                 restaurantCoordinates={
                   restCOORDS
                     ? [restCOORDS[index].latitude, restCOORDS[index].longitude]
-                    : [28, 123]
+                    : [12, 23]
                 }
                 userCoordinates={userLocation}
                 onSelect={() => {
+                  var coords = [];
+                  if (restCOORDS) {
+                    for (var i = 0; i < names.length; i++) {
+                      coords.push([
+                        restCOORDS[i].latitude,
+                        restCOORDS[i].longitude,
+                      ]);
+                    }
+                  }
                   setCalledOnce(false);
                   props.navigation.navigate({
                     routeName: "RetaurantDetail",
@@ -362,7 +369,7 @@ const ExploreScreen = () => {
                       price: PRICE,
                       cover: covers,
                       transactions: transactions,
-                      restaurantCoordinates: restCOORDS,
+                      restaurantCoordinates: coords,
                       userCoordinates: userLocation,
                       phoneNumber: phoneNumbers,
                       yelpUrl: URL,
@@ -430,7 +437,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingVertical: 10,
-
   },
   endPadding: {
     paddingRight: width - CARD_WIDTH,
@@ -448,7 +454,6 @@ const styles = StyleSheet.create({
     width: CARD_WIDTH,
     overflow: "hidden",
     backgroundColor: "transparent",
-    
   },
   cardImage: {
     flex: 3,
@@ -497,9 +502,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  restcard:{
-      backgroundColor: Color.primaryColor,
-  }
+  restcard: {
+    backgroundColor: Color.primaryColor,
+  },
 });
 
 export default ExploreScreen;

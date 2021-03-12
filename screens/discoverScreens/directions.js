@@ -38,7 +38,6 @@ export default class RnDirectionsApp extends Component {
     let userLoc = await getUserLocation();
     this.setState({ userLoc: userLoc });
     let restaurantName = await getNames();
-    console.error(this.state.userLoc);
     let restauarntLoc = await getRestaurantCoords();
     this.getDirections(
       `${userLoc[0]}, ${userLoc[1]}`,
@@ -62,7 +61,6 @@ export default class RnDirectionsApp extends Component {
         `https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&key=AIzaSyCi0HQ1zcQmm8ZeKqFSNKkxq0yfWOt6nC8`
       );
       let respJson = await resp.json();
-      console.error(respJson);
       let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
       let coords = points.map((point, index) => {
         return {
@@ -78,17 +76,11 @@ export default class RnDirectionsApp extends Component {
   }
 
   render() {
-    console.warn(this.state.userLoc + " user lo");
-
     return (
       <View>
         <Button
           title="open in google maps"
           onPress={() => {
-            console.error(
-              `${this.state.restauarntLoc.latitude},${this.state.restauarntLoc.longitude}` +
-                " rest lo"
-            );
             openLink(
               `https://www.google.com/maps/dir/?api=1&origin=${
                 this.state.userLoc != undefined

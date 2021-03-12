@@ -180,7 +180,6 @@ const RestaurantDetailScreen = (props) => {
   }
 
   let that = getCalledOnce();
-  console.warn(that);
   if (!that) {
     getComments();
     setCalledOnce(true);
@@ -230,7 +229,11 @@ const RestaurantDetailScreen = (props) => {
             </View>
             {/* Make tags into a diff comp being an array*/}
             <Text style={styles.title}>
-              {openHours[restIndex] ? "open right now" : "closed right now"}
+              {openHours
+                ? openHours[restIndex]
+                  ? "open right now"
+                  : "closed right now"
+                : "not too sure"}
             </Text>
             <Text style={styles.title}>Tags:</Text>
             <View style={{ flexDirection: "row" }}>
@@ -434,13 +437,19 @@ const RestaurantDetailScreen = (props) => {
               }}
               keyExtractor={(item) => item}
             />
-            <View style={{ backgroundColor: "#E1E1E1", padding: 1, borderRadius:5, marginTop: 10}} />
+            <View
+              style={{
+                backgroundColor: "#E1E1E1",
+                padding: 1,
+                borderRadius: 5,
+                marginTop: 10,
+              }}
+            />
             <View style={{ alignSelf: "flex-end" }}>
               <Button
                 color="#000"
                 title="All comments..."
                 onPress={() => {
-                  console.warn(comments);
                   props.navigation.navigate("Comments", {
                     text: comments,
                     date: dates,

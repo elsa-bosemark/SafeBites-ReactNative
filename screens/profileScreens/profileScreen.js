@@ -91,7 +91,6 @@ const ProfileScreen = (props) => {
     };
 
     validate = (text) => {
-      console.log(text);
       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (reg.test(text) === false) {
         return false;
@@ -264,7 +263,6 @@ const ProfileScreen = (props) => {
     };
 
     validate = (text) => {
-      console.log(text);
       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (reg.test(text) === false) {
         return false;
@@ -291,7 +289,6 @@ const ProfileScreen = (props) => {
             var myDB = firebase.firestore();
             var doc = myDB.collection("users").doc(`${email}`).get();
             if (!doc.exists) {
-              console.log("No document");
               myDB.collection("users").doc(`${email}`).set({
                 firstName: firstName,
                 lastName: lastName,
@@ -443,7 +440,6 @@ const ProfileScreen = (props) => {
     };
 
     validate = (text) => {
-      console.log(text);
       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (reg.test(text) === false) {
         return false;
@@ -666,72 +662,72 @@ const ProfileScreen = (props) => {
   const Displayed = () => {
     if (favShown) {
       return (
-        <FlatList
-          data={favorites}
-          renderItem={({ item, index }) => {
-            var coordArray = [];
-            favRestCoords.forEach((element) => {
-              if (element != null && element != undefined) {
-                coordArray.push(Object.values(element));
+        <ScrollView>
+          <FlatList
+            data={favorites}
+            renderItem={({ item, index }) => {
+              var coordArray = [];
+              favRestCoords.forEach((element) => {
+                if (element != null && element != undefined) {
+                  coordArray.push(Object.values(element));
+                }
+              });
+
+              if (
+                favRestCoords != null &&
+                favRestCoords != undefined &&
+                favRestCoords.length > 0
+              ) {
+                return (
+                  <RestaurantCard
+                    title={item}
+                    price={favPrice[index]}
+                    cover={favCover[index]}
+                    transactions={favTransactions[index]}
+                    restaurantCoordinates={coordArray[index]}
+                    userCoordinates={userLocation}
+                    onSelect={() => {
+                      props.navigation.navigate({
+                        routeName: "RetaurantDetail",
+                        params: {
+                          //pass restaurant DATA
+                          restIndex: index,
+                          title: favorites,
+                          price: favPrice,
+                          cover: favCover,
+                          transactions: favTransactions,
+                          restaurantCoordinates: coordArray,
+                          userCoordinates: userLocation,
+                          phoneNumber: favPhoneNumber,
+                          yelpUrl: favURL,
+                          yelpRating: favRating,
+                          yelpReviewCount: favReviewCount,
+                          photos: favPhotos,
+                          tags: [favTags[index]],
+                        },
+                      });
+                    }}
+                  />
+                );
+              } else {
+                return (
+                  <RestaurantCard
+                    title={item}
+                    price={favPrice[index]}
+                    cover={favCover[index]}
+                    transactions={favTransactions[index]}
+                    restaurantCoordinates={[0, 0]}
+                    userCoordinates={userLocation}
+                    onSelect={() => {
+                      alert("Sorry we can't find the data needed.");
+                    }}
+                  />
+                );
               }
-            });
-
-            if (
-              favRestCoords != null &&
-              favRestCoords != undefined &&
-              favRestCoords.length > 0
-            ) {
-              return (
-
-                <RestaurantCard
-                  title={item}
-                  price={favPrice[index]}
-                  cover={favCover[index]}
-                  transactions={favTransactions[index]}
-                  restaurantCoordinates={coordArray[index]}
-                  userCoordinates={userLocation}
-                  onSelect={() => {
-                    props.navigation.navigate({
-                      routeName: "RetaurantDetail",
-                      params: {
-                        //pass restaurant DATA
-                        restIndex: index,
-                        title: favorites,
-                        price: favPrice,
-                        cover: favCover,
-                        transactions: favTransactions,
-                        restaurantCoordinates: coordArray,
-                        userCoordinates: userLocation,
-                        phoneNumber: favPhoneNumber,
-                        yelpUrl: favURL,
-                        yelpRating: favRating,
-                        yelpReviewCount: favReviewCount,
-                        photos: favPhotos,
-                        tags: [favTags[index]],
-                      },
-                    });
-                  }}
-                />
-
-              );
-            } else {
-              return (
-                <RestaurantCard
-                  title={item}
-                  price={favPrice[index]}
-                  cover={favCover[index]}
-                  transactions={favTransactions[index]}
-                  restaurantCoordinates={[0, 0]}
-                  userCoordinates={userLocation}
-                  onSelect={() => {
-                    alert("Sorry we can't find the data needed.");
-                  }}
-                />
-              );
-            }
-          }}
-          keyExtractor={(item) => item}
-        />
+            }}
+            keyExtractor={(item) => item}
+          />
+        </ScrollView>
       );
     } else {
       return (
@@ -754,10 +750,8 @@ const ProfileScreen = (props) => {
     if (user) {
       return (
         <SafeAreaView>
-
           <View
             style={{
-            
               ...styles.card,
               ...styles.row,
               ...{ justifyContent: "space-around", alignItems: "center" },
@@ -773,23 +767,26 @@ const ProfileScreen = (props) => {
                 <View>
                   <Text style={(styles.infoText, { marginRight: 20 })}>
                     favorites
-                    </Text>
+                  </Text>
                   <Text style={{ textAlign: "center" }}>
                     {favorites.length}
                   </Text>
                 </View>
                 <View>
                   <Text style={styles.infoText}>comments</Text>
-                  <Text style={{ textAlign: "center" }}>
-                    {comments.length}
-                  </Text>
+                  <Text style={{ textAlign: "center" }}>{comments.length}</Text>
                 </View>
-
               </View>
             </View>
           </View>
 
-          <View style={{ ...styles.row, ...styles.tabSlider,...{borderRadius:10}}}>
+          <View
+            style={{
+              ...styles.row,
+              ...styles.tabSlider,
+              ...{ borderRadius: 10 },
+            }}
+          >
             <TabSlider
               icon="heart"
               activeIconColor="red"
@@ -811,7 +808,6 @@ const ProfileScreen = (props) => {
           </View>
           <Displayed />
           <View style={{ height: 500 }}></View>
-
         </SafeAreaView>
       );
     } else {
@@ -864,7 +860,6 @@ const ProfileScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-
   title: {
     fontFamily: "rubik",
     fontSize: 20,
