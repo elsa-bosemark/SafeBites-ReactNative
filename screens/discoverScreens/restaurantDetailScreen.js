@@ -220,21 +220,22 @@ const RestaurantDetailScreen = (props) => {
                   </View>
                 </View>
                 {/* Extra Info*/}
-                <Text style={styles.title}>Max capacity: ???</Text>
+                {/* <Text style={styles.title}>Max capacity: ???</Text> */}
+                <Text style={styles.title}>Open:</Text>
+                  {/* Make tags into a diff comp being an array*/}
+            <Text style={styles.title}>
+              {openHours
+                ? openHours[restIndex]
+                  ? "Open right now"
+                  : "Closed right now"
+                : "Not sure"}
+            </Text>
               </View>
 
               <View>
                 <CatIcon cat={transactions[restIndex]} />
               </View>
             </View>
-            {/* Make tags into a diff comp being an array*/}
-            <Text style={styles.title}>
-              {openHours
-                ? openHours[restIndex]
-                  ? "open right now"
-                  : "closed right now"
-                : "not too sure"}
-            </Text>
             <Text style={styles.title}>Tags:</Text>
             <View style={{ flexDirection: "row" }}>
               <Tags restTags={tags[restIndex]} />
