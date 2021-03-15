@@ -727,6 +727,7 @@ const ProfileScreen = (props) => {
             }}
             keyExtractor={(item) => item}
           />
+          <View style={{ height: 150 }} />
         </ScrollView>
       );
     } else {
@@ -741,7 +742,6 @@ const ProfileScreen = (props) => {
             }}
             keyExtractor={(item) => item}
           />
-          <View style={{ height: 1000 }} />
         </ScrollView>
       );
     }
@@ -768,7 +768,12 @@ const ProfileScreen = (props) => {
                   <Text style={(styles.infoText, { marginRight: 20 })}>
                     favorites
                   </Text>
-                  <Text style={{ textAlign: "center" }}>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      marginRight: 20,
+                    }}
+                  >
                     {favorites.length}
                   </Text>
                 </View>
