@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "SafeBites-ReactNative-Elsa",
-    "slug": "SafeBites-ReactNative-Elsa",
+    "name": "Safe Bites",
+    "slug": "Safe Bites",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
