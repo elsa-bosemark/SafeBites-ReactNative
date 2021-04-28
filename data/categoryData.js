@@ -1,24 +1,16 @@
 import Category from "../models/category";
 
 export const CATEGORIES = [
-  new Category(
-    "restaurant_reservation",
-    "Reserve",
-    require("../assets/categoryIcons/dine-inIcon.png")
-  ),
+  new Category("takeout", "Takeout", require("../assets/icons/takeout.png")),
   new Category(
     "pickup",
     "Pickup",
-    require("../assets/categoryIcons/curbsidePickupIcon.png")
+    require("../assets/icons/curbsidePickup.png")
   ),
-  new Category(
-    "delivery",
-    "Delivery",
-    require("../assets/categoryIcons/deliveryIcon.png")
-  ),
+  new Category("delivery", "Delivery", require("../assets/icons/delivery.png")),
   new Category(
     "outdoor-sitting",
     "Outdoor Sitting",
-    require("../assets/categoryIcons/deliveryIcon.png")
+    require("../assets/icons/outdoorDining.png")
   ),
 ];

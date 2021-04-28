@@ -144,7 +144,7 @@ const ExploreScreen = (props) => {
         ),
       },
       {
-        name: "Reserve",
+        name: "Takeout",
         icon: (
           <MaterialCommunityIcons
             name="table-chair"
