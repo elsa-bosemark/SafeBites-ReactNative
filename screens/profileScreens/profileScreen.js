@@ -833,11 +833,7 @@ const ProfileScreen = (props) => {
           <View style={styles.centeredView}>
             <Text style={styles.title}>Signup</Text>
             <Text style={{ fontSize: 15 }}>
-<<<<<<< HEAD
               Please login to see your profile page
-=======
-            Please login to see your profile page
->>>>>>> b03311d5654b951fb8944172ed4c636b4b37ca8a
             </Text>
 
             <Spacer />
@@ -850,11 +846,7 @@ const ProfileScreen = (props) => {
           <View style={styles.centeredView}>
             <Text style={styles.title}>Forgot Password?</Text>
             <Text style={{ fontSize: 15 }}>
-<<<<<<< HEAD
               Please login to see your profile page
-=======
-            Please login to see your profile page
->>>>>>> b03311d5654b951fb8944172ed4c636b4b37ca8a
             </Text>
 
             <Spacer />
