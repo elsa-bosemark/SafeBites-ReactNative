@@ -145,6 +145,7 @@ class HomeScreen extends React.Component {
   //screen did load
   componentDidMount() {
     this.getLocationAsync();
+    console.warn("getting location async");
     //this takes longer and since we don't display it, we can do it later
     if (
       this.state.restaurantLocations != null ||
@@ -164,6 +165,7 @@ class HomeScreen extends React.Component {
   }
   //fetch yelp api
   fetchApiCall = () => {
+    console.warn("fetching pai");
     let names = [];
     let phoneNums = [];
     let _yelpUrl = [];
@@ -183,71 +185,79 @@ class HomeScreen extends React.Component {
     let _openHours = [];
 
     // this.setState({ loading: true });
-    axios
-      .get(
-        `https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=50&radius=400`,
-        { headers: headers }
-      )
-      .then((response) => {
-        storeData(response.data.businesses);
-        didSetApi = true;
-        response.data.businesses
-          .forEach((element) => {
-            names.push(element.name);
-            phoneNums.push(element.phone);
-            _cover.push(element.image_url);
-            _restaurantLocation.push(element.location);
-            _yelpUrl.push(element.url);
-            _price.push(element.price);
-            _transactions.push(element.transactions);
-            _restaurantCoordinates.push(element.coordinates);
-            _yelpRating.push(element.rating);
-            _yelpReviewCount.push(element.review_count);
-            _photos.push(element.photos);
-            _openHours.push(element.is_closed);
-            _tags.push(element.categories);
-            this.setState({
-              title: names,
-              error: response.error || null,
-              loading: false,
-              refreshing: false,
-              phoneNumber: phoneNums,
-              cover: _cover,
-              restaurantLocations: _restaurantLocation,
-              price: _price,
-              transactions: _transactions,
-              restaurantCoordinates: _restaurantCoordinates,
-              yelpUrl: _yelpUrl,
+    if (this.state.location != null) {
+      console.warn("has location");
+      console.warn(this.state.location);
+      axios
+        .get(
+          `https://api.yelp.com/v3/businesses/search?term=&latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}&limit=50`,
+          { headers: headers }
+        )
+        .then((response) => {
+          storeData(response.data.businesses);
+          didSetApi = true;
+          response.data.businesses
+            .forEach((element) => {
+              names.push(element.name);
+              phoneNums.push(element.phone);
+              _cover.push(element.image_url);
+              _restaurantLocation.push(element.location);
+              _yelpUrl.push(element.url);
+              _price.push(element.price);
+              _transactions.push(element.transactions);
+              _restaurantCoordinates.push(element.coordinates);
+              _yelpRating.push(element.rating);
+              _yelpReviewCount.push(element.review_count);
+              _photos.push(element.photos);
+              _openHours.push(element.is_closed);
+              _tags.push(element.categories);
+              this.setState({
+                title: names,
+                error: response.error || null,
+                loading: false,
+                refreshing: false,
+                phoneNumber: phoneNums,
+                cover: _cover,
+                restaurantLocations: _restaurantLocation,
+                price: _price,
+                transactions: _transactions,
+                restaurantCoordinates: _restaurantCoordinates,
+                yelpUrl: _yelpUrl,
 
-              yelpRating: _yelpRating,
-              yelpReviewCount: _yelpReviewCount,
-              photos: _photos,
-              tags: _tags,
-              openHours: _openHours,
+                yelpRating: _yelpRating,
+                yelpReviewCount: _yelpReviewCount,
+                photos: _photos,
+                tags: _tags,
+                openHours: _openHours,
+              });
+              storeNames(names);
+              storePhoneNumbers(phoneNums);
+              storeCover(_cover);
+              storePrice(_price);
+              storeTransactions(_transactions);
+              storeRestaurantLoc(_restaurantLocation);
+              storeRestaurantCoords(_restaurantCoordinates);
+              storeYelpUrl(_yelpUrl);
+              storeRating(_yelpRating);
+              storePhotos(_photos);
+              storeTags(_tags);
+              storeReviewCount(_yelpReviewCount);
+              console.error("JUST FINISHED SETTING AND DONE LOADING");
+            })
+            .catch((error) => {
+              if (error.response) {
+                console.error(error.response);
+              } else if (error.request) {
+                console.error(error.request);
+              } else if (error.message) {
+                console.error(error.message);
+              }
             });
-            storeNames(names);
-            storePhoneNumbers(phoneNums);
-            storeCover(_cover);
-            storePrice(_price);
-            storeTransactions(_transactions);
-            storeRestaurantLoc(_restaurantLocation);
-            storeRestaurantCoords(_restaurantCoordinates);
-            storeYelpUrl(_yelpUrl);
-            storeRating(_yelpRating);
-            storePhotos(_photos);
-            storeTags(_tags);
-            storeReviewCount(_yelpReviewCount);
-          })
-          .catch((error) => {
-            if (error.response) {
-              console.error(error.response);
-            } else if (error.request) {
-              console.error(error.request);
-            } else if (error.message) {
-              console.error(error.message);
-            }
-          });
-      });
+        });
+    } else {
+      console.warn("location is null");
+      this.getLocationAsync();
+    }
     setTimeout(() => {
       this.getFirebaseData(names);
     }, 3000);
@@ -259,14 +269,20 @@ class HomeScreen extends React.Component {
       this.setState({
         errorMessage: "Permission to access location was denied",
       });
+      Alert.alert(
+        "we cannot display anything without permission to access location."
+      );
+    } else {
+      console.warn("has permision");
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+      });
+      const { latitude, longitude } = location.coords;
+      this.setState({ location: { latitude, longitude } });
+      storeUserLocation([latitude, longitude]);
+      this.fetchApiCall();
+      console.log("GETTING STUFF");
     }
-    let location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.BestForNavigation,
-    });
-    const { latitude, longitude } = location.coords;
-    this.setState({ location: { latitude, longitude } });
-    storeUserLocation([latitude, longitude]);
-    this.fetchApiCall();
   };
 
   //get the geocode
@@ -302,11 +318,13 @@ class HomeScreen extends React.Component {
           icon={itemData.item.icon}
           onSelect={() => {
             if (this.state.loading) {
+              console.warn("STILL LOAIDNG");
               Alert.alert(
                 "Please wait",
                 "Our data is currently loading. Please wait a couple seconds until you can search by categories! Thanks so much!"
               );
             } else {
+              console.warn("done loading");
               this.props.navigation.navigate({
                 routeName: "RestaurantCategory",
                 params: {
@@ -354,7 +372,7 @@ class HomeScreen extends React.Component {
               showsHorizontalScrollIndicator={false}
               data={CATEGORIES}
               renderItem={renderGridItem}
-              keyExtractor={(item) => item}
+              key={(item) => item}
             />
           </View>
         );
