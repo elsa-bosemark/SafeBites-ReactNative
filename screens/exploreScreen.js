@@ -13,7 +13,7 @@ import {
   Touchable,
   FlatList,
 } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { PROVIDER_DEFAULT, Marker } from "react-native-maps";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -290,7 +290,7 @@ const ExploreScreen = (props) => {
           longitudeDelta: 0.00421,
         }}
         style={{ height: "70%" }}
-        provider={PROVIDER_GOOGLE}
+        provider={PROVIDER_DEFAULT}
         customMapStyle={mapStandardStyle}
         showsUserLocation={true}
       >
