@@ -240,6 +240,7 @@ const RestaurantDetailScreen = (props) => {
             <View style={{ flexDirection: "row" }}>
               <Tags restTags={tags[restIndex]} />
             </View>
+            <Text>Disclaimer: Purchase options may be out of date. Please reference user comments to find the most recent information.</Text>
           </View>
           <Credit logo={require("../../assets/yelpStars/yelpLogo.png")} />
           <Divider />
@@ -347,14 +348,7 @@ const RestaurantDetailScreen = (props) => {
                     });
                   }}
                 />
-                <CircleButton
-                  icon="attach"
-                  color={Colors.primaryColor}
-                  title="Website"
-                  onSelect={() => {
-                    Alert.alert("TODO");
-                  }}
-                />
+
               </View>
             </View>
           </View>

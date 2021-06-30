@@ -165,7 +165,7 @@ class HomeScreen extends React.Component {
   }
   //fetch yelp api
   fetchApiCall = () => {
-    console.warn("fetching pai");
+    Alert.alert("Please Wait!", "Please wait for the data to load before using our features (may take a few seconds). Thank you! ");
     let names = [];
     let phoneNums = [];
     let _yelpUrl = [];
