@@ -1,4 +1,2 @@
 # Safe Bites
-
-
- [safebites website]([http://google.com](https://safebites.weebly.com/))
+ [safebites website](https://safebites.weebly.com/)
